@@ -1,0 +1,100 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0px;
+    font-family: 'segoe ui';
+  }
+  
+  .navigation {
+    position: fixed;
+    top: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #4d4d4d;
+    
+    z-index:10
+  }
+  
+  .navigation > .navigation-header {
+    display: inline;
+  }
+  
+  .navigation > .navigation-header > .navigation-title {
+    display: inline-block;
+    font-size: 22px;
+    color: #fff;
+    padding: 10px 10px 10px 10px;
+  }
+  
+  .navigation > .navigation-btn {
+    display: none;
+  }
+  
+  .navigation > .navigation-links {
+    display: inline;
+    float: right;
+    font-size: 18px;
+  }
+  
+  .navigation > .navigation-links > a {
+    display: inline-block;
+    padding: 13px 10px 13px 10px;
+    text-decoration: none;
+    color: #efefef;
+  }
+  
+  .navigation > .navigation-links > a:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .navigation > #navigation-check {
+    display: none;
+  }
+  
+  @media (max-width:600px) {
+    .navigation > .navigation-btn {
+      display: inline-block;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+    }
+    .navigation > .navigation-btn > label {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      padding: 13px;
+    }
+    .navigation > .navigation-btn > label:hover,.navigation  #navigation-check:checked ~ .navigation-btn > label {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    .navigation > .navigation-btn > label > span {
+      display: block;
+      width: 25px;
+      height: 10px;
+      border-top: 2px solid #eee;
+    }
+    .navigation > .navigation-links {
+      position: absolute;
+      display: block;
+      width: 100%;
+      background-color: #333;
+      height: 0px;
+      transition: all 0.3s ease-in;
+      overflow-y: hidden;
+      top: 50px;
+      left: 0px;
+    }
+    .navigation > .navigation-links > a {
+      display: block;
+      width: 100%;
+    }
+    .navigation > #navigation-check:not(:checked) ~ .navigation-links {
+      height: 0px;
+    }
+    .navigation > #navigation-check:checked ~ .navigation-links {
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+    }
+  }

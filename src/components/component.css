@@ -1,0 +1,19 @@
+.gradient-text {
+    font-size:100px;
+    font-weight:700;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ff3000 0%, #e79c30 100%);
+    /* background-image: linear-gradient(60deg , #f15a29, #ed6200); */
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+}
+
+.bg-reg{
+    background-image: url('../assets/bgHome.jpg'); 
+}
+.bg-dark{
+    background-image: url('../assets/darkBG.jpg'); 
+}

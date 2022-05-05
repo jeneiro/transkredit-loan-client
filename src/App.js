@@ -1,24 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import NavRoutes from './routes';
+import { positions, Provider } from "react-alert";
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import AlertTemplate from "react-alert-template-basic";
+import React, { createContext, useReducer } from "react";
+
+export const AuthContext = createContext();
+const options = {
+  timeout: 3000,
+  position: positions.TOP_RIGHT
+};
+
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#F16024',
+    },
+    secondary: {
+      main: '#F16024',
+    },
+  },
+
+});
 
 function App() {
+  //useInterceptor();
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   
+    <Provider template={AlertTemplate} {...options}>
+    <MuiThemeProvider theme={theme}>
+    <NavRoutes/>
+    </MuiThemeProvider>
+    </Provider>
+    
+   
   );
 }
 
