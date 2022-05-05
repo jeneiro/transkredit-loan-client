@@ -1,13 +1,12 @@
 import React, { useState, Fragment } from "react";
 import { KeyboardDatePicker } from "@material-ui/pickers";
-import IndividualSteppr from "./individualSteppr";
 import "./form.css";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { useAlert } from "react-alert";
-
-export default function Individual() {
+import CorporateStepper from "./corporateStepper";
+export default function Director() {
   const alert = useAlert();
   const navigate = useNavigate();
   const [payload, setPayload] = useState({});
@@ -48,10 +47,10 @@ export default function Individual() {
 
   return (
     <div style={{ marginTop: 155 }}>
-      <IndividualSteppr />
+   <CorporateStepper activeStep={1} />
       <div class="Form-container ">
         <form className="register-form" onSubmit={submitForm}>
-          <h5>Individual Account Registration</h5>
+        <h5>Corporate Account Registration</h5>
           <hr />
           <div
             class="row"
@@ -62,7 +61,7 @@ export default function Individual() {
               margin: 2,
             }}
           >
-            <h6>PERSONAL INFORMATION</h6>
+            <h6>DIRECTOR INFORMATION</h6>
           </div>
           <div style={{ padding: 2 }}>
             <div class="row">

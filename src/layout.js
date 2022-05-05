@@ -6,6 +6,7 @@ import Individual from "./components/individual";
 import Registration from "./components/registration";
 import Corporate from "./components/corporate";
 import Form from "./form";
+import Director from "./components/director";
 import BankDetails from "./components/bankDetail";
 import Home from "./components/home";
 import UploadPassport from "./components/passport";
@@ -16,7 +17,7 @@ import "./layout.css";
 export default function Layout() {
   const navigate = useNavigate();
   const isRegistered = localStorage.getItem("isRegistered");
-  console.log(isRegistered)
+
   function logout() {
     localStorage.setItem("isAuth", JSON.stringify({ isAuthenticated: false }));
    
@@ -78,6 +79,7 @@ export default function Layout() {
         <Route path={"bank-detail"} element={<BankDetails />} />
         <Route path={"passport-upload"} element={<UploadPassport />} />
         <Route path={"home"} element={<Home />} />
+        <Route path={"directors"} element={<Director />} />
       </Routes>
     </div>
   );
