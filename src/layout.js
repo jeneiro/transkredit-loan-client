@@ -5,7 +5,7 @@ import Dashboard from "./components/dashboard";
 import Individual from "./components/individual";
 import Registration from "./components/registration";
 import Corporate from "./components/corporate";
-import Form from "./form";
+import TAndCCorporate from "./components/TAndCCorporate";
 import Director from "./components/director";
 import BankDetails from "./components/bankDetail";
 import Home from "./components/home";
@@ -14,6 +14,10 @@ import { Routes, Route } from "react-router";
 import { useNavigate } from "react-router";
 import logoTag from "./assets/logo-text2.png";
 import "./layout.css";
+import TAndCIndividual from "./components/TAndCIndividual";
+import JointNextOfKin from "./components/jointNextOfKin";
+import AddDirector from "./components/addDirector";
+
 export default function Layout() {
   const navigate = useNavigate();
   const isRegistered = localStorage.getItem("isRegistered");
@@ -80,6 +84,10 @@ export default function Layout() {
         <Route path={"passport-upload"} element={<UploadPassport />} />
         <Route path={"home"} element={<Home />} />
         <Route path={"directors"} element={<Director />} />
+        <Route path={"tandc-corporate"} element={<TAndCCorporate />} />
+        <Route path={"tandc-individual"} element={<TAndCIndividual/>}/>
+        <Route path={"add-director"} element={<AddDirector/>}/>
+        <Route path={"joint-next-of-Kin"} element ={<JointNextOfKin/>}/>
       </Routes>
     </div>
   );

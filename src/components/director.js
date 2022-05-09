@@ -14,10 +14,10 @@ export default function Director() {
   const [selectedDateID, handleDateChangeID] = useState(new Date());
   const [selectedDateED, handleDateChangeED] = useState(new Date());
   const [activate, setActivate] = useState(true);
-  const id = localStorage.getItem("id")
+  const id = localStorage.getItem("CorporateId")
 
  // const dashboard = `${webapibaseurl}/dashboard?officerId=${url}`;
- const individualURL = `${webapibaseurl}/individual/${id}`;
+ const individualURL = `${webapibaseurl}/director/${id}`;
   function changeHandler(e) {
     e.preventDefault();
     if (e.target.name === "nationality" && e.target.value === "Nigeria") {
@@ -36,9 +36,9 @@ export default function Director() {
     payload.issuanceDate = selectedDateID;
    
     axios.post(individualURL, payload).then((res)=>{
-    localStorage.setItem("individualId",res.data.individual.id) 
-      alert.success("Individual Information submitted")
-      navigate("/app/next-of-kin")
+    
+      alert.success("Director Information submitted")
+      navigate("/app/add-director")
     }
     
     ).catch((error)=>{alert.error(error.response.data.msg)})
@@ -643,14 +643,61 @@ export default function Director() {
                 </Fragment>
               </div>
             </div>
+            <div className="row">
+            <div class="input-group col-md-4">
+                <label>Occupation</label>
+                <input
+                  type="text"
+                  placeholder="Occupation"
+                  name="occupation"
+                  value={"" || payload.occupation}
+                  required
+                  onChange={changeHandler}
+                />
+              </div>
+              <div class="input-group col-md-4">
+                <label>Place of Work</label>
+                <input
+                  type="text"
+                  placeholder="Place of Work"
+                  name="placeOfWork"
+                  value={"" || payload.placeOfWork}
+                  required
+                  onChange={changeHandler}
+                />
+              </div>
+              <div class="input-group col-md-4">
+                <label>Nature Of Business</label>
+                <input
+                  type="text"
+                  placeholder="Nature Of Business"
+                  name="natureOfBusiness"
+                  value={"" || payload.natureOfBusiness}
+                  required
+                  onChange={changeHandler}
+                />
+              </div>
+              </div>
 
             <div className="row">
-              <div className="input-group col-md-8">
-                <label>Address</label>
+              <div className="input-group col-md-6">
+                <label>Work Address</label>
                 <input
                   type="text"
                   className="input-group"
-                  placeholder="Address"
+                  placeholder="Work Address"
+                  name="workAddress"
+                  value={"" || payload.workAddress}
+                  required
+                  onChange={changeHandler}
+                ></input>
+              </div>
+              <div className="input-group col-md-6">
+                <label>Residential Address</label>
+                <input
+                  type="text"
+                  className="input-group"
+                  placeholder=" Residential Address"
                   name="address"
                   value={"" || payload.address}
                   required
@@ -658,22 +705,14 @@ export default function Director() {
                 ></input>
               </div>
               <div className="col-md-4" style={{ marginTop: 30 }}>
-                <button>Submit</button>
+                <button type="submit">Add</button>
               </div>
             </div>
           </div>
 
-          {/* <div class="row">
-            <h4>Terms and Conditions</h4>
-            <div class="input-group">
-              <input id="terms" type="checkbox" />
-              <label for="terms">
-                I accept the terms and conditions for signing up to this
-                service, and hereby confirm I have read the privacy policy.
-              </label>
-            </div>
-          </div> */}
+         
         </form>
+      
       </div>
     </div>
   );

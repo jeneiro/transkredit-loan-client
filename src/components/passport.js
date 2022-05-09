@@ -36,12 +36,8 @@ export default function UploadPassport() {
       formData.append("photo", Image.photo);
 
       axios.post(individualURL, Image).then(()=>{
-        axios.post(registeredURI,{isRegistered:true}).then(()=>{
-          localStorage.setItem("isRegistered", true);
-          alert.success("Passport Details Submitted")
-          navigate("/app/Home")
-        }).catch((err=>{console.log(err)}))
-      
+     
+       navigate("/app/tandc-individual")
       }
       
       ).catch((error)=>{alert.error("Image size too large")

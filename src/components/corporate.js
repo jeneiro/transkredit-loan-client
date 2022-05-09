@@ -40,8 +40,8 @@ export default function Corporate() {
     axios
       .post(individualURL, payload)
       .then((res) => {
-        localStorage.setItem("individualId", res.data.corporate.id);
-        alert.success("Individual Information submitted");
+        localStorage.setItem("CorporateId", res.data.corporate.id);
+        alert.success("Corporate Information submitted");
         navigate("/app/directors");
       })
       .catch((error) => {
