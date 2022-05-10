@@ -25,9 +25,10 @@ export default function TAndCCorporate() {
   function submitForm(e) {
     e.preventDefault();
     axios
-      .put(registeredURI, { isRegistered: true })
+      .put(registeredURI, { isRegistered: true , userType:"Corporate"})
       .then(() => {
         localStorage.setItem("isRegistered", true);
+        localStorage.setItem("userType","Corporate" )
         alert.success("Registration Complete");
         navigate("/app/Home");
       })

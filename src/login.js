@@ -27,6 +27,7 @@ function Login() {
     axios
       .post(uri, payload)
       .then((res) => {
+        console.log( res.data)
         const id = res.data.userD.id;
         const token = res.data.token;
         localStorage.setItem("token", token);
@@ -64,7 +65,8 @@ function Login() {
         axios.get(`${webapibaseurl}/register/${id}`).then((res) => {
           if (res.data.registered.isRegistered) {
             localStorage.setItem("isRegistered", true);
-            navigate("/app/dashboard");
+            localStorage.setItem("userType",res.data.registered.userType )
+            navigate("/app/home");
           } else if (
             res.data.registered.isRegistered === null ||
             res.data.registered.isRegistered === undefined
@@ -102,7 +104,7 @@ function Login() {
 
         alert.success("User registered, please login to proceed");
         axios
-          .post(`${webapibaseurl}/register/${id}`, { isRegistered: false })
+          .post(`${webapibaseurl}/register/${id}`, { isRegistered: false, userType:"Unregistered" })
           .then((res) => {
             console.log(res.data);
             setPayload({});

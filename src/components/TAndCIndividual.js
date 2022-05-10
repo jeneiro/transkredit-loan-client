@@ -27,9 +27,11 @@ const id = localStorage.getItem("id")
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
  function submitForm(e){
   e.preventDefault();
-  axios.put(registeredURI,{isRegistered:true}).then(()=>{
+  axios.put(registeredURI,{isRegistered:true, userType:"Individual"}).then(()=>{
     localStorage.setItem("isRegistered", true);
+    localStorage.setItem("userType","Individual")
     alert.success("Registration Complete")
+   
     navigate("/app/Home")
   }).catch((err=>{console.log(err)}))
   }

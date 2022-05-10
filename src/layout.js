@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import NextOfKin from "./components/nextOfKin";
 import WorkDetails from "./components/workDetails";
-import Dashboard from "./components/dashboard";
+import JoinCorporative from "./components/joinCorporative";
+import Corporative from "./components/corporative";
 import Individual from "./components/individual";
 import Registration from "./components/registration";
 import Corporate from "./components/corporate";
@@ -29,13 +30,15 @@ export default function Layout() {
 
     navigate("/");
   }
+  
   function apply() {}
   function loan() {}
   function isRegisteredFunction(){
     if(isRegistered==="true")
     { return<>
-      <a target="_blank" style={{ cursor: "pointer" }} onClick={apply}>
-      Apply
+   
+      <a target="_blank" style={{ cursor: "pointer" }} onClick={()=>{navigate("/app/home")}}>
+    Home
     </a>
     <a target="_blank" style={{ cursor: "pointer" }} onClick={loan}>
       Loan
@@ -50,7 +53,7 @@ export default function Layout() {
     <div>
       <div className="navigation">
         <input type="checkbox" id="navigation-check"></input>
-        <div className="navigation-header">
+        <div className="navigation-header" >
           <img
             src={logoTag}
             alt="Logo"
@@ -88,6 +91,8 @@ export default function Layout() {
         <Route path={"tandc-individual"} element={<TAndCIndividual/>}/>
         <Route path={"add-director"} element={<AddDirector/>}/>
         <Route path={"joint-next-of-Kin"} element ={<JointNextOfKin/>}/>
+        <Route path={"corporative"} element={<Corporative/>}/>
+        <Route path={"join-corporative"} element={<JoinCorporative/>}/>
       </Routes>
     </div>
   );
