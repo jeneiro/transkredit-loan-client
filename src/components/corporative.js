@@ -24,8 +24,8 @@ export default function Corporative() {
     e.preventDefault();
    
     axios.post(url, payload).then((res)=>{
-        console.log(res.data)
-        alert.success("Corporative Created")
+      
+        alert.success(res.data.msg)
     }).catch((err)=>{
         console.log(err)
     })

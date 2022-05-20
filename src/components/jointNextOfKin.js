@@ -18,7 +18,7 @@ export default function JointNextOfKin() {
     const name = e.target.name;
     const value = e.target.value;
     setPayload({ ...payload, [name]: value });
-    console.log(e.target.name);
+  
   }
   const individualURL = `${webapibaseurl}/nextofkin/${corporateId}`;
   function submitForm(e){

@@ -27,7 +27,6 @@ function Login() {
     axios
       .post(uri, payload)
       .then((res) => {
-        console.log( res.data)
         const id = res.data.userD.id;
         const token = res.data.token;
         localStorage.setItem("token", token);
@@ -36,37 +35,54 @@ function Login() {
           JSON.stringify({ isAuthenticated: true })
         );
         localStorage.setItem("id", JSON.stringify(id));
-        console.log(res);
-        const individualURL = `${webapibaseurl}/individual/${id}`;
-        const corporateURL =`${webapibaseurl}/corporate/${id}`;
-        axiosInstance
-          .get(individualURL)
-          .then((res) => {
 
-            localStorage.setItem("individualId", res.data.individual.id);
-          
-          })
-          .catch((err) => {
-            console.log(err.response);
-            alert.error(err.response.data.errorMessage);
-          });
-          axiosInstance
-          .get(corporateURL)
-          .then((res) => {
-            console.log(res.data)
-            localStorage.setItem("CorporateId", res.data.corporate.id);
-            
-          
-          })
-          .catch((err) => {
-            console.log(err);
-            alert.error(err.response);
-          });
+        const individualURL = `${webapibaseurl}/individual/${id}`;
+        const corporateURL = `${webapibaseurl}/corporate/${id}`;
+        const staffCorporativeURL = `${webapibaseurl}/staff/byAuth/${id}`;
+
         axios.get(`${webapibaseurl}/register/${id}`).then((res) => {
           if (res.data.registered.isRegistered) {
             localStorage.setItem("isRegistered", true);
-            localStorage.setItem("userType",res.data.registered.userType )
-            navigate("/app/home");
+            localStorage.setItem("userType", res.data.registered.userType);
+            axiosInstance
+              .get(individualURL)
+              .then((res) => {
+                if (
+                  res.data.individual.name !== undefined ||
+                  res.data.individual.name !== null
+                ) {
+                  localStorage.setItem("individualId", res.data.individual.id);
+                  localStorage.setItem("username", res.data.individual.name);
+                  navigate("/app/home");
+                }
+              })
+              .catch((err) => {
+                console.log(err.response);
+              });
+            axiosInstance
+              .get(corporateURL)
+              .then((res) => {
+                if (
+                  res.data.corporate.name !== undefined ||
+                  res.data.corporate.name !== null
+                ) {
+                  localStorage.setItem("CorporateId", res.data.corporate.id);
+                  localStorage.setItem(
+                    "username",
+                    res.data.corporate.companyName
+                  );
+                  navigate("/app/home");
+                } else {
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+            axiosInstance.get(staffCorporativeURL).then((res) => {
+              localStorage.setItem("coporativememberId", res.data.data.id);
+              localStorage.setItem("username", res.data.data.fullName);
+              navigate("/app/home");
+            });
           } else if (
             res.data.registered.isRegistered === null ||
             res.data.registered.isRegistered === undefined
@@ -104,7 +120,10 @@ function Login() {
 
         alert.success("User registered, please login to proceed");
         axios
-          .post(`${webapibaseurl}/register/${id}`, { isRegistered: false, userType:"Unregistered" })
+          .post(`${webapibaseurl}/register/${id}`, {
+            isRegistered: false,
+            userType: "Unregistered",
+          })
           .then((res) => {
             console.log(res.data);
             setPayload({});

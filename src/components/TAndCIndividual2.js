@@ -4,33 +4,33 @@ import { webapibaseurl } from "../environment";
 import PDF from "../assets/TandC.pdf";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
-import IndividualStepper from "./individualSteppr";
+import IndividualSteppr from "./joinCorporativeSteppr";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-export default function TAndCIndividual() {
+export default function TAndCIndividual2() {
   const alert = useAlert();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const id = localStorage.getItem("id");
   const registeredURI = `${webapibaseurl}/register/${id}`;
-  const individualURL = `${webapibaseurl}/individual/${id}`;
+  const individualURL = `${webapibaseurl}/staff/byAuth/${id}`;
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   function submitForm(e) {
     e.preventDefault();
     axios
-      .put(registeredURI, { isRegistered: true, userType: "Individual" })
+      .put(registeredURI, { isRegistered: true, userType: "Corporative Member" })
       .then(() => {
         localStorage.setItem("isRegistered", true);
-        localStorage.setItem("userType", "Individual");
+        localStorage.setItem("userType", "Corporative Member");
         axios
           .get(individualURL)
           .then((res) => {
-            localStorage.setItem("individualId", res.data.individual.id);
-            localStorage.setItem("username", res.data.individual.name);
+            localStorage.setItem("coporativememberId", res.data.data.id);
+            localStorage.setItem("username", res.data.data.fullName);
             alert.success("Registration Complete");
             navigate("/app/Home");
           })
@@ -49,7 +49,7 @@ export default function TAndCIndividual() {
   }
   return (
     <div>
-      <IndividualStepper activeStep={5} />
+     <IndividualSteppr activeStep={2} />
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
         <div
           style={{ height: "720px", marginTop: 130, padding: 20 }}

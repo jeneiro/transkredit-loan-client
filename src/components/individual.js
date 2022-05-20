@@ -156,6 +156,7 @@ export default function Individual() {
                 <input
                   type="number"
                   placeholder="Phone Number"
+                  
                   minLength={11}
                   required
                   name="phone"
@@ -200,7 +201,7 @@ export default function Individual() {
                   onChange={changeHandler}
                 >
                   <option disabled selected>
-                    --Select Status--
+                    -Select Status-
                   </option>
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>

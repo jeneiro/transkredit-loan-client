@@ -21,16 +21,30 @@ export default function TAndCCorporate() {
   const [show, setShow] = useState(false);
   const id = localStorage.getItem("id");
   const registeredURI = `${webapibaseurl}/register/${id}`;
+  const corporateURL = `${webapibaseurl}/corporate/${id}`;
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   function submitForm(e) {
     e.preventDefault();
+
     axios
-      .put(registeredURI, { isRegistered: true , userType:"Corporate"})
+      .put(registeredURI, { isRegistered: true, userType: "Corporate" })
       .then(() => {
         localStorage.setItem("isRegistered", true);
-        localStorage.setItem("userType","Corporate" )
-        alert.success("Registration Complete");
-        navigate("/app/Home");
+        localStorage.setItem("userType", "Corporate");
+        axios
+          .get(corporateURL)
+          .then((res) => {
+            console.log(res.data);
+            localStorage.setItem("CorporateId", res.data.corporate.id);
+            localStorage.setItem("username", res.data.corporate.companyName);
+            alert.success("Registration Complete");
+            navigate("/app/Home");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+       
       })
       .catch((err) => {
         console.log(err);
