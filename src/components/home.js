@@ -1,93 +1,51 @@
 import React, { useEffect, useState } from "react";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
-
+import LoanApplication from "./loanApplication";
+import IndividualHome from "./individualHome";
+import CooporateHome from "./cooporateHome";
+import $ from "jquery";
 export default function Home() {
   const [userType, setUserType] = useState("");
   const [username, setUsername] = useState("");
+  const [show, setShow] = useState(false);
+  const [individual, setIndividual]= useState(false)
   const navigate = useNavigate();
+
   useEffect(() => {
     const userType = localStorage.getItem("userType");
     const username = localStorage.getItem("username");
     setUserType(userType);
     setUsername(username);
-  }, []);
+    if(userType === "Individual"){setIndividual(true)}
 
-  function view(){
-	  if(userType==="Corporate"){
-		  return<>
-		  <div
-            class="productBox small"
-            onClick={() => {
-              navigate("/app/upload-staff-list");
-            }}
-          >
-            <aside>
-              <h4>Upload Staff List</h4>
-            </aside>
-            <img src="" />
-          </div>
-		  <div
-            class="productBox small"
-            onClick={() => {
-              navigate("/app/staff-list");
-            }}
-          >
-            <aside>
-              <h4>Staff List</h4>
-            </aside>
-            <img src="" />
-          </div>
-		  
-		  <div
-            class="productBox small"
-            onClick={() => {
-              navigate("/app/corporative");
-            }}
-          >
-            <aside>
-              <h4>Register Corporative</h4>
-            </aside>
-            <img src="" />
-          </div>
-		  <div class="productBox small" onClick={()=>{
-			  navigate("/app/corporative-request-list")
-		  }}>
-            <aside>
-              <h4>Pending Approvals</h4>
-            </aside>
-            <img src="" />
-          </div>
-		 
-		  </>
+  hover() }, []);
 
-	  }
-	  if(userType==="Individual"){
-		  return <>
-		  	<div
-		class="productBox small"
-		onClick={() => {
-		  navigate("/app/join-corporative");
-		}}
-	  >
-		<aside>
-		  <h4>Join Corporative</h4>
-		</aside>
-		<img src="" />
-	  </div>
-	  
-	  <div class="productBox small">
-            <aside>
-              <h4>Joint Account</h4>
-            </aside>
-            <img src="" />
-          </div></>
-	
-	  }
+  function hover(){
+    $(".productBox").on('mouseenter',function(){$(this).addClass('color-hover')}).on('mouseleave',function(){$(this).removeClass('color-hover').show() })
+  
+  }
+  function handleClose(event) {
+    setShow(false);
+  }
+  function view() {
+    
+    if (userType === "Corporate") {
+  
+      return (
+      <CooporateHome/>
+      );
+    }
+    if (userType === "Individual") {
 
+      return (
+      <IndividualHome />
+      );
+    }
   }
   return (
     <div style={{ marginTop: 40, padding: 50, marginLeft: 20 }}>
+      <LoanApplication show={show} handleClose={handleClose} />
       <div className="row">
         <h5 style={{ color: "#f15a29" }}>Welcome </h5>
         <b> &nbsp; | {username}</b> <br />
@@ -99,44 +57,66 @@ export default function Home() {
       </div>
       <div className="row">
         <div class="productShell" style={{ marginTop: 55 }}>
-          <div class="productBox color-blue"  onClick={() => {
-              navigate("/app/loan-application");
-            }}>
+          
+          <div
+            class="productBox color-blue"
+            onClick={() => {
+              setShow(true);
+            }}
+          >
             <aside>
               <h4>Book a Loan</h4>
             </aside>
             <img src="" />
           </div>
 
-          <div class="productBox small color-green">
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/loan-list");
+            }}
+          >
             <aside>
               <h4>Loan Request</h4>
             </aside>
             <img src="" />
           </div>
 
-         
-
-         
-
-          <div class="productBox small">
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/active-loan-list");
+            }}
+          >
             <aside>
               <h4>Running Loans</h4>
             </aside>
-            <img src="" />
+            <img src="https://play-lh.googleusercontent.com/ccWDU4A7fX1R24v-vvT480ySh26AYp97g1VrIB_FIdjRcuQB2JP2WdY7h_wVVAeSpg=w240-h480-rw" />
           </div>
-		  <div class="productBox small">
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/settled-loan-list");
+            }}
+          >
             <aside>
               <h4>Settled Loans</h4>
             </aside>
             <img src="" />
           </div>
-          
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/upload-files");
+            }}
+          >
+            <aside>
+              <h4>Upload Documents</h4>
+            </aside>
+            <img src="" />
+          </div>
 
-          
-		  {view()}
-
-        
+          {view()}
         </div>
       </div>
     </div>

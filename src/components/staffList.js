@@ -42,7 +42,7 @@ export default function StaffList() {
     <div>
       <div style={{ marginTop: 100 }} className="col-md-8 offset-2">
         <div className="Form-container ">
-          <h5>Corporative Staff List</h5>
+          <h5>Cooporative Staff List</h5>
           <div
             className="row "
             style={{
@@ -52,7 +52,7 @@ export default function StaffList() {
               margin: 2,
             }}
           >
-            <b>List Of All Corporative Members</b>
+            <b>List Of All Cooporative Members</b>
           </div>
 
           <MaterialTable

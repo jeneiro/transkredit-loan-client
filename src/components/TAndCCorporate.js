@@ -60,7 +60,7 @@ export default function TAndCCorporate() {
       <CorporateStepper activeStep={3} />
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
         <div
-          style={{ height: "720px", marginTop: 130, padding: 20 }}
+          style={{ height: "720px", marginTop: 130, padding: 20,  marginBottom:100 }}
           className="col-md-10 offset-1"
         >
           <Viewer fileUrl={PDF} plugins={[defaultLayoutPluginInstance]} />

@@ -22,10 +22,10 @@ export default function TAndCIndividual2() {
   function submitForm(e) {
     e.preventDefault();
     axios
-      .put(registeredURI, { isRegistered: true, userType: "Corporative Member" })
+      .put(registeredURI, { isRegistered: true, userType: "Cooporative Member" })
       .then(() => {
         localStorage.setItem("isRegistered", true);
-        localStorage.setItem("userType", "Corporative Member");
+        localStorage.setItem("userType", "Cooporative Member");
         axios
           .get(individualURL)
           .then((res) => {
@@ -52,7 +52,7 @@ export default function TAndCIndividual2() {
      <IndividualSteppr activeStep={2} />
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
         <div
-          style={{ height: "720px", marginTop: 130, padding: 20 }}
+          style={{ height: "720px", marginTop: 130, padding: 20 ,  marginBottom:100}}
           className="col-md-10 offset-1"
         >
           <Viewer fileUrl={PDF} plugins={[defaultLayoutPluginInstance]} />

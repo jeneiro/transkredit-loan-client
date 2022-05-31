@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CurrencyFormat from "react-currency-format";
 import "./form.css";
+import Modal from "react-bootstrap/Modal";
 import { webapibaseurl } from "../environment";
 import { axiosInstance as axios } from "../interceptor";
 import Radio from "@mui/material/Radio";
@@ -8,15 +9,22 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-export default function LoanApplication() {
+import { Button } from "reactstrap";
+export default function LoanApplication(props) {
   const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
   const [corpList, setCorpList] = useState([]);
   const individualId = localStorage.getItem("individualId");
+  const id =localStorage.getItem("id");
   const userType = localStorage.getItem("userType");
-  const individualURL = `${webapibaseurl}/bank-detail/${individualId}`;
+  const loanURL = `${webapibaseurl}/loan/${id}`;
+  const CorporateId = localStorage.getItem("corporateId");
   const url = `${webapibaseurl}/joinRequest/approved/${individualId}`;
 
+  function handleClose(event) {
+  
+    props.handleClose(event);
+  }
   const [amount, setAmount] = useState();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -31,7 +39,13 @@ export default function LoanApplication() {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
-    setPayload({ ...payload, [name]: value });
+    setPayload({ ...payload, [name]: value,['loanAmount']:amount });
+    
+    if(CorporateId){
+        setPayload({...payload, [name]: value,[ 'CorporateId' ]:CorporateId, ['loanAmount']:amount })
+      
+        console.log(payload)
+    }
   }
   function changeHandler2(e) {
     e.preventDefault();
@@ -46,12 +60,15 @@ export default function LoanApplication() {
   }
   function submitForm(e) {
     e.preventDefault();
-    console.log(payload);
+   
     axios
-      .post(individualURL, payload)
+      .post(loanURL, payload)
       .then(() => {
         alert.success("Loan Request Submitted");
-        navigate("/app/home");
+        document.getElementById("loan-form").reset();
+        setAmount(0);
+        setPayload({});
+        navigate("/app/home/")
       })
       .catch((error) => {
         alert.error(error.response.data.msg);
@@ -77,18 +94,18 @@ export default function LoanApplication() {
           </div>
           {show && (
             <div className="col-md-6">
-              <label>Select Corporative</label>
+              <label>Select Cooporative</label>
               <select
                 name="loanType"
                 class="input-group"
                 onChange={changeHandler}
               >
                 <option disabled selected>
-                  -Select Corporative-
+                  -Select Cooporative-
                 </option>
 
                {corpList.map((corp)=>{
-                  return <option value={corp.CorporativeName}>{corp.CorporativeName}</option>
+                  return <option value={corp.CorporateId}>{corp.CorporativeName}</option>
                })} 
                
               </select>
@@ -101,9 +118,19 @@ export default function LoanApplication() {
     }
   }
   return (
-    <div style={{ marginTop: 155 }}>
+
+
+    <Modal
+    show={props.show}
+    onHide={handleClose}
+    size="lg"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+  >
+    <Modal.Body>
+    <div >
       <div class="Form-container ">
-        <form className="register-form" onSubmit={submitForm}>
+        <form className="register-form" id="loan-form" onSubmit={submitForm}>
           <h5>Loan Applcation</h5>
           <hr />
           <div
@@ -125,11 +152,15 @@ export default function LoanApplication() {
                 <div>
                   <CurrencyFormat
                     thousandSeparator={true}
-                    prefix={"NGN"}
+                    prefix={"₦"}
                     className="currency"
-                    value={amount || payload.amount}
+                    fixedDecimalScale={true}
+                    name="loanAmount"
+                    value={amount||payload.loanAmount}
                     onValueChange={(values) => {
+                     
                       const { formattedValue, value } = values;
+                      
 
                       setAmount(value);
                       // setFormattedAmount2(formattedValue);
@@ -165,7 +196,7 @@ export default function LoanApplication() {
                   <option value="Cheques">Cheques</option>
                 </select>
               </div>
-              <div class=" col-md-2">
+              <div class=" col-md-3">
                 <label>Tenor</label>
                 <input
                   className="input-group"
@@ -176,15 +207,21 @@ export default function LoanApplication() {
                   placeholder="Tenor"
                 />
               </div>
-              <div class=" col-md-7">{checkType()}</div>
-              <div class=" col-md-3" style={{ marginTop: 35 }}>
+              <div class=" col-md-8">{checkType()}</div>
+              {/* <div class=" col-md-3" style={{ marginTop: 35 }}>
                 {" "}
                 <button type="submit">Submit</button>
-              </div>
+              </div> */}
             </div>
           </div>
         </form>
       </div>
     </div>
+    </Modal.Body>
+    <Modal.Footer>
+    <form> <button onClick={(e)=>{submitForm(e);  handleClose()}}>Submit</button></form>
+    </Modal.Footer>
+  </Modal>
+  
   );
 }

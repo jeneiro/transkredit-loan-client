@@ -7,7 +7,7 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import {useAlert} from "react-alert"
-export default function CorporateRequestTable(props) {
+export default function LoanRequestLIst() {
   const alert = useAlert();
   const CorporateId = localStorage.getItem("CorporateId");
   const getReqURL = `${webapibaseurl}/joinRequest/corporate/${CorporateId}`;

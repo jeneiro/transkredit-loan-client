@@ -51,7 +51,7 @@ export default function Corporate() {
   }
 
   return (
-    <div style={{ marginTop: 155 }}>
+    <div style={{ marginTop: 155, marginBottom:100 }}>
       <CorporateStepper />
       <div class="Form-container ">
         <form className="register-form" onSubmit={submitForm}>

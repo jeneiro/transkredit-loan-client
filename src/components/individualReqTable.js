@@ -40,7 +40,7 @@ export default function IndividualRequestTable(props) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Corporative Name</StyledTableCell>
+            <StyledTableCell>Cooporative Name</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Request Date</StyledTableCell>
             <StyledTableCell align="right">Delete Request</StyledTableCell>

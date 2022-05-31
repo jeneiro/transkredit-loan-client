@@ -41,7 +41,7 @@ export default function JoinCorporative() {
           console.log(res.data);
           setReqCorporative(res.data.data);
         });
-        alert.success("Request to Join Corporative Sent");
+        alert.success("Request to Join Cooporative Sent");
       })
       .catch((err) => {
         console.log(err);
@@ -69,7 +69,7 @@ export default function JoinCorporative() {
     <div>
       <div style={{ marginTop: 120 }} className="col-md-6 offset-3">
         <div className="Form-container ">
-          <h5>Corporative</h5>
+          <h5>Cooporative</h5>
           <div
             className="row "
             style={{
@@ -79,7 +79,7 @@ export default function JoinCorporative() {
               margin: 2,
             }}
           >
-            <b>Join Corporative</b>
+            <b>Join Cooporative</b>
           </div>
 
           <form className="register-form" onSubmit={submitForm}>
@@ -97,14 +97,14 @@ export default function JoinCorporative() {
                 />
               </div>
               <div class=" col-md-6">
-                <label>Select Corporative</label>
+                <label>Select Cooporative</label>
                 <select
                   name="CorporateId"
                   class="input-group"
                   required
                   onChange={changeHandler2}
                 >
-                  <option selected>-List Of Corporative-</option>
+                  <option selected>-List Of Cooporative-</option>
                   {row}
                 </select>
               </div>

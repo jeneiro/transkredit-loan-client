@@ -18,7 +18,7 @@ export default function RegisterViaCorproative() {
   const [corpname, setCorpName] = useState("");
   const [request, setRequest] = useState(false);
   const [stepper, setStepper] = useState(0);
-const [Status, SetStatus] = useState('')
+  const [Status, SetStatus] = useState("");
   useEffect(() => {
     const corporativeURL = `${webapibaseurl}/corporative`;
     checkStatus();
@@ -46,19 +46,18 @@ const [Status, SetStatus] = useState('')
       setPayload({ ...payload, ...res.data.corporative });
     });
   }
-  function checkStatus(){
+  function checkStatus() {
     axios.get(url).then((res) => {
       const status = res.data.data[0].Status;
       const corprativename = res.data.data[0].CorporativeName;
-      SetStatus(status)
+      SetStatus(status);
       console.log(res.data.data);
       if (status) {
         setStepper(1);
         setRequest(true);
-          setCorpName(corprativename);
+        setCorpName(corprativename);
       }
     });
-
   }
   function submitForm(e) {
     e.preventDefault();
@@ -73,37 +72,69 @@ const [Status, SetStatus] = useState('')
         alert.error(error.response.data.msg);
       });
   }
-  function pendingWindow(){
-    if(Status ==="Pending"){
-     return <div>
-      <p style={{ fontSize: 20, textAlign: "center", marginTop: 30 }}>
-        You have a <b>Pending Request</b> to join through {corpname}
-      </p>{" "}
-      <br />
-      <p style={{ textAlign: "center" }}>
-        <i>
-          You will be able to move to the next step when your request is
-          approved or re-apply if your request is rejected
-        </i>
-      </p>
-      </div> 
+  function pendingWindow() {
+    if (Status === "Pending") {
+      return (
+        <div>
+          <p style={{ fontSize: 20, textAlign: "center", marginTop: 30 }}>
+            You have a <b>Pending Request</b> to join through {corpname}
+          </p>{" "}
+          <br />
+          <p style={{ textAlign: "center" }}>
+            <i>
+              You will be able to move to the next step when your request is
+              approved or re-apply if your request is rejected
+            </i>
+          </p>
+        </div>
+      );
     }
-    if(Status==="Approved"){
-      return <div>
+    if (Status === "Approved") {
+      return (
+        <div>
+          <p style={{ fontSize: 20, textAlign: "center", marginTop: 30 }}>
+            Your request has been <b> Approved</b> by {corpname}
+          </p>{" "}
+          <br />
+          <p style={{ textAlign: "center" }}>
+            <i>Please proceed to Terms and Conditions</i>
+            <form style={{ marginTop: 20 }} className="col-md-4 offset-4">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/app/tandc-individual-2");
+                }}
+              >
+                Terms and Conditions
+              </button>
+            </form>
+          </p>
+        </div>
+      );
+    }
+    if (Status === "Rejected") {
+      return (
+      <div>
       <p style={{ fontSize: 20, textAlign: "center", marginTop: 30 }}>
-        Your request has been <b> Approved</b> by {corpname}
+        Your request has been <b> Rejected</b> by {corpname}
       </p>{" "}
       <br />
       <p style={{ textAlign: "center" }}>
-        <i>
-         Please proceed to Terms and Conditions 
-        </i>
-        <form style={{ marginTop:20 }} className="col-md-4 offset-4"><button onClick={(e)=>{
-          e.preventDefault()
-          navigate("/app/tandc-individual-2")
-        }}>Terms and Conditions</button></form>
+        <i>Please contact your corporative and try again</i>
+        <form style={{ marginTop: 20 }} className="col-md-4 offset-4">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+            setRequest(false);
+            setStepper(0)
+            }}
+          >
+            Send New Request 
+          </button>
+        </form>
       </p>
-      </div> 
+    </div>
+      )
     }
   }
 
@@ -123,7 +154,7 @@ const [Status, SetStatus] = useState('')
                 margin: 2,
               }}
             >
-              <b>Join Corporative Request Status</b>
+              <b>Join Cooporative Request Status</b>
             </div>
             {pendingWindow()}
           </div>
@@ -172,14 +203,14 @@ const [Status, SetStatus] = useState('')
 
               <div className="row">
                 <div class=" col-md-6">
-                  <label>Select Corporative</label>
+                  <label>Select Cooporative</label>
                   <select
                     name="CorporateId"
                     class="input-group"
                     required
                     onChange={changeHandler2}
                   >
-                    <option selected>-List Of Corporative-</option>
+                    <option selected>-List Of Cooporative-</option>
                     {row}
                   </select>
                 </div>

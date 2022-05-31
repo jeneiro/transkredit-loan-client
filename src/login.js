@@ -6,8 +6,6 @@ import { useFormik } from "formik";
 import logoTag from "./assets/logo-white.png";
 import { useNavigate } from "react-router";
 import { webapibaseurl } from "./environment";
-import { AuthContext } from "./App";
-import BarLoader from "react-spinners/BarLoader";
 import $ from "jquery";
 import "./login.css";
 
@@ -27,8 +25,10 @@ function Login() {
     axios
       .post(uri, payload)
       .then((res) => {
+       
         const id = res.data.userD.id;
         const token = res.data.token;
+       
         localStorage.setItem("token", token);
         localStorage.setItem(
           "isAuth",
@@ -39,61 +39,68 @@ function Login() {
         const individualURL = `${webapibaseurl}/individual/${id}`;
         const corporateURL = `${webapibaseurl}/corporate/${id}`;
         const staffCorporativeURL = `${webapibaseurl}/staff/byAuth/${id}`;
-
-        axios.get(`${webapibaseurl}/register/${id}`).then((res) => {
-          if (res.data.registered.isRegistered) {
-            localStorage.setItem("isRegistered", true);
-            localStorage.setItem("userType", res.data.registered.userType);
-            axiosInstance
-              .get(individualURL)
-              .then((res) => {
-                if (
-                  res.data.individual.name !== undefined ||
-                  res.data.individual.name !== null
-                ) {
-                  localStorage.setItem("individualId", res.data.individual.id);
-                  localStorage.setItem("username", res.data.individual.name);
-                  navigate("/app/home");
-                }
-              })
-              .catch((err) => {
-                console.log(err.response);
+        if(res.data.userD.isAdmin===true){
+          navigate("/app/dashboard");
+          localStorage.setItem("isAdmin", true);
+        }
+        else{
+          axios.get(`${webapibaseurl}/register/${id}`).then((res) => {
+            if (res.data.registered.isRegistered) {
+              localStorage.setItem("isRegistered", true);
+              localStorage.setItem("userType", res.data.registered.userType);
+              axiosInstance
+                .get(individualURL)
+                .then((res) => {
+                  if (
+                    res.data.individual.name !== undefined ||
+                    res.data.individual.name !== null
+                  ) {
+                    localStorage.setItem("individualId", res.data.individual.id);
+                    localStorage.setItem("username", res.data.individual.name);
+                    navigate("/app/home");
+                  }
+                })
+                .catch((err) => {
+                  console.log(err.response);
+                });
+              axiosInstance
+                .get(corporateURL)
+                .then((res) => {
+                  if (
+                    res.data.corporate.name !== undefined ||
+                    res.data.corporate.name !== null
+                  ) {
+                    localStorage.setItem("CorporateId", res.data.corporate.id);
+                    localStorage.setItem(
+                      "username",
+                      res.data.corporate.companyName
+                    );
+                    navigate("/app/home");
+                  } else {
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              axiosInstance.get(staffCorporativeURL).then((res) => {
+                localStorage.setItem("coporativememberId", res.data.data.id);
+                localStorage.setItem("corporateId", res.data.data.CorporateId);
+                localStorage.setItem("username", res.data.data.fullName);
+                navigate("/app/home");
               });
-            axiosInstance
-              .get(corporateURL)
-              .then((res) => {
-                if (
-                  res.data.corporate.name !== undefined ||
-                  res.data.corporate.name !== null
-                ) {
-                  localStorage.setItem("CorporateId", res.data.corporate.id);
-                  localStorage.setItem(
-                    "username",
-                    res.data.corporate.companyName
-                  );
-                  navigate("/app/home");
-                } else {
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-            axiosInstance.get(staffCorporativeURL).then((res) => {
-              localStorage.setItem("coporativememberId", res.data.data.id);
-              localStorage.setItem("username", res.data.data.fullName);
-              navigate("/app/home");
-            });
-          } else if (
-            res.data.registered.isRegistered === null ||
-            res.data.registered.isRegistered === undefined
-          ) {
-            localStorage.setItem("isRegistered", false);
-            navigate("/app/register");
-          } else {
-            localStorage.setItem("isRegistered", false);
-            navigate("/app/register");
-          }
-        });
+            } else if (
+              res.data.registered.isRegistered === null ||
+              res.data.registered.isRegistered === undefined
+            ) {
+              localStorage.setItem("isRegistered", false);
+              navigate("/app/register");
+            } else {
+              localStorage.setItem("isRegistered", false);
+              navigate("/app/register");
+            }
+          });
+        }
+       
       })
       .catch((err) => {
         console.log(err.response);

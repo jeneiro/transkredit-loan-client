@@ -7,7 +7,7 @@ import { useAlert } from "react-alert";
 export default function CSV() {
   const alert = useAlert();
   const CorporateId = localStorage.getItem("CorporateId");
-  const Corporative = localStorage.getItem("CorporativeId")
+  const Cooporative = localStorage.getItem("CorporativeId")
   const [data, setData] = useState([]);
   const [columns, setKeys] = useState([]);
   const postList = `${webapibaseurl}/staff/${CorporateId}`;
@@ -36,12 +36,12 @@ export default function CSV() {
                     .replace(/[\u0300-\u036f]/g, "")
                 );
                 let keyArr = keys.map((key) => {
-                  let i = { field: key, headerName: key, width: 150 };
+                  let i = { field: key, headerName: key, width: "50%" };
                   return i;
                 });
 
                 let column = [
-                  { field: "id", headerName: "ID", width: 70 },
+                  { field: "id", headerName: "ID", width: 90 },
                   ...keyArr,
                 ];
 

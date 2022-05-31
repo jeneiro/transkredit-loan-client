@@ -6,26 +6,28 @@ import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
-import {useAlert} from "react-alert"
-export default function CorporateRequestTable(props) {
+import { useAlert } from "react-alert";
+export default function AdminAllUsers() {
   const alert = useAlert();
-  const CorporateId = localStorage.getItem("CorporateId");
-  const getReqURL = `${webapibaseurl}/joinRequest/corporate/${CorporateId}`;
+
+  const getReqURL = `${webapibaseurl}/admin/all-pending-loans`;
   const [staff, setStaff] = useState([]);
-  const [payload, setPayload] = useState({})
+  const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const approveURL = `${webapibaseurl}/joinRequest/approve/${CorporateId}`;
-  const rejectURL = `${webapibaseurl}/joinRequest/reject/${CorporateId}`;
+  const [loanID, setLoanID] = useState();
 
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleShow2 = () => setShow2(true);
+  const approveURL = `${webapibaseurl}/admin/approve-loan-request/${loanID}`;
+  const rejectURL = `${webapibaseurl}/admin/reject-loan-request/${loanID}`;
 
   useEffect(() => {
     callList();
   }, []);
+  function currencyFormat(num) {
+    return "₦" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
   function callList() {
     axios.get(getReqURL).then((res) => {
       console.log(res.data.data);
@@ -34,12 +36,15 @@ export default function CorporateRequestTable(props) {
       const listItems = list.map((item, index) => {
         const payload = {
           sn: index + 1,
-          fullName: item.IndividualName,
-          staffId: item.StaffId,
-          id: item.id,
-          AuthId:item.AuthId
+          id:item.id,
+          date: moment(item.date).format("LL"),
+          loanAmount: currencyFormat(Number(item.loanAmount)),
+          tenor: item.tenor,
+          loanType: item.loanType,
+          repaymentMode: item.repaymentMode,
+          status: item.status,
         };
-        console.log(payload)
+        console.log(payload);
         return payload;
       });
       setStaff(listItems);
@@ -48,16 +53,19 @@ export default function CorporateRequestTable(props) {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
-    { title: "Full Name", field: "fullName" },
-
-    { title: "Staff ID", field: "staffId" },
+    { title: "Loan Amount", field: "loanAmount" },
+    { title: "Loan Type", field: "loanType" },
+    { title: "Repayment Mode", field: "repaymentMode" },
+    { title: "Tenor", field: "tenor" },
+    { title: "Date", field: "date" },
+    { title: "Status", field: "status" },
   ];
 
   return (
     <div>
-      <div style={{ marginTop: 120 }} className="col-md-8 offset-2">
+      <div style={{ marginTop: 120 }} className="col-md-10 offset-1">
         <div className="Form-container ">
-          <h5>Cooporative Request</h5>
+          <h5>Admin All Users</h5>
           <div
             className="row "
             style={{
@@ -67,10 +75,10 @@ export default function CorporateRequestTable(props) {
               margin: 2,
             }}
           >
-            <b>Join Cooporative Request List</b>
+            <b>Loan Action Required</b>
           </div>
           <MaterialTable
-            title={<b>Request List</b>}
+            title={<b>Pending Action List</b>}
             columns={columns}
             data={rows}
             actions={[
@@ -79,9 +87,8 @@ export default function CorporateRequestTable(props) {
                 iconProps: { style: { fontSize: "34px", color: "green" } },
                 tooltip: "Approve Request",
                 onClick: (event, rowData) => {
-                  console.log(rowData);
-                  const Item = { staffId: rowData.staffId, id: rowData.id, fullName: rowData.fullName, AuthId:rowData.AuthId };
-                  setPayload(Item)
+                  setLoanID(rowData.id);
+               
                   setShow(true);
                 },
               },
@@ -90,9 +97,8 @@ export default function CorporateRequestTable(props) {
                 tooltip: "Reject Request",
                 iconProps: { style: { fontSize: "34px", color: "red" } },
                 onClick: (event, rowData) => {
-                  console.log(rowData);
-                  const Item = { staffId: rowData.staffId ,id: rowData.id };
-                  setPayload(Item)
+                  setLoanID(rowData.id);
+                 
                   setShow2(true);
                 },
               },
@@ -119,7 +125,7 @@ export default function CorporateRequestTable(props) {
             centered
           >
             <Modal.Body>
-              <b>Are you sure you want approve this record?</b>
+              <b>Are you sure you want approve this loan?</b>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -141,12 +147,12 @@ export default function CorporateRequestTable(props) {
                 variant="success"
                 style={{ marginTop: 10 }}
                 onClick={() => {
-                  axios.post(approveURL,payload).then((res)=>{
-                    alert.success('Record Approved')
-                    setPayload({})
+                  axios.post(approveURL, payload).then((res) => {
+                    alert.success("Record Approved");
+                    setPayload({});
                     setShow(false);
                     callList();
-                  })
+                  });
                 }}
               >
                 Approve
@@ -161,7 +167,7 @@ export default function CorporateRequestTable(props) {
             centered
           >
             <Modal.Body>
-              <b>Are you sure you want reject this record?</b>
+              <b>Are you sure you want reject this loan?</b>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -183,12 +189,12 @@ export default function CorporateRequestTable(props) {
                 variant="primary"
                 style={{ marginTop: 10 }}
                 onClick={() => {
-                  axios.post(rejectURL,payload).then((res)=>{
-                    alert.success('Record Rejected')
-                    setPayload({})
+                  axios.post(rejectURL, payload).then((res) => {
+                    alert.success("Record Rejected");
+                    setPayload({});
                     setShow2(false);
                     callList();
-                  })
+                  });
                 }}
               >
                 Reject

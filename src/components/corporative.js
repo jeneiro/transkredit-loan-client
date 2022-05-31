@@ -3,7 +3,8 @@ import { useAlert } from "react-alert";
 import { axiosInstance as axios } from "../interceptor";
 import { useNavigate } from "react-router-dom";
 import { webapibaseurl } from "../environment";
-export default function Corporative() {
+import Modal from "react-bootstrap/Modal";
+export default function Cooporative(props) {
   const alert = useAlert();
   const navigate = useNavigate();
   const [payload, setPayload] = useState({});
@@ -18,6 +19,10 @@ export default function Corporative() {
       setDirectors(res.data.directors);
     });
   }, []);
+  function handleClose(event) {
+  
+    props.handleClose(event);
+  }
   const url = `${webapibaseurl}/corporative/${id}`;
  
   function submitForm(e) {
@@ -38,44 +43,59 @@ export default function Corporative() {
     setPayload({ ...payload, [name]: value });
   }
   return (
-    <div>
-      <div style={{ marginTop: 155 }} className="col-md-6 offset-3">
-        <div className="Form-container ">
-          <h5>Corporative</h5>
-          <div
+    <Modal
+    show={props.show}
+    onHide={handleClose}
+   
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+  >  <Modal.Header closeButton>
+  <Modal.Title id="contained-modal-title-vcenter">
+  <div
             className="row "
             style={{
               backgroundColor: "#f15a29",
               color: "#fff",
               padding: 4,
               margin: 2,
+              fontSize:16
             }}
           >
-            <b>Add Corporative</b>
+          Register Cooporative
           </div>
+  </Modal.Title>
+</Modal.Header>
+    <Modal.Body>
+    <div>
+    
+        <div className="Form-container ">
+      
 
           <form className="register-form" onSubmit={submitForm}>
             <hr />
 
             <div className="row">
-              <div class="input-group col-md-6">
-                <label>Corporative Name</label>
+             
+                <label>Cooporative Name</label>
                 <input
                   type="text"
-                  placeholder="Corporative Name"
+                  placeholder="Cooporative Name"
                   name="name"
                   value={"" || payload.name}
                   required
                   onChange={changeHandler}
                 />
-              </div>
-              <div className="col-md-4" style={{ marginTop: 30 }}>
-                <button type="submit">Submit</button>
-              </div>
+             
+             
             </div>
           </form>
         </div>
-      </div>
+      
     </div>
+    </Modal.Body>
+    <Modal.Footer>
+    <form> <button onClick={(e)=>{submitForm(e);  handleClose()}}>Submit</button></form>
+    </Modal.Footer>
+  </Modal>
   );
 }

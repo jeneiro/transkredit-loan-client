@@ -60,3 +60,14 @@
 	background: linear-gradient(to bottom, #89c825 0%,#6ea11d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89c825', endColorstr='#6ea11d',GradientType=0 );
 }
+
+.color-hover aside {
+	background:  #f15a29;
+	background: -moz-linear-gradient(top,  #f15a29 0%, #f2a305 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f15a29), color-stop(100%,#f2a305));
+	background: -webkit-linear-gradient(top,  #f15a29 0%,#f2a305 100%);
+	background: -o-linear-gradient(top,  #f15a29 0%,#f2a305 100%);
+	background: -ms-linear-gradient(top,  #f15a29 0%,#f2a305 100%);
+	background: linear-gradient(to bottom,  #f15a29 0%,#f2a305 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89c825', endColorstr='#6ea11d',GradientType=0 );
+}
