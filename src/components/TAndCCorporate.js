@@ -67,7 +67,7 @@ export default function TAndCCorporate() {
         </div>
       </Worker>
       <form
-        style={{ marginTop: 10, float: "right", marginRight: 30 }}
+        style={{ float: "right", marginRight: 30 }}
         onSubmit={submitForm}
       >
         <div className="input-group">
@@ -88,6 +88,7 @@ export default function TAndCCorporate() {
           {show && <button type="submit">Submit</button>}
         </div>
       </form>
+      <div style={{ height:100 }}>.</div>
     </div>
   );
 }

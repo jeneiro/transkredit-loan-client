@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import FileBase64 from "react-file-base64";
 import IndividualSteppr from "./joinCorporativeSteppr";
 import "./form.css";
 import { webapibaseurl } from "../environment";
@@ -19,6 +19,7 @@ export default function RegisterViaCorproative() {
   const [request, setRequest] = useState(false);
   const [stepper, setStepper] = useState(0);
   const [Status, SetStatus] = useState("");
+  const[document, setDocument]=useState();
   useEffect(() => {
     const corporativeURL = `${webapibaseurl}/corporative`;
     checkStatus();
@@ -61,7 +62,7 @@ export default function RegisterViaCorproative() {
   }
   function submitForm(e) {
     e.preventDefault();
-
+payload.document=document.photo
     axios
       .post(url, payload)
       .then(() => {
@@ -120,7 +121,7 @@ export default function RegisterViaCorproative() {
       </p>{" "}
       <br />
       <p style={{ textAlign: "center" }}>
-        <i>Please contact your corporative and try again</i>
+        <i>Please contact your cooporative and try again</i>
         <form style={{ marginTop: 20 }} className="col-md-4 offset-4">
           <button
             onClick={(e) => {
@@ -144,7 +145,7 @@ export default function RegisterViaCorproative() {
       {request ? (
         <div>
           <div className="Form-container ">
-            <h5>REGISTER USING A CORPORATIVE</h5>
+            <h5>REGISTER USING A COOPORATIVE</h5>
             <div
               className="row "
               style={{
@@ -173,7 +174,7 @@ export default function RegisterViaCorproative() {
                 margin: 2,
               }}
             >
-              <h6>REGISTER USING A CORPORATIVE</h6>
+              <h6>REGISTER USING A COOPORATIVE</h6>
             </div>
             <div style={{ padding: 2 }}>
               <div class="row">
@@ -214,10 +215,22 @@ export default function RegisterViaCorproative() {
                     {row}
                   </select>
                 </div>
-                <div className="col-md-4" style={{ marginTop: 30 }}>
-                  <button>Submit</button>
+                <div className="col-md-6" >
+                <label>Upload Staff ID</label>
+                <FileBase64
+                  multiple={false}
+                  onDone={({ base64 }) =>
+                    setDocument({ ...Image, photo: base64 })
+                  }
+                  className="form-control"
+                />
+               <small style={{color:"#f15a29"}}>*Accepted upload formats are JPG/PNG & file size Should not exceed 50kb</small>
                 </div>
               </div>
+             
+              <div className="row"><div className="col-md-4"></div><div className="col-md-4"></div><div className="col-md-4" style={{ marginTop: 30 }}>
+                  <button>Submit</button>
+                </div></div>
             </div>
           </form>
         </div>

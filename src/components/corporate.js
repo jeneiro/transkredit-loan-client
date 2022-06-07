@@ -15,10 +15,11 @@ export default function Corporate() {
   const [selectedDateID, handleDateChangeID] = useState(new Date());
   const [selectedDateED, handleDateChangeED] = useState(new Date());
   const [activate, setActivate] = useState(true);
+  const [corporativeName, setCorporativeName] = useState("");
   const id = localStorage.getItem("id");
 
   // const dashboard = `${webapibaseurl}/dashboard?officerId=${url}`;
-  const individualURL = `${webapibaseurl}/corporate/${id}`;
+  const corporateURL = `${webapibaseurl}/corporate/${id}`;
   function changeHandler(e) {
     e.preventDefault();
     if (e.target.name === "nationality" && e.target.value === "Nigeria") {
@@ -38,20 +39,27 @@ export default function Corporate() {
     payload.issuanceDate = selectedDateID;
 
     axios
-      .post(individualURL, payload)
+      .post(corporateURL, payload)
       .then((res) => {
         localStorage.setItem("CorporateId", res.data.corporate.id);
-        alert.success("Corporate Information submitted");
-        navigate("/app/directors");
+        const CorporateId = res.data.corporate.id;
+        const url = `${webapibaseurl}/corporative/${CorporateId}`;
+        axios
+          .post(url,{name: corporativeName})
+          .then(() => {
+            alert.success("Corporate Information submitted");
+            navigate("/app/directors");
+          })
+          .catch((err) => console.log(err));
       })
       .catch((error) => {
-       // alert.error(error.response.data);
+        // alert.error(error.response.data);
         console.log(error);
       });
   }
 
   return (
-    <div style={{ marginTop: 155, marginBottom:100 }}>
+    <div style={{ marginTop: 155, marginBottom: 100 }}>
       <CorporateStepper />
       <div class="Form-container ">
         <form className="register-form" onSubmit={submitForm}>
@@ -80,7 +88,7 @@ export default function Corporate() {
                 >
                   {" "}
                   <option selected>--Category--</option>
-                  <option value="llc">Limited Liability COmpany</option>
+                  <option value="llc">Limited Liability Company</option>
                   <option value="plc">Public Limited Company</option>
                   <option value="partnership">Partnership</option>
                   <option value="sole proprietorship">
@@ -445,7 +453,7 @@ export default function Corporate() {
               </div>
             </div>
             <div className="row">
-              <div className=" input-group col-md-6">
+              <div className=" input-group col-md-4">
                 {" "}
                 <label>Nature/Type Of Business</label>{" "}
                 <input
@@ -457,7 +465,7 @@ export default function Corporate() {
                   onChange={changeHandler}
                 />
               </div>
-              <div className=" input-group col-md-6">
+              <div className=" input-group col-md-4">
                 <label>Sector/Industry</label>{" "}
                 <input
                   type="text"
@@ -466,6 +474,20 @@ export default function Corporate() {
                   name="sector"
                   value={"" || payload.sector}
                   onChange={changeHandler}
+                />
+              </div>
+              <div className=" input-group col-md-4">
+                <label>Cooporative Name</label>{" "}
+                <input
+                  type="text"
+                  placeholder="Cooporative Name"
+                  required
+                  name="sector"
+                  value={"" || corporativeName}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setCorporativeName(e.target.value);
+                  }}
                 />
               </div>
               <div className=" input-group col-md-4">

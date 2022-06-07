@@ -5,10 +5,11 @@ import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 
-export default function SettledLoanList() {
+export default function CorporateSettled() {
   const id = localStorage.getItem("id");
-  const getReqURL = `${webapibaseurl}/loan/settled-loans/${id}`;
-  console.log(id)
+  const CorporateId = localStorage.getItem("CorporateId");
+  const getReqURL = `${webapibaseurl}/loan/corporate-settled/${CorporateId}`;
+ 
   const [staff, setStaff] = useState([]);
 
   useEffect(() => {

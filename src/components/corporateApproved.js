@@ -5,9 +5,11 @@ import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 
-export default function SettledLoanList() {
+export default function CorporateApproved() {
   const id = localStorage.getItem("id");
-  const getReqURL = `${webapibaseurl}/loan/settled-loans/${id}`;
+  const CorporateId = localStorage.getItem("CorporateId");
+  const getReqURL = `${webapibaseurl}/loan/corporate-approved/${CorporateId}`;
+
   console.log(id)
   const [staff, setStaff] = useState([]);
 
@@ -56,7 +58,7 @@ export default function SettledLoanList() {
     <div>
       <div style={{ marginTop: 120 }} className="col-md-8 offset-2">
         <div className="Form-container ">
-          <h5>Settled Loans</h5>
+          <h5>Approved Loans</h5>
           <div
             className="row "
             style={{
@@ -66,10 +68,10 @@ export default function SettledLoanList() {
               margin: 2,
             }}
           >
-            <b></b>
+            <b>Approved Loan List</b>
           </div>
           <MaterialTable
-            title={<b>List of Settled Loans</b>}
+            title={<b>List of Approved Loans</b>}
             columns={columns}
             data={rows}
             options={{

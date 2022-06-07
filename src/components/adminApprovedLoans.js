@@ -44,6 +44,7 @@ export default function AdminApprovedLoans() {
           repaymentMode: item.repaymentMode,
           repaymentStatus: item.repaymentStatus,
           status: item.status,
+          username: item.username,
         };
         console.log(payload);
         return payload;
@@ -54,6 +55,7 @@ export default function AdminApprovedLoans() {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
+    { title: "Applicant", field: "username" },
     { title: "Loan Amount", field: "loanAmount" },
     { title: "Loan Type", field: "loanType" },
     { title: "Repayment Mode", field: "repaymentMode" },
@@ -77,7 +79,7 @@ export default function AdminApprovedLoans() {
               margin: 2,
             }}
           >
-            <b>All Approved Loans</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>Approved Loan List</b>}

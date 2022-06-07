@@ -7,19 +7,20 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
-export default function AdminAllUsers() {
+export default function AdminAllIndividuals() {
   const alert = useAlert();
 
-  const getReqURL = `${webapibaseurl}/auth`;
+  const getReqURL = `${webapibaseurl}/admin/all-individual-accounts`;
   const [staff, setStaff] = useState([]);
   const [payload, setPayload] = useState({});
+  const [detail, setDetail] = useState({});
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [loanID, setLoanID] = useState();
 
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow(false);
-  const approveURL = `${webapibaseurl}/admin/approve-loan-request/${loanID}`;
+
   const rejectURL = `${webapibaseurl}/admin/reject-loan-request/${loanID}`;
 
   useEffect(() => {
@@ -30,21 +31,19 @@ export default function AdminAllUsers() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data);
+     
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
         const payload = {
           sn: index + 1,
-          id:item.id,
+          id: item.id,
           date: moment(item.createdAt).format("LL"),
-          username: item.username,
+          username: item.name,
           email: item.email,
-          loanType: item.loanType,
-          repaymentMode: item.repaymentMode,
-          status: item.status,
+          title: item.title,
         };
-        console.log(payload);
+     
         return payload;
       });
       setStaff(listItems);
@@ -53,7 +52,8 @@ export default function AdminAllUsers() {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
-    { title: "Username", field: "username" },
+    { title: "Title", field: "title" },
+    { title: "Full Name", field: "username" },
     { title: "email", field: "email" },
     { title: "Date Created", field: "date" },
     {
@@ -62,28 +62,30 @@ export default function AdminAllUsers() {
       tooltip: "Detail",
       render: (rowData) => (
         <div>
-         
           <Button
             className="ml-3"
             onClick={() => {
-              console.log(rowData);
-              }}
+              const detailURL = `${webapibaseurl}/admin//individual-detail/${rowData.id}`;
+              axios.get(detailURL).then((res) => {
+                  console.log(res.data)
+               setDetail(res.data.data);
+               detail.fullname = rowData.username
+                setShow(true);
+              });
+            }}
           >
-          
-          Detail
-           
+            Detail
           </Button>
         </div>
       ),
     },
-   
   ];
 
   return (
     <div>
       <div style={{ marginTop: 120 }} className="col-md-10 offset-1">
         <div className="Form-container ">
-          <h5>Admin All Users</h5>
+          <h5>Admin - All Individual Account</h5>
           <div
             className="row "
             style={{
@@ -93,13 +95,12 @@ export default function AdminAllUsers() {
               margin: 2,
             }}
           >
-            <b>Loan Action Required</b>
+            <b></b>
           </div>
           <MaterialTable
-            title={<b>Pending Action List</b>}
+            title={<b>Individual Members</b>}
             columns={columns}
             data={rows}
-           
             options={{
               actionsColumnIndex: -1,
               headerStyle: {
@@ -113,16 +114,76 @@ export default function AdminAllUsers() {
               },
             }}
           />
- <div style={{ height:100 }}>.</div>
+          <div style={{ height: 100 }}>.</div>
           <Modal
             show={show}
             onHide={handleClose}
-            size="sm"
+            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
             <Modal.Body>
-              <b>Are you sure you want approve this loan?</b>
+            <div>
+            <div
+            className="row "
+            style={{
+              backgroundColor: "#f15a29",
+              color: "#fff",
+              padding: 4,
+              margin: 2,
+            }}
+          >
+            <b>Individual Account</b>
+          </div>
+                <div className="row">
+               
+                  <div className="col-md-3"> <img src={detail.passport} style={{width:150, height:150}}/></div><div className="col-md-7">
+                  <div className="row">
+                          <div className="col-md-5"><label><b>Title:</b></label> {detail.title}</div><div className="col-md-7"><label><b>Full Name:</b></label>  {detail.fullname} </div>
+                         
+                      </div>
+                      <hr/>
+                      <div className="row">
+                      <div className="col-md-5"> <label><b>DOB:</b></label> {moment(detail.dob).format("LL")} </div><div className="col-md-7"><label><b>Marital Status:</b></label>  {detail.maritalStatus} </div>
+                       
+                      </div>
+                      <hr/>
+                      <div className="row">
+                      <div className="col-md-5">  <label><b>Phone :</b></label>  {detail.phone}  </div>  <div className="col-md-7"> <label><b>Email:</b></label>  {detail.email}</div>
+                          <hr/>
+                      </div>
+                     
+                      <div>
+                        
+                          <hr/>
+                      </div>
+                      
+                      </div></div> 
+                </div>
+                <div
+            className="row "
+            style={{
+              backgroundColor: "#f15a29",
+              color: "#fff",
+              padding: 4,
+              margin: 2,
+            }}
+          >
+            <b>Work Detail</b>
+          </div>
+        
+          <div className="row">
+                          <div className="col-md-5"><label><b>Work Place:</b></label> {detail.placeOfWork}</div><div className="col-md-7"><label><b>Nature Of Business:</b></label>  {detail.natureOfBusiness} </div>
+                         
+                      </div>
+                      <hr/>
+                      <div className="row">
+                          <div className="col-md-5"><label><b>Salary Range:</b></label> {detail.salaryRange}</div><div className="col-md-7"><label><b>Work Address:</b></label>  {detail.natureOfBusiness} </div>
+                         
+                      </div>
+                      <hr/>
+              <div className="col-md-6"></div>
+          
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -143,16 +204,9 @@ export default function AdminAllUsers() {
                 className="btn-sm"
                 variant="success"
                 style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(approveURL, payload).then((res) => {
-                    alert.success("Record Approved");
-                    setPayload({});
-                    setShow(false);
-                    callList();
-                  });
-                }}
+                onClick={() => {}}
               >
-                Approve
+               Download
               </Button>
             </Modal.Footer>
           </Modal>
@@ -179,23 +233,7 @@ export default function AdminAllUsers() {
               >
                 Cancel
               </Button>
-              <Button
-                color="danger"
-                type="submit"
-                className="btn-sm"
-                variant="primary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(rejectURL, payload).then((res) => {
-                    alert.success("Record Rejected");
-                    setPayload({});
-                    setShow2(false);
-                    callList();
-                  });
-                }}
-              >
-                Reject
-              </Button>
+              
             </Modal.Footer>
           </Modal>
         </div>

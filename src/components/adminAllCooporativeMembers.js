@@ -7,46 +7,44 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
-export default function CorporateRequestTable(props) {
+export default function AdminAllCooporativeMembers() {
   const alert = useAlert();
-  const CorporateId = localStorage.getItem("CorporateId");
-  const getReqURL = `${webapibaseurl}/joinRequest/corporate/${CorporateId}`;
+
+  const getReqURL = `${webapibaseurl}/admin/all-individuals`;
   const [staff, setStaff] = useState([]);
-  const [fullName, setFullName] = useState("");
   const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const [show3, setShow3] = useState(false);
-  const [show4, setShow4] = useState(false);
-  const [image, setImage] = useState("");
-  const approveURL = `${webapibaseurl}/joinRequest/approve/${CorporateId}`;
-  const rejectURL = `${webapibaseurl}/joinRequest/reject/${CorporateId}`;
+  const [loanID, setLoanID] = useState();
 
   const handleClose = () => setShow(false);
-  const handleClose2 = () => setShow2(false);
-  const handleClose3 = () => setShow3(false);
-  const handleClose4 = () => setShow4(false);
+  const handleClose2 = () => setShow(false);
+  const approveURL = `${webapibaseurl}/admin/approve-loan-request/${loanID}`;
+  const rejectURL = `${webapibaseurl}/admin/reject-loan-request/${loanID}`;
 
   useEffect(() => {
     callList();
   }, []);
+  function currencyFormat(num) {
+    return "₦" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
   function callList() {
     axios.get(getReqURL).then((res) => {
-     
+      console.log(res.data);
       setStaff(res.data.data);
       const list = res.data.data;
-
       const listItems = list.map((item, index) => {
-      
         const payload = {
           sn: index + 1,
-          fullName: item.IndividualName,
-          staffId: item.StaffId,
-          id: item.id,
-          AuthId: item.AuthId,
-          document: item.document,
+          id:item.id,
+          date: moment(item.createdAt).format("LL"),
+          username: item.username,
+          email: item.email,
+          loanType: item.loanType,
+          repaymentMode: item.repaymentMode,
+          status: item.status,
         };
-       
+        console.log(payload);
         return payload;
       });
       setStaff(listItems);
@@ -55,13 +53,13 @@ export default function CorporateRequestTable(props) {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
-    { title: "Full Name", field: "fullName" },
-
-    { title: "Staff ID", field: "staffId" },
+    { title: "Username", field: "username" },
+    { title: "email", field: "email" },
+    { title: "Date Created", field: "date" },
     {
       field: "url",
-      title: "Verify Fullname",
-      tooltip: "Verify fullname",
+      title: "Detail",
+      tooltip: "Detail",
       render: (rowData) => (
         <div>
          
@@ -69,35 +67,23 @@ export default function CorporateRequestTable(props) {
             className="ml-3"
             onClick={() => {
               console.log(rowData);
-              const validUsername = `${webapibaseurl}/staff/byStaffId/${CorporateId}/${rowData.staffId}/`;
-      
-      const validName= axios
-          .get(validUsername)
-          .then((res) => {
-            let fullName = res.data.data.fullName;
-            console.log(fullName)
-            setFullName(fullName)
-            setShow4(true)
-          })
-          .catch((err) => console.log(err));
-
-           
-            }}
+              }}
           >
           
-          Verify Full Name
+          Detail
            
           </Button>
         </div>
       ),
     },
+   
   ];
 
   return (
     <div>
-      <div style={{ marginTop: 120 }} className="col-md-8 offset-2">
+      <div style={{ marginTop: 120 }} className="col-md-10 offset-1">
         <div className="Form-container ">
-          <h5>Cooporative Request</h5>
+          <h5>Admin - All Cooporative Member Accounts</h5>
           <div
             className="row "
             style={{
@@ -107,50 +93,13 @@ export default function CorporateRequestTable(props) {
               margin: 2,
             }}
           >
-            <b>Join Cooporative Request List</b>
+            <b></b>
           </div>
           <MaterialTable
-            title={<b>Request List</b>}
+            title={<b>Cooporative Members</b>}
             columns={columns}
             data={rows}
-            actions={[
-              {
-                icon: "preview",
-                iconProps: { style: { fontSize: "34px", color: "#f15a29" } },
-                tooltip: "View Staff ID",
-                onClick: (event, rowData) => {
-                  setImage(rowData.document);
-                  setShow3(true);
-                },
-              },
-              {
-                icon: "checkCircleOutlineIcon",
-                iconProps: { style: { fontSize: "34px", color: "green" } },
-                tooltip: "Approve Request",
-                onClick: (event, rowData) => {
-                  console.log(rowData);
-                  const Item = {
-                    staffId: rowData.staffId,
-                    id: rowData.id,
-                    fullName: rowData.fullName,
-                    AuthId: rowData.AuthId,
-                  };
-                  setPayload(Item);
-                  setShow(true);
-                },
-              },
-              {
-                icon: "clear",
-                tooltip: "Reject Request",
-                iconProps: { style: { fontSize: "34px", color: "red" } },
-                onClick: (event, rowData) => {
-                  console.log(rowData);
-                  const Item = { staffId: rowData.staffId, id: rowData.id };
-                  setPayload(Item);
-                  setShow2(true);
-                },
-              },
-            ]}
+           
             options={{
               actionsColumnIndex: -1,
               headerStyle: {
@@ -164,7 +113,7 @@ export default function CorporateRequestTable(props) {
               },
             }}
           />
-
+ <div style={{ height:100 }}>.</div>
           <Modal
             show={show}
             onHide={handleClose}
@@ -173,7 +122,7 @@ export default function CorporateRequestTable(props) {
             centered
           >
             <Modal.Body>
-              <b>Are you sure you want approve this record?</b>
+              <b>Are you sure you want approve this loan?</b>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -215,7 +164,7 @@ export default function CorporateRequestTable(props) {
             centered
           >
             <Modal.Body>
-              <b>Are you sure you want reject this record?</b>
+              <b>Are you sure you want reject this loan?</b>
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -248,29 +197,6 @@ export default function CorporateRequestTable(props) {
                 Reject
               </Button>
             </Modal.Footer>
-          </Modal>
-          <Modal
-            show={show3}
-            onHide={handleClose3}
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Body>
-              <img src={image} style={{ height: 600, maxWidth: 480 }} />
-            </Modal.Body>
-            <Modal.Footer></Modal.Footer>
-          </Modal>
-          <Modal
-            show={show4}
-            onHide={handleClose4}
-            aria-labelledby="contained-modal-title-vcenter"
-            size="sm"
-            centered
-          >
-            <Modal.Body>
-             <h4 className="text-centre"><b>{fullName}</b></h4>
-            </Modal.Body>
-           
           </Modal>
         </div>
       </div>

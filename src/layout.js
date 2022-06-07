@@ -36,6 +36,11 @@ import AdminLoanRequestList from "./components/adminLoanRequestList";
 import AdminApprovedLoans from "./components/adminApprovedLoans";
 import  AdminAllUser from "./components/adminAllUser";
 import UploadFiles from "./components/uploadFiles";
+import CorporateApproved from "./components/corporateApproved";
+import CorporateSettled from "./components/corporateSettled";
+import AdminAllCooporativeMembers from "./components/adminAllCooporativeMembers";
+import AdminAllCorporate from "./components/adminAllCorporate";
+import AdminAllIndividuals from "./components/adminAllIndividual";
 export default function Layout() {
   const navigate = useNavigate();
   const isRegistered = localStorage.getItem("isRegistered");
@@ -161,6 +166,8 @@ export default function Layout() {
         <Route path={"settled-loan-list"} element={<SettledLoanList />} />
         <Route path={"loan-action-list"} element={<LoanActionList />} />
         <Route path={"loan-request"} element={<LoanRequestLIst />} />
+        <Route path={"corporate-approved"} element={<CorporateApproved />} />
+        <Route path={"corporate-settled"} element={<CorporateSettled />} />
         <Route
           path={"register-via-corporative"}
           element={<RegisterViaCorproative />}
@@ -181,9 +188,21 @@ export default function Layout() {
               path={"admin-all-users"}
               element={<AdminAllUser />}
             />
+            <Route
+              path={"admin-all-individuals"}
+              element={<AdminAllIndividuals />}
+            />
+            <Route
+              path={"admin-all-corporate"}
+              element={<AdminAllCorporate />}
+            />
+             <Route
+              path={"admin-all-cooporative-members"}
+              element={<AdminAllCooporativeMembers />}
+            />
           </>
         )}
-      </Routes>
+      </Routes><div style={{ height:100 }}>.</div>
       <div
         style={{
           position: "fixed",
@@ -196,6 +215,7 @@ export default function Layout() {
           backgroundColor: "#03001a",
         }}
       >
+          
         <div className="row">
           <div className="col-md-8">
             © 2022 Transkredit. All rights reserved.

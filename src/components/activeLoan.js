@@ -63,7 +63,7 @@ export default function ActiveLoanList() {
               margin: 2,
             }}
           >
-            <b>Active Loan List</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>List of Active Loans</b>}

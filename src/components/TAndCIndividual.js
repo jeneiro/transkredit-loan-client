@@ -81,6 +81,7 @@ export default function TAndCIndividual() {
           {show && <button type="submit">Submit</button>}
         </div>
       </form>
+      <div style={{ height:100 }}>.</div>
     </div>
   );
 }

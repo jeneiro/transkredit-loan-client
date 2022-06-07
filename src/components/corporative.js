@@ -28,7 +28,7 @@ export default function Cooporative(props) {
   function submitForm(e) {
     e.preventDefault();
    
-    axios.post(url, payload).then((res)=>{
+    axios.put(url, payload).then((res)=>{
       
         alert.success(res.data.msg)
     }).catch((err)=>{
@@ -61,7 +61,7 @@ export default function Cooporative(props) {
               fontSize:16
             }}
           >
-          Register Cooporative
+          Edit Cooporative Name
           </div>
   </Modal.Title>
 </Modal.Header>

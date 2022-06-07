@@ -166,7 +166,9 @@ function Login() {
         <header>
           <div className="grid" style={{ marginTop: -150 }}>
             <div className="login-page">
+             
               <div className="form">
+            <h6 style={{fontWeight:700, color:"#f15a29"}}> LOAN REQUEST PORTAL</h6> 
                 <form className="register-form" onSubmit={createUser}>
                   <input
                     type="text"

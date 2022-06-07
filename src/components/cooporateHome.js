@@ -22,7 +22,7 @@ export default function CooporateHome() {
     return (
   
         <>
-        
+
         <Cooporative show={show} handleClose={handleClose}/>
             <div
               class="productBox small"
@@ -32,6 +32,28 @@ export default function CooporateHome() {
             >
               <aside>
                 <h4>Pending Loan Action</h4>
+              </aside>
+              <img src="" />
+            </div>
+            <div
+              class="productBox small"
+              onClick={() => {
+                navigate("/app/corporate-settled");
+              }}
+            >
+              <aside>
+                <h4>Members Settled Loans</h4>
+              </aside>
+              <img src="" />
+            </div>
+            <div
+              class="productBox small"
+              onClick={() => {
+                navigate("/app/corporate-approved");
+              }}
+            >
+              <aside>
+                <h4>Members Approved Loans</h4>
               </aside>
               <img src="" />
             </div>
@@ -65,7 +87,7 @@ export default function CooporateHome() {
               }}
             >
               <aside>
-                <h4>Register Cooporative</h4>
+                <h4>Edit Cooporative Name</h4>
               </aside>
               <img src="" />
             </div>

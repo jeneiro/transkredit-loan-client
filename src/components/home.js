@@ -65,7 +65,7 @@ export default function Home() {
             }}
           >
             <aside>
-              <h4>Book a Loan</h4>
+              <h4>Request a Loan</h4>
             </aside>
             <img src="" />
           </div>

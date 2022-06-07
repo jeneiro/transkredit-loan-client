@@ -43,6 +43,7 @@ export default function AdminLoanRequestList() {
           loanType: item.loanType,
           repaymentMode: item.repaymentMode,
           status: item.status,
+          username: item.username,
         };
         console.log(payload);
         return payload;
@@ -53,6 +54,7 @@ export default function AdminLoanRequestList() {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
+    { title: "Applicant", field: "username" },
     { title: "Loan Amount", field: "loanAmount" },
     { title: "Loan Type", field: "loanType" },
     { title: "Repayment Mode", field: "repaymentMode" },
@@ -75,7 +77,7 @@ export default function AdminLoanRequestList() {
               margin: 2,
             }}
           >
-            <b>Loan Action Required</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>Pending Action List</b>}

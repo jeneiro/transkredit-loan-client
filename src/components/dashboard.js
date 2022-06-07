@@ -31,7 +31,7 @@ export default function Dashboard() {
       <div className="row">
         <div class="productShell" style={{ marginTop: 55 }}>
           <div
-            class="productBox small"
+            class="productBox color-blue"
             onClick={() => {
               navigate("/app/admin-loan-request-list");
             }}
@@ -52,6 +52,18 @@ export default function Dashboard() {
             </aside>
             <img src="" />
           </div>
+         
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/settled-loan-list");
+            }}
+          >
+            <aside>
+              <h4>Settled Loans</h4>
+            </aside>
+            <img src="" />
+          </div>
           <div
             class="productBox small"
             onClick={() => {
@@ -59,33 +71,43 @@ export default function Dashboard() {
             }}
           >
             <aside>
-              <h4>All Accounts</h4>
+              <h4>All Users</h4>
             </aside>
             <img src="" />
           </div>
           <div
             class="productBox small"
             onClick={() => {
-              navigate("/app/settled-loan-list");
+              navigate("/app/admin-all-individuals");
             }}
           >
             <aside>
-              <h4>Settled Loans</h4>
+              <h4>All Individual Accounts</h4>
             </aside>
             <img src="" />
           </div>
           <div
             class="productBox small"
             onClick={() => {
-              navigate("/app/settled-loan-list");
+              navigate("/app/admin-all-corporate");
             }}
           >
             <aside>
-              <h4>Settled Loans</h4>
+              <h4>All Corporate Accounts</h4>
             </aside>
             <img src="" />
           </div>
-
+          <div
+            class="productBox small"
+            onClick={() => {
+              navigate("/app/admin-all-cooporative-members");
+            }}
+          >
+            <aside>
+              <h4>All Cooporative Member Accounts</h4>
+            </aside>
+            <img src="" />
+          </div>
         </div>
       </div>
     </div>

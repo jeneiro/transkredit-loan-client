@@ -63,7 +63,7 @@ export default function LoanList() {
               margin: 2,
             }}
           >
-            <b>Loan Request List</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>Request List</b>}

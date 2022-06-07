@@ -67,7 +67,7 @@ export default function LoanRequestLIst() {
               margin: 2,
             }}
           >
-            <b>Join Cooporative Request List</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>Request List</b>}
