@@ -44,7 +44,7 @@ export default function AdminAllCorporate() {
           repaymentMode: item.repaymentMode,
           status: item.status,
         };
-        console.log(payload);
+      
         return payload;
       });
       setStaff(listItems);

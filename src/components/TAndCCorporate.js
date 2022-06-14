@@ -34,7 +34,7 @@ export default function TAndCCorporate() {
         axios
           .get(corporateURL)
           .then((res) => {
-            console.log(res.data);
+           
             localStorage.setItem("CorporateId", res.data.corporate.id);
             localStorage.setItem("username", res.data.corporate.companyName);
             alert.success("Registration Complete");

@@ -23,7 +23,7 @@ export default function WorkDetails() {
   const individualURL = `${webapibaseurl}/work-detail/${individualId}`;
   function submitForm(e){
     e.preventDefault()
-    console.log(payload)
+   
     axios.post(individualURL, payload).then(()=>{
       alert.success("Work Details Submitted")
       navigate("/app/bank-detail")

@@ -19,7 +19,7 @@ export default function ActiveLoanList() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data.data);
+     
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {

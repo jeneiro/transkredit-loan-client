@@ -28,7 +28,7 @@ submitForm(e){
 
 change(e){
     this.setState({image:[...e.target.files]})
-    console.log(this.image)
+  
 }
     render(){
         return(<div><form onSubmit={this.submitForm}>

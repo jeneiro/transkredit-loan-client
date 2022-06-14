@@ -30,7 +30,7 @@ export default function AdminAllCooporativeMembers() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data);
+     
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
@@ -44,7 +44,7 @@ export default function AdminAllCooporativeMembers() {
           repaymentMode: item.repaymentMode,
           status: item.status,
         };
-        console.log(payload);
+       
         return payload;
       });
       setStaff(listItems);

@@ -6,7 +6,7 @@ import axios from 'axios';
     const token = localStorage.getItem("token");
    
     if(token){
-        config.headers.common['authorization']= token ;
+        config.headers.common['authorization']= `Bearer ${token}` ;
     }
  
 

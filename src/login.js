@@ -20,15 +20,22 @@ function Login() {
 
   function login(e) {
     e.preventDefault();
-
+    const emailURL = `${webapibaseurl}/email`;
     let uri = `${webapibaseurl}/auth/login`;
     axios
       .post(uri, payload)
       .then((res) => {
-       
         const id = res.data.userD.id;
         const token = res.data.token;
-       
+        const title = "Transkredit Login";
+        const email = res.data.userD.email;
+        const message =
+          "You have succesfully logged into your transkredit account. Thank you";
+        let loginPayload = { title, message, email };
+        axios.post(emailURL, loginPayload).then((res)=>{console.log(res)}).catch(err=>console.log(err));
+
+
+
         localStorage.setItem("token", token);
         localStorage.setItem(
           "isAuth",
@@ -39,23 +46,27 @@ function Login() {
         const individualURL = `${webapibaseurl}/individual/${id}`;
         const corporateURL = `${webapibaseurl}/corporate/${id}`;
         const staffCorporativeURL = `${webapibaseurl}/staff/byAuth/${id}`;
-        if(res.data.userD.isAdmin===true){
+        if (res.data.userD.isAdmin === true) {
           navigate("/app/dashboard");
           localStorage.setItem("isAdmin", true);
-        }
-        else{
+        } else {
           axios.get(`${webapibaseurl}/register/${id}`).then((res) => {
             if (res.data.registered.isRegistered) {
               localStorage.setItem("isRegistered", true);
-              localStorage.setItem("userType", res.data.registered.userType);
-              axiosInstance
+              const userType = res.data.registered.userType;
+              localStorage.setItem("userType", userType);
+              if(userType==="Individual"){
+                axiosInstance
                 .get(individualURL)
                 .then((res) => {
                   if (
                     res.data.individual.name !== undefined ||
                     res.data.individual.name !== null
                   ) {
-                    localStorage.setItem("individualId", res.data.individual.id);
+                    localStorage.setItem(
+                      "individualId",
+                      res.data.individual.id
+                    );
                     localStorage.setItem("username", res.data.individual.name);
                     navigate("/app/home");
                   }
@@ -63,7 +74,9 @@ function Login() {
                 .catch((err) => {
                   console.log(err.response);
                 });
-              axiosInstance
+              }
+              if(userType==="Corporate"){
+                axiosInstance
                 .get(corporateURL)
                 .then((res) => {
                   if (
@@ -82,12 +95,17 @@ function Login() {
                 .catch((err) => {
                   console.log(err);
                 });
+              }
+             if(userType==="Cooporative Member"){
               axiosInstance.get(staffCorporativeURL).then((res) => {
+                console.log(res.data);
                 localStorage.setItem("coporativememberId", res.data.data.id);
                 localStorage.setItem("corporateId", res.data.data.CorporateId);
                 localStorage.setItem("username", res.data.data.fullName);
                 navigate("/app/home");
               });
+             }
+           
             } else if (
               res.data.registered.isRegistered === null ||
               res.data.registered.isRegistered === undefined
@@ -100,7 +118,6 @@ function Login() {
             }
           });
         }
-       
       })
       .catch((err) => {
         console.log(err.response);
@@ -166,9 +183,11 @@ function Login() {
         <header>
           <div className="grid" style={{ marginTop: -150 }}>
             <div className="login-page">
-             
               <div className="form">
-            <h6 style={{fontWeight:700, color:"#f15a29"}}> LOAN REQUEST PORTAL</h6> 
+                <h6 style={{ fontWeight: 700, color: "#f15a29" }}>
+                  {" "}
+                  LOAN REQUEST PORTAL
+                </h6>
                 <form className="register-form" onSubmit={createUser}>
                   <input
                     type="text"
@@ -226,6 +245,14 @@ function Login() {
                     Not registered?{" "}
                     <a style={{ cursor: "pointer" }} onClick={toggle}>
                       Create an account
+                    </a>
+                  </p>
+                  <p className="message">
+                   
+                    <a style={{ cursor: "pointer", color: "#ed8d64" }}  onClick={() => {
+                      navigate("/forgotPassword")
+                    }}>
+                     Forgot Password?
                     </a>
                   </p>
                 </form>

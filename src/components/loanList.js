@@ -8,7 +8,7 @@ import { webapibaseurl } from "../environment";
 export default function LoanList() {
   const id = localStorage.getItem("id");
   const getReqURL = `${webapibaseurl}/loan/loan-list/${id}`;
-  console.log(id)
+ 
   const [staff, setStaff] = useState([]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function LoanList() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data.data);
+      
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {

@@ -29,6 +29,7 @@ export default function LoanApplication(props) {
   const url = `${webapibaseurl}/joinRequest/approved/${individualId}`;
 
   function handleClose(event) {
+    resetForm();
     props.handleClose(event);
   }
 
@@ -43,43 +44,43 @@ export default function LoanApplication(props) {
   function addTenor() {
     if (tenor < 24) {
       const newTenor = tenor + 1;
-      CalculateRepayment(newTenor,amount);
+      CalculateRepayment(newTenor, amount);
       setTenor(tenor + 1);
     }
   }
   function reduceTenor() {
     if (tenor > 1) {
       const newTenor = tenor - 1;
-      CalculateRepayment(newTenor,amount);
+      CalculateRepayment(newTenor, amount);
       setTenor(tenor - 1);
     }
   }
-  function CalculateRepayment(tenor,amount){
+  function CalculateRepayment(tenor, amount) {
     const principal = amount / tenor;
-      let list = [];
-      let updatedAmount = amount;
-      for (let i = 0; i < tenor; i++) {
-        const formattedPrincipal = Math.round(principal * 100) / 100;
-        const initialInterest = 0.03 * updatedAmount;
-        const item = formattedPrincipal + initialInterest;
-        list = [...list, item];
-        updatedAmount = updatedAmount - formattedPrincipal;
+    let list = [];
+    let updatedAmount = amount;
+    for (let i = 0; i < tenor; i++) {
+      const formattedPrincipal = Math.round(principal * 100) / 100;
+      const initialInterest = 0.03 * updatedAmount;
+      const item = formattedPrincipal + initialInterest;
+      list = [...list, item];
+      updatedAmount = updatedAmount - formattedPrincipal;
 
-        setRepaymentList(list);
-        var sum = list.reduce(function (a, b) {
-          return a + b;
-        }, 0);
-      }
-      setTotalRepayment(sum.toFixed(2));
+      setRepaymentList(list);
+      var sum = list.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+    }
+    setTotalRepayment(sum.toFixed(2));
   }
- 
+
   function changeHandler(e) {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
-
+    console.log(name, value);
     setPayload({ ...payload, [name]: value, ["loanAmount"]: amount });
-   
+
     if (CorporateId) {
       setPayload({
         ...payload,
@@ -102,21 +103,34 @@ export default function LoanApplication(props) {
   }
   function submitForm(e) {
     e.preventDefault();
+    if (userType === "Individual" && CorporateId != null) {
+      payload.Status = "Pending";
+    } else if (userType === "Cooporative Member") {
+      payload.Status = "Pending";
+    } else {
+      payload.Status = "Submitted";
+    }
     payload.username = username;
+    payload.tenor = tenor;
     axios
       .post(loanURL, payload)
       .then(() => {
         alert.success("Loan Request Submitted");
-        document.getElementById("loan-form").reset();
-        setAmount(0);
-        setPayload({});
+      resetForm();
         navigate("/app/home/");
       })
       .catch((error) => {
         alert.error(error.response.data.msg);
       });
   }
-
+function resetForm(){
+  document.getElementById("loan-form").reset();
+  setTotalRepayment(0)
+  setRepaymentList([])
+  setTenor(1)
+  setAmount(0);
+  setPayload({});
+}
   function checkType() {
     if (userType === "Individual") {
       return (
@@ -138,7 +152,7 @@ export default function LoanApplication(props) {
             <div className="col-md-6">
               <label>Select Cooporative</label>
               <select
-                name="loanType"
+                name="CorporateId"
                 class="input-group"
                 onChange={changeHandler}
               >
@@ -171,7 +185,7 @@ export default function LoanApplication(props) {
       centered
     >
       <Modal.Header>
-        {" "}
+      
         <div className="row" style={{ width: "100%" }}>
           <h5 className="col-md-6">Loan Applcation</h5>{" "}
           <div className="col-md-2"></div>
@@ -213,7 +227,7 @@ export default function LoanApplication(props) {
 
                   <div style={{ padding: 2 }}>
                     <div class="row">
-                      <div className="col-md-5">
+                      <div className="col-md-4">
                         <label> Loan Amount </label>
 
                         <div>
@@ -228,7 +242,7 @@ export default function LoanApplication(props) {
                               const { formattedValue, value } = values;
 
                               setAmount(value);
-                              CalculateRepayment(tenor,value)
+                              CalculateRepayment(tenor, value);
                               // setFormattedAmount2(formattedValue);
                             }}
                           />
@@ -248,7 +262,7 @@ export default function LoanApplication(props) {
                           <option value="Corporate Loan">Corporate Loan</option>
                         </select>
                       </div>
-                      <div class=" col-md-3">
+                      <div class=" col-md-4">
                         <label>Repayment Mode</label>
                         <select
                           name="repaymentMode"
@@ -262,41 +276,42 @@ export default function LoanApplication(props) {
                           <option value="Cheques">Cheques</option>
                         </select>
                       </div>
-                      <div class=" col-md-3">
+                      <div class=" col-md-4">
                         <label>Tenor</label>
                         <div
-                          class="btn-group form-control "
-                          style={{ height: "60px" }}
-                          role="group"
-                          aria-label="Second group"
+                          className="row"
+                          style={{
+                            marginLeft: 8,
+                            height: "52px",
+                            border: "1px solid #eaeaea",
+                            borderRadius: 5,
+                            padding: "5px",
+                          }}
                         >
-                          <button
-                            type="button"
-                            class="btn btn-secondary"
-                            onClick={reduceTenor}
-                          >
-                            -
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-secondary"
-                            onClick={addTenor}
-                          >
-                            +
-                          </button>
+                          <div className="col-md-8 btn-group ">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              onClick={reduceTenor}
+                            >
+                              -
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              onClick={addTenor}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div className="col-md-2">
+                            <h4>{tenor}</h4>
+                          </div>
                         </div>
                       </div>
-                      <div className="col-md-1">
-                        {" "}
-                        <div
-                          className="form-control"
-                          style={{ marginTop: 40, width: 50 }}
-                        >
-                          <h4>{tenor}</h4>
-                        </div>
-                      </div>
+
                       <div className="col-md-3 ">
-                        <label>Total Repayment</label>{" "}
+                        <label>Total Repayment</label>
                         <div style={{ marginTop: "20px" }}>
                           <CurrencyFormat
                             thousandSeparator={true}
@@ -354,7 +369,7 @@ export default function LoanApplication(props) {
             }}
           >
             <small className="text-center">
-              *All loan request attracts a 3% commision which comprises of
+              *All loan request attracts a 3% statutory charge which comprises of
               management, commitements and insurance fees{" "}
             </small>
           </div>

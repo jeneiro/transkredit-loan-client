@@ -44,7 +44,7 @@ const handleClose = () => setShow(false);
     axios
       .post(url, doc)
       .then((res) => {
-        console.log(res.data);
+      
         callList()
       })
       .catch((err) => {
@@ -110,7 +110,7 @@ const handleClose = () => setShow(false);
                   required
                   onChange={changeHandler}
                 >
-                  <option selected>-List Of Cooporative-</option>
+                  <option selected>-List Of Documents-</option>
                   <option value="Birth Certificate">Birth Certificate</option>
                
                   <option value="Certificate Of Incorporation">

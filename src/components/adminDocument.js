@@ -42,7 +42,7 @@ const AdminDocument = () => setShow(false);
     axios
       .post(url, doc)
       .then((res) => {
-        console.log(res.data);
+       
         callList()
       })
       .catch((err) => {
@@ -70,7 +70,7 @@ const AdminDocument = () => setShow(false);
             onClick={()=>{
               const url = `${webapibaseurl}/documents/download/${id}/${i.id}`;
               axios.get(url).then((res)=>{ setShow(true);setImage(res.data.data.document)
-            console.log(res.data.data.document)
+            
               
               }).catch(err=>console.log(err))
             }}

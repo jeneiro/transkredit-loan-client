@@ -64,7 +64,7 @@ export default function StaffList() {
                 icon: "deleteforever",
                 tooltip: "Remove Member from List",
                 onClick: (event, rowData) => {
-                  console.log(rowData);
+                 
                   const deleteItem = {"staffId":rowData.staffId}
                   setPayload(deleteItem)
                   setShow2(true)
