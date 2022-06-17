@@ -2,25 +2,24 @@ import React, { useContext, useEffect, useState, createContext } from "react";
 import { useAlert } from "react-alert";
 import axios from "axios";
 import { axiosInstance } from "./interceptor";
-import { useFormik } from "formik";
 import logoTag from "./assets/logo-white.png";
 import { useNavigate } from "react-router";
 import { webapibaseurl } from "./environment";
 import $ from "jquery";
 import "./login.css";
-
+import SecureLS from "secure-ls";
 function Login() {
   const alert = useAlert();
-
+  var ls = new SecureLS();
   const [payload, setPayload] = useState({});
 
   const navigate = useNavigate();
-
+  const emailURL = `${webapibaseurl}/email`;
   useEffect(() => {}, []);
 
   function login(e) {
     e.preventDefault();
-    const emailURL = `${webapibaseurl}/email`;
+  
     let uri = `${webapibaseurl}/auth/login`;
     axios
       .post(uri, payload)
@@ -29,8 +28,9 @@ function Login() {
         const token = res.data.token;
         const title = "Transkredit Login";
         const email = res.data.userD.email;
+        ls.set("email", email);
         const message =
-          "You have succesfully logged into your transkredit account. Thank you";
+          "You have succesfully logged into your Transkredit Loan Portal account. Thank you";
         let loginPayload = { title, message, email };
         axios.post(emailURL, loginPayload).then((res)=>{console.log(res)}).catch(err=>console.log(err));
 
@@ -42,7 +42,6 @@ function Login() {
           JSON.stringify({ isAuthenticated: true })
         );
         localStorage.setItem("id", JSON.stringify(id));
-
         const individualURL = `${webapibaseurl}/individual/${id}`;
         const corporateURL = `${webapibaseurl}/corporate/${id}`;
         const staffCorporativeURL = `${webapibaseurl}/staff/byAuth/${id}`;
@@ -96,7 +95,7 @@ function Login() {
                   console.log(err);
                 });
               }
-             if(userType==="Cooporative Member"){
+             if(userType==="Cooperative Member"){
               axiosInstance.get(staffCorporativeURL).then((res) => {
                 console.log(res.data);
                 localStorage.setItem("coporativememberId", res.data.data.id);
@@ -141,8 +140,14 @@ function Login() {
       .post(uri, payload)
       .then((res) => {
         const id = res.data.userD.id;
-
-        alert.success("User registered, please login to proceed");
+        const title = "Transkredit Loan Portal Registration";
+        const email = res.data.userD.email;
+        const message =
+          "You have succesfully registered this email to the Transkredit Loan Portal. Thank you";
+          alert.success("User registered, please login to proceed");
+        let loginPayload = { title, message, email };
+        axios.post(emailURL, loginPayload).then((res)=>{}).catch(err=>console.log(err));
+        
         axios
           .post(`${webapibaseurl}/register/${id}`, {
             isRegistered: false,

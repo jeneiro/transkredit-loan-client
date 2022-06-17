@@ -140,7 +140,7 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = ['Join Through Cooporative', 'Request Status', 'Terms & Conditions'];
+const steps = ['Join Through Cooperative', 'Request Status', 'Terms & Conditions'];
 
 export default function CustomizedSteppers(props) {
     let activeStep = props.activeStep

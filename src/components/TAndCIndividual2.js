@@ -18,19 +18,21 @@ export default function TAndCIndividual2() {
   const id = localStorage.getItem("id");
   const registeredURI = `${webapibaseurl}/register/${id}`;
   const individualURL = `${webapibaseurl}/staff/byAuth/${id}`;
+ 
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   function submitForm(e) {
     e.preventDefault();
     axios
-      .put(registeredURI, { isRegistered: true, userType: "Cooporative Member" })
+      .put(registeredURI, { isRegistered: true, userType: "Cooperative Member" })
       .then(() => {
         localStorage.setItem("isRegistered", true);
-        localStorage.setItem("userType", "Cooporative Member");
+        localStorage.setItem("userType", "Cooperative Member");
         axios
           .get(individualURL)
           .then((res) => {
             localStorage.setItem("coporativememberId", res.data.data.id);
             localStorage.setItem("username", res.data.data.fullName);
+            localStorage.setItem("corporateId", res.data.data.CorporateId);
             alert.success("Registration Complete");
             navigate("/app/Home");
           })

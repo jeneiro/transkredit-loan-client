@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import NextOfKin from "./components/nextOfKin";
 import WorkDetails from "./components/workDetails";
 import JoinCorporative from "./components/joinCorporative";
-import Cooporative from "./components/corporative";
+import Cooperative from "./components/corporative";
 import Individual from "./components/individual";
 import Registration from "./components/registration";
 import Corporate from "./components/corporate";
@@ -149,7 +149,7 @@ export default function Layout() {
         <Route path={"tandc-individual-2"} element={<TAndCIndividual2 />} />
         <Route path={"add-director"} element={<AddDirector />} />
         <Route path={"joint-next-of-Kin"} element={<JointNextOfKin />} />
-        <Route path={"corporative"} element={<Cooporative />} />
+        <Route path={"corporative"} element={<Cooperative />} />
         <Route path={"upload-files"} element={<UploadFiles />} />
         <Route path={"join-corporative"} element={<JoinCorporative />} />
         <Route

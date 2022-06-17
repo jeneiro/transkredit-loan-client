@@ -2,20 +2,32 @@ import React, { useEffect, useState } from "react";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
+import Modal from "react-bootstrap/Modal";
+import AdminInterestRate from "./adminInterestRate";
 export default function Dashboard() {
+  const [show, setShow] = useState(false);
   const [userType, setUserType] = useState("");
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  const handleClose = (event) => {
+    setShow(false);
+  };
+ 
   useEffect(() => {
     const userType = localStorage.getItem("userType");
     const username = localStorage.getItem("username");
     setUserType(userType);
     setUsername(username);
-    hover()
+    hover();
   }, []);
-  function hover(){
-    $(".productBox").on('mouseenter',function(){$(this).addClass('color-hover')}).on('mouseleave',function(){$(this).removeClass('color-hover').show() })
-  
+  function hover() {
+    $(".productBox")
+      .on("mouseenter", function () {
+        $(this).addClass("color-hover");
+      })
+      .on("mouseleave", function () {
+        $(this).removeClass("color-hover").show();
+      });
   }
   return (
     <div style={{ marginTop: 40, padding: 50, marginLeft: 20 }}>
@@ -52,7 +64,7 @@ export default function Dashboard() {
             </aside>
             <img src="" />
           </div>
-         
+
           <div
             class="productBox small"
             onClick={() => {
@@ -104,11 +116,38 @@ export default function Dashboard() {
             }}
           >
             <aside>
-              <h4>All Cooporative Member Accounts</h4>
+              <h4>All Cooperative Member Accounts</h4>
+            </aside>
+            <img src="" />
+          </div>
+          <div
+            class="productBox small"
+            onClick={() => {
+              setShow(true);
+            }}
+          >
+            <aside>
+              <h4>Set Interest Rate</h4>
             </aside>
             <img src="" />
           </div>
         </div>
+
+        <Modal
+          show={show}
+          onHide={handleClose}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Body>
+
+ 
+<AdminInterestRate handleClose={handleClose}/>
+
+          </Modal.Body>
+         
+        </Modal>
       </div>
     </div>
   );

@@ -477,10 +477,10 @@ export default function Corporate() {
                 />
               </div>
               <div className=" input-group col-md-4">
-                <label>Cooporative Name</label>{" "}
+                <label>Cooperative Name</label>{" "}
                 <input
                   type="text"
-                  placeholder="Cooporative Name"
+                  placeholder="Cooperative Name"
                   required
                   name="sector"
                   value={"" || corporativeName}

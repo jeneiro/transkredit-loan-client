@@ -10,7 +10,7 @@ import { useAlert } from "react-alert";
 export default function AdminAllCooporativeMembers() {
   const alert = useAlert();
 
-  const getReqURL = `${webapibaseurl}/admin/all-individuals`;
+  const getReqURL = `${webapibaseurl}/admin/all-cooporative-member-accounts`;
   const [staff, setStaff] = useState([]);
   const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
@@ -38,8 +38,8 @@ export default function AdminAllCooporativeMembers() {
           sn: index + 1,
           id:item.id,
           date: moment(item.createdAt).format("LL"),
-          username: item.username,
-          email: item.email,
+          username: item.fullName,
+          staffId: item.staffId,
           loanType: item.loanType,
           repaymentMode: item.repaymentMode,
           status: item.status,
@@ -53,8 +53,8 @@ export default function AdminAllCooporativeMembers() {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
-    { title: "Username", field: "username" },
-    { title: "email", field: "email" },
+    { title: "Full Name", field: "username" },
+    { title: "staff ID", field: "staffId" },
     { title: "Date Created", field: "date" },
     {
       field: "url",
@@ -83,7 +83,7 @@ export default function AdminAllCooporativeMembers() {
     <div>
       <div style={{ marginTop: 120 }} className="col-md-10 offset-1">
         <div className="Form-container ">
-          <h5>Admin - All Cooporative Member Accounts</h5>
+          <h5>Admin - All Cooperative Member Accounts</h5>
           <div
             className="row "
             style={{
@@ -96,7 +96,7 @@ export default function AdminAllCooporativeMembers() {
             <b></b>
           </div>
           <MaterialTable
-            title={<b>Cooporative Members</b>}
+            title={<b>Cooperative Members</b>}
             columns={columns}
             data={rows}
            

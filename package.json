@@ -34,6 +34,7 @@
     "moment": "^2.29.3",
     "papaparse": "^5.3.2",
     "pdf-viewer-reactjs": "^2.2.3",
+    "pure-react-carousel": "^1.28.1",
     "react": "^18.0.0",
     "react-alert": "^7.0.3",
     "react-alert-template-basic": "^1.0.2",

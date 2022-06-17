@@ -1,7 +1,7 @@
 import React, {useEffect, useState}from 'react'
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
-import Cooporative from './corporative';
+import Cooperative from './corporative';
 export default function CooporateHome() {
  
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function CooporateHome() {
   
         <>
 
-        <Cooporative show={show} handleClose={handleClose}/>
+        <Cooperative show={show} handleClose={handleClose}/>
             <div
               class="productBox small"
               onClick={() => {
@@ -87,7 +87,7 @@ export default function CooporateHome() {
               }}
             >
               <aside>
-                <h4>Edit Cooporative Name</h4>
+                <h4>Edit Cooperative Name</h4>
               </aside>
               <img src="" />
             </div>
@@ -98,7 +98,7 @@ export default function CooporateHome() {
               }}
             >
               <aside>
-                <h4>Cooporative Request</h4>
+                <h4>Cooperative Request</h4>
               </aside>
               <img src="" />
             </div>

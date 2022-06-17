@@ -7,7 +7,7 @@ import { useAlert } from "react-alert";
 export default function CSV() {
   const alert = useAlert();
   const CorporateId = localStorage.getItem("CorporateId");
-  const Cooporative = localStorage.getItem("CorporativeId")
+  const Cooperative = localStorage.getItem("CorporativeId")
   const [data, setData] = useState([]);
   const [columns, setKeys] = useState([]);
   const postList = `${webapibaseurl}/staff/${CorporateId}`;

@@ -6,23 +6,30 @@ import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
-import {useAlert} from "react-alert"
+import { useAlert } from "react-alert";
 export default function LoanActionList() {
   const alert = useAlert();
   const CorporateId = localStorage.getItem("CorporateId");
   const getReqURL = `${webapibaseurl}/loan/corporate-loan-pending/${CorporateId}`;
   const [staff, setStaff] = useState([]);
-  const [payload, setPayload] = useState({})
+  const [amount, setAmount] = useState('');
+  const [reason, setReason] = useState('')
+  const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
-  const[loanID, setLoanID]=useState();
+  const [defaultReject, setDefaultReject] = useState(true);
+  const [loanID, setLoanID] = useState();
   const approveURL = `${webapibaseurl}/loan/submit-loan-request/${loanID}`;
   const rejectURL = `${webapibaseurl}/loan/reject-loan-request/${loanID}`;
-
+  const [email, setEmail] = useState();
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow(false);
- 
-
+  function changeHandler(e) {
+    e.preventDefault();
+    const name = e.target.name;
+    const value = e.target.value;
+    setPayload({ ...payload, [name]: value });
+  }
   useEffect(() => {
     callList();
   }, []);
@@ -38,13 +45,14 @@ export default function LoanActionList() {
         const payload = {
           sn: index + 1,
           id: item.id,
-          username:item.username,
-          date:moment(item.date).format('LL'),
-          loanAmount:currencyFormat(Number(item.loanAmount)),
+          username: item.username,
+          date: moment(item.date).format("LL"),
+          loanAmount: currencyFormat(Number(item.loanAmount)),
           tenor: item.tenor,
           loanType: item.loanType,
           repaymentMode: item.repaymentMode,
-          status:item.status
+          status: item.status,
+          AuthId:item.AuthId
         };
         console.log(payload);
         return payload;
@@ -90,8 +98,13 @@ export default function LoanActionList() {
                 iconProps: { style: { fontSize: "34px", color: "green" } },
                 tooltip: "Submit Request",
                 onClick: (event, rowData) => {
-                    console.log(rowData)
-                    setLoanID(rowData.id)
+                  setAmount(rowData.loanAmount)
+                  let uri = `${webapibaseurl}/auth/${rowData.AuthId}`;
+                  axios.get(uri).then((res) => {
+                    setEmail(res.data.data.email);
+                  });
+                  console.log(rowData);
+                  setLoanID(rowData.id);
                   setShow(true);
                 },
               },
@@ -100,7 +113,12 @@ export default function LoanActionList() {
                 tooltip: "Reject Request",
                 iconProps: { style: { fontSize: "34px", color: "red" } },
                 onClick: (event, rowData) => {
-                    setLoanID(rowData.id)
+                  let uri = `${webapibaseurl}/auth/${rowData.AuthId}`;
+                  setAmount(rowData.loanAmount)
+                  axios.get(uri).then((res) => {
+                    setEmail(res.data.data.email);
+                  });
+                  setLoanID(rowData.id);
                   setShow2(true);
                 },
               },
@@ -149,15 +167,29 @@ export default function LoanActionList() {
                 variant="success"
                 style={{ marginTop: 10 }}
                 onClick={() => {
-                  axios.post(approveURL,payload).then((res)=>{
-                    alert.success('Record Submitted')
-                    setPayload({})
+                
+                  axios.post(approveURL, payload).then((res) => {
+                    alert.success("Record Submitted");
+                    const emailURL = `${webapibaseurl}/email`;
+                    const title = "Transkredit Loan Status Update";
+
+                    const message = `Your loan request for ${amount}has been Submitted by your cooperative for further action. You You will be notified when your loan is approved.
+                      Thank you`;
+                    let loginPayload = { title, message, email };
+                    axios
+                      .post(emailURL, loginPayload)
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((err) => console.log(err));
+                 
+                    setPayload({});
                     setShow(false);
                     callList();
-                  })
+                  });
                 }}
               >
-               Submit
+                Submit
               </Button>
             </Modal.Footer>
           </Modal>
@@ -168,40 +200,83 @@ export default function LoanActionList() {
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
-            <Modal.Body>
-              <b>Are you sure you want to reject this loan?</b>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                color="secondary"
-                type="submit"
-                className="btn-sm"
-                variant="secoundary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  setShow2(false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                color="danger"
-                type="submit"
-                className="btn-sm"
-                variant="primary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(rejectURL,payload).then((res)=>{
-                    alert.success('Record Rejected')
-                    setPayload({})
-                    setShow2(false);
-                    callList();
-                  })
-                }}
-              >
-                Reject
-              </Button>
-            </Modal.Footer>
+            {defaultReject && (
+              <>
+                <Modal.Body>
+                  <b>Are you sure you want to reject this loan?</b>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    color="secondary"
+                    type="submit"
+                    className="btn-sm"
+                    variant="secoundary"
+                    style={{ marginTop: 10 }}
+                    onClick={() => {
+                      setShow2(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    color="danger"
+                    type="submit"
+                    className="btn-sm"
+                    variant="primary"
+                    style={{ marginTop: 10 }}
+                    onClick={() => {
+                      setDefaultReject(false);
+                    }}
+                  >
+                    Reject
+                  </Button>
+                </Modal.Footer>
+              </>
+            )}
+            {!defaultReject && (
+              <>
+                <Modal.Body>
+                  <b>Reason for rejection</b>
+                  <form>
+                    <textarea name="message" rows="4" value={""|| payload.message} placeholderr="Reason for rejection" className="form-control" width="100%" onChange={changeHandler}></textarea>
+                  </form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    color="danger"
+                    type="submit"
+                    className="btn-sm"
+                    variant="primary"
+                    style={{ marginTop: 10 }}
+                    onClick={() => {
+                      setReason(payload.message);
+                      axios.post(rejectURL, payload).then((res) => {
+                        alert.success("Record Rejected");  
+                        const emailURL = `${webapibaseurl}/email`;
+                        const title = "Transkredit Loan Status Update";
+    
+                        const message = `Your loan request for ${amount} has been rejected. your loan was rejected because of this reason:</br>${reason}.
+                          Thank you`;
+                        let loginPayload = { title, message, email };
+                        axios
+                          .post(emailURL, loginPayload)
+                          .then((res) => {
+                            console.log(res);
+                          })
+                          .catch((err) => console.log(err));
+                        setDefaultReject(true);
+                        setPayload({});
+                        setShow2(false);
+                        callList();
+
+                      });
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Modal.Footer>
+              </>
+            )}
           </Modal>
         </div>
       </div>

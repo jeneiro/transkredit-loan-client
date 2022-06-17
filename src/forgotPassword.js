@@ -183,15 +183,8 @@ function ForgotPassword() {
                       ></input>
                       <button type="submit">Email</button>
                       <p className="message">
-                        <a
-                          style={{ cursor: "pointer", color: "#ed8d64" }}
-                          onClick={() => {
-                            toggle();
-                          }}
-                        >
-                          toggle
-                        </a>{" "}
-                        " "
+                       
+                     
                         <a
                           style={{ cursor: "pointer", color: "#ed8d64" }}
                           onClick={() => {

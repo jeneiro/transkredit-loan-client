@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LoanApplication from "./loanApplication";
 import IndividualHome from "./individualHome";
 import CooporateHome from "./cooporateHome";
+import CooperateMemberHome from "./CooperateMemberHome";
 import $ from "jquery";
 export default function Home() {
   const [userType, setUserType] = useState("");
@@ -42,6 +43,12 @@ export default function Home() {
       <IndividualHome />
       );
     }
+    if (userType === "Cooperative Member") {
+
+      return (
+      <CooperateMemberHome />
+      );
+    }
   }
   return (
     <div style={{ marginTop: 40, padding: 50, marginLeft: 20 }}>
@@ -77,7 +84,7 @@ export default function Home() {
             }}
           >
             <aside>
-              <h4>Loan Request</h4>
+              <h4>Loan Request List</h4>
             </aside>
             <img src="" />
           </div>

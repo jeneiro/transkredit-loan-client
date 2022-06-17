@@ -107,7 +107,7 @@ const AdminDocument = () => setShow(false);
                   required
                   onChange={changeHandler}
                 >
-                  <option selected>-List Of Cooporative-</option>
+                  <option selected>-List Of Cooperative-</option>
                   <option value="Birth Certificate">Birth Certificate</option>
                
                   <option value="Certificate Of Incorporation">

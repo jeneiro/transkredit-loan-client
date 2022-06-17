@@ -4,7 +4,7 @@ import { axiosInstance as axios } from "../interceptor";
 import { useNavigate } from "react-router-dom";
 import { webapibaseurl } from "../environment";
 import Modal from "react-bootstrap/Modal";
-export default function Cooporative(props) {
+export default function Cooperative(props) {
   const alert = useAlert();
   const navigate = useNavigate();
   const [payload, setPayload] = useState({});
@@ -15,7 +15,7 @@ export default function Cooporative(props) {
   useEffect(() => {
     const director = `${webapibaseurl}/director/${id}`;
     axios.get(director).then((res) => {
-      console.log(res.data);
+    
       setDirectors(res.data.directors);
     });
   }, []);
@@ -61,7 +61,7 @@ export default function Cooporative(props) {
               fontSize:16
             }}
           >
-          Edit Cooporative Name
+          Edit Cooperative Name
           </div>
   </Modal.Title>
 </Modal.Header>
@@ -76,10 +76,10 @@ export default function Cooporative(props) {
 
             <div className="row">
              
-                <label>Cooporative Name</label>
+                <label>Cooperative Name</label>
                 <input
                   type="text"
-                  placeholder="Cooporative Name"
+                  placeholder="Cooperative Name"
                   name="name"
                   value={"" || payload.name}
                   required

@@ -19,25 +19,29 @@ export default function CorporateRequestTable(props) {
   const [show3, setShow3] = useState(false);
   const [show4, setShow4] = useState(false);
   const [image, setImage] = useState("");
+  const [email, setEmail] = useState();
+  const [corpname, setCorpName] = useState();
   const approveURL = `${webapibaseurl}/joinRequest/approve/${CorporateId}`;
   const rejectURL = `${webapibaseurl}/joinRequest/reject/${CorporateId}`;
-
+  const cooperativeName = `${webapibaseurl}/corporative/${CorporateId}`;
   const handleClose = () => setShow(false);
   const handleClose2 = () => setShow2(false);
   const handleClose3 = () => setShow3(false);
   const handleClose4 = () => setShow4(false);
 
   useEffect(() => {
+    axios.get(cooperativeName).then((res) => {
+      setCorpName(res.data.corporative.name);
+    });
     callList();
   }, []);
+
   function callList() {
     axios.get(getReqURL).then((res) => {
-     
       setStaff(res.data.data);
       const list = res.data.data;
 
       const listItems = list.map((item, index) => {
-      
         const payload = {
           sn: index + 1,
           fullName: item.IndividualName,
@@ -46,7 +50,7 @@ export default function CorporateRequestTable(props) {
           AuthId: item.AuthId,
           document: item.document,
         };
-       
+
         return payload;
       });
       setStaff(listItems);
@@ -64,29 +68,24 @@ export default function CorporateRequestTable(props) {
       tooltip: "Verify fullname",
       render: (rowData) => (
         <div>
-         
           <Button
             className="ml-3"
             onClick={() => {
               console.log(rowData);
               const validUsername = `${webapibaseurl}/staff/byStaffId/${CorporateId}/${rowData.staffId}/`;
-      
-      const validName= axios
-          .get(validUsername)
-          .then((res) => {
-            let fullName = res.data.data.fullName;
-            console.log(fullName)
-            setFullName(fullName)
-            setShow4(true)
-          })
-          .catch((err) => console.log(err));
 
-           
+              const validName = axios
+                .get(validUsername)
+                .then((res) => {
+                  let fullName = res.data.data.fullName;
+                  console.log(fullName);
+                  setFullName(fullName);
+                  setShow4(true);
+                })
+                .catch((err) => console.log(err));
             }}
           >
-          
-          Verify Full Name
-           
+            Verify Full Name
           </Button>
         </div>
       ),
@@ -97,7 +96,7 @@ export default function CorporateRequestTable(props) {
     <div>
       <div style={{ marginTop: 120 }} className="col-md-8 offset-2">
         <div className="Form-container ">
-          <h5>Cooporative Request</h5>
+          <h5>Cooperative Request</h5>
           <div
             className="row "
             style={{
@@ -107,7 +106,7 @@ export default function CorporateRequestTable(props) {
               margin: 2,
             }}
           >
-            <b>Join Cooporative Request List</b>
+            <b></b>
           </div>
           <MaterialTable
             title={<b>Request List</b>}
@@ -128,7 +127,11 @@ export default function CorporateRequestTable(props) {
                 iconProps: { style: { fontSize: "34px", color: "green" } },
                 tooltip: "Approve Request",
                 onClick: (event, rowData) => {
-                  console.log(rowData);
+                  let uri = `${webapibaseurl}/auth/${rowData.AuthId}`;
+                  axios.get(uri).then((res) => {
+                    setEmail(res.data.data.email);
+                  });
+
                   const Item = {
                     staffId: rowData.staffId,
                     id: rowData.id,
@@ -200,6 +203,18 @@ export default function CorporateRequestTable(props) {
                     setPayload({});
                     setShow(false);
                     callList();
+                    const emailURL = `${webapibaseurl}/email`;
+                    const title = "Transkredit Registration";
+
+                    const message = `Your requested to join ${corpname} has been approved. You can proceed to the Transkredit Loan Portal to complete your registration.
+                      Thank you`;
+                    let loginPayload = { title, message, email };
+                    axios
+                      .post(emailURL, loginPayload)
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((err) => console.log(err));
                   });
                 }}
               >
@@ -239,7 +254,19 @@ export default function CorporateRequestTable(props) {
                 onClick={() => {
                   axios.post(rejectURL, payload).then((res) => {
                     alert.success("Record Rejected");
-                    setPayload({});
+                    const emailURL = `${webapibaseurl}/email`;
+                    const title = "Transkredit Registration";
+
+                    const message = `Your requested to join ${corpname} has been rejected. You can proceed to the Transkredit Loan Portal for further action.
+                      Thank you`;
+                    let loginPayload = { title, message, email };
+                    axios
+                      .post(emailURL, loginPayload)
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((err) => console.log(err));
+                                     setPayload({});
                     setShow2(false);
                     callList();
                   });
@@ -268,9 +295,10 @@ export default function CorporateRequestTable(props) {
             centered
           >
             <Modal.Body>
-             <h4 className="text-centre"><b>{fullName}</b></h4>
+              <h4 className="text-centre">
+                <b>{fullName}</b>
+              </h4>
             </Modal.Body>
-           
           </Modal>
         </div>
       </div>

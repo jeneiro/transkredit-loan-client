@@ -10,7 +10,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import RepaymentSchedule from "./repaymentSchedule";
+import SecureLS from "secure-ls";
 export default function LoanApplication(props) {
+  var ls = new SecureLS();
+  const email = ls.get("email");
   const alert = useAlert();
   const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
@@ -18,6 +21,7 @@ export default function LoanApplication(props) {
   const [repaymentList, setRepaymentList] = useState([]);
   const [amount, setAmount] = useState(0);
   const [form, setForm] = useState(true);
+  const [rate, setRate] = useState()
   const [totalRepayment, setTotalRepayment] = useState(0);
   const [tenor, setTenor] = useState(1);
   const individualId = localStorage.getItem("individualId");
@@ -26,8 +30,8 @@ export default function LoanApplication(props) {
   const userType = localStorage.getItem("userType");
   const loanURL = `${webapibaseurl}/loan/${id}`;
   const CorporateId = localStorage.getItem("corporateId");
+  const getURL = `${webapibaseurl}/interest-rate`;
   const url = `${webapibaseurl}/joinRequest/approved/${individualId}`;
-
   function handleClose(event) {
     resetForm();
     props.handleClose(event);
@@ -36,6 +40,10 @@ export default function LoanApplication(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    axios.get(getURL).then((res) => {
+      setRate(res.data.data[0].rate);
+    });
     axios.get(url).then((res) => {
       setCorpList(res.data.data);
     });
@@ -61,7 +69,7 @@ export default function LoanApplication(props) {
     let updatedAmount = amount;
     for (let i = 0; i < tenor; i++) {
       const formattedPrincipal = Math.round(principal * 100) / 100;
-      const initialInterest = 0.03 * updatedAmount;
+      const initialInterest =Number(rate)* updatedAmount;
       const item = formattedPrincipal + initialInterest;
       list = [...list, item];
       updatedAmount = updatedAmount - formattedPrincipal;
@@ -73,12 +81,13 @@ export default function LoanApplication(props) {
     }
     setTotalRepayment(sum.toFixed(2));
   }
-
+  function currencyFormat(num) {
+    return "₦" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
   function changeHandler(e) {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
     setPayload({ ...payload, [name]: value, ["loanAmount"]: amount });
 
     if (CorporateId) {
@@ -105,17 +114,40 @@ export default function LoanApplication(props) {
     e.preventDefault();
     if (userType === "Individual" && CorporateId != null) {
       payload.Status = "Pending";
-    } else if (userType === "Cooporative Member") {
+    } else if (userType === "Cooperative Member") {
       payload.Status = "Pending";
     } else {
       payload.Status = "Submitted";
     }
     payload.username = username;
     payload.tenor = tenor;
+    const formattedAmmount = currencyFormat(Number(payload.loanAmount));
     axios
       .post(loanURL, payload)
-      .then(() => {
+      .then((res) => {
+      const rescheduleID = res.data.data.id;
+        const loanScheduleURL = `${webapibaseurl}/loan-schedule/${rescheduleID}`;
+        const schedulePayload = repaymentList.map((i,index)=>{ const sn = index+1
+          const obj ={
+              sn:sn,
+              amount:i.toString(),
+              months: "month " + sn
+          }
+          return obj;})
+        axios.post(loanScheduleURL,schedulePayload).then().catch()
+        const emailURL = `${webapibaseurl}/email`;
+        const title = "Transkredit Loan Request";
+        const message = `You have applied for a loan of ${formattedAmmount} on the Transkredit Loan Portal. You will be notified when your loan request is treated.
+          Thank you`;
+        let msgPayload = { title, message, email };
+        axios
+          .post(emailURL, msgPayload)
+          .then((res) => {
+           
+          })
+          .catch((err) => console.log(err));
         alert.success("Loan Request Submitted");
+       
       resetForm();
         navigate("/app/home/");
       })
@@ -136,7 +168,7 @@ function resetForm(){
       return (
         <div className="row">
           <div className="col-md-6">
-            <label>Are you applying through your Cooporative?</label>
+            <label>Are you applying through your Cooperative?</label>
 
             <RadioGroup
               row
@@ -150,14 +182,14 @@ function resetForm(){
           </div>
           {show && (
             <div className="col-md-6">
-              <label>Select Cooporative</label>
+              <label>Select Cooperative</label>
               <select
                 name="CorporateId"
                 class="input-group"
                 onChange={changeHandler}
               >
                 <option disabled selected>
-                  -Select Cooporative-
+                  -Select Cooperative-
                 </option>
 
                 {corpList.map((corp) => {

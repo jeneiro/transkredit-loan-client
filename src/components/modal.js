@@ -57,7 +57,7 @@ export default function LoanRequestLIst() {
     <div>
       <div style={{ marginTop: 120 }} className="col-md-8 offset-2">
         <div className="Form-container ">
-          <h5>Cooporative Request</h5>
+          <h5>Cooperative Request</h5>
           <div
             className="row "
             style={{
@@ -67,7 +67,7 @@ export default function LoanRequestLIst() {
               margin: 2,
             }}
           >
-            <b>Join Cooporative Request List</b>
+            <b>Join Cooperative Request List</b>
           </div>
           <MaterialTable
             title={<b>Request List</b>}

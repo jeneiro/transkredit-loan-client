@@ -10,7 +10,7 @@ import { useAlert } from "react-alert";
 export default function AdminAllCorporate() {
   const alert = useAlert();
 
-  const getReqURL = `${webapibaseurl}/admin/all-individuals`;
+  const getReqURL = `${webapibaseurl}/admin/all-corporate-accounts`;
   const [staff, setStaff] = useState([]);
   const [payload, setPayload] = useState({});
   const [show, setShow] = useState(false);
@@ -38,7 +38,7 @@ export default function AdminAllCorporate() {
           sn: index + 1,
           id:item.id,
           date: moment(item.createdAt).format("LL"),
-          username: item.username,
+          username: item.companyName,
           email: item.email,
           loanType: item.loanType,
           repaymentMode: item.repaymentMode,
@@ -53,7 +53,7 @@ export default function AdminAllCorporate() {
   let rows = staff;
   let columns = [
     { title: "S/N", field: "sn", width: "2%" },
-    { title: "Username", field: "username" },
+    { title: "CompanyName", field: "username" },
     { title: "email", field: "email" },
     { title: "Date Created", field: "date" },
     {
