@@ -8,7 +8,7 @@ import { webapibaseurl } from "../environment";
 export default function ActiveLoanList() {
   const id = localStorage.getItem("id");
   const getReqURL = `${webapibaseurl}/loan/approved-loans/${id}`;
-  console.log(id)
+  
   const [staff, setStaff] = useState([]);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ActiveLoanList() {
           repaymentMode: item.repaymentMode,
           status:item.status
         };
-        console.log(payload);
+     
         return payload;
       });
       setStaff(listItems);

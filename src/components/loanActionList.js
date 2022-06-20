@@ -38,7 +38,7 @@ export default function LoanActionList() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data.data);
+      
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
@@ -54,7 +54,7 @@ export default function LoanActionList() {
           status: item.status,
           AuthId:item.AuthId
         };
-        console.log(payload);
+        
         return payload;
       });
       setStaff(listItems);
@@ -103,7 +103,7 @@ export default function LoanActionList() {
                   axios.get(uri).then((res) => {
                     setEmail(res.data.data.email);
                   });
-                  console.log(rowData);
+                
                   setLoanID(rowData.id);
                   setShow(true);
                 },
@@ -261,7 +261,7 @@ export default function LoanActionList() {
                         axios
                           .post(emailURL, loginPayload)
                           .then((res) => {
-                            console.log(res);
+                            
                           })
                           .catch((err) => console.log(err));
                         setDefaultReject(true);

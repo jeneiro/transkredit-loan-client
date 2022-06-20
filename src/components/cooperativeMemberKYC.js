@@ -23,7 +23,7 @@ export default function CooperativeMemberKYC(props) {
     const name = e.target.name;
     const value = e.target.value;
     setPayload({ ...payload, [name]: value });
-    console.log(e.target.name);
+    
   }
   function submitForm(e) {
     e.preventDefault();

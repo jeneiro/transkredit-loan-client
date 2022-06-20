@@ -7,20 +7,22 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
+import SecureLS from "secure-ls";
+import Pdf from "react-to-pdf";
+import logoTag from "../assets/avatar.png";
 export default function AdminAllCooporativeMembers() {
+  const ref = React.createRef();
   const alert = useAlert();
-
+  var ls = new SecureLS();
   const getReqURL = `${webapibaseurl}/admin/all-cooporative-member-accounts`;
   const [staff, setStaff] = useState([]);
-  const [payload, setPayload] = useState({});
+  const [corporativeName, setCorporativeName] = useState("");
   const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
-  const [loanID, setLoanID] = useState();
-
+  const [fullName, setFullName] = useState("");
+  const [staffID, setStaffID] = useState("");
+  const [passport, setPassport] = useState(logoTag)
+  const [detail, setDetail] = useState({});
   const handleClose = () => setShow(false);
-  const handleClose2 = () => setShow(false);
-  const approveURL = `${webapibaseurl}/admin/approve-loan-request/${loanID}`;
-  const rejectURL = `${webapibaseurl}/admin/reject-loan-request/${loanID}`;
 
   useEffect(() => {
     callList();
@@ -30,21 +32,25 @@ export default function AdminAllCooporativeMembers() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-     
       setStaff(res.data.data);
       const list = res.data.data;
+    
       const listItems = list.map((item, index) => {
+      
         const payload = {
           sn: index + 1,
-          id:item.id,
+          id: item.id,
           date: moment(item.createdAt).format("LL"),
           username: item.fullName,
           staffId: item.staffId,
           loanType: item.loanType,
           repaymentMode: item.repaymentMode,
           status: item.status,
+          authId: item.AuthId,
+          CorporateId: item.CorporateId
+          
         };
-       
+
         return payload;
       });
       setStaff(listItems);
@@ -62,21 +68,34 @@ export default function AdminAllCooporativeMembers() {
       tooltip: "Detail",
       render: (rowData) => (
         <div>
-         
           <Button
             className="ml-3"
             onClick={() => {
-              console.log(rowData);
-              }}
+              setFullName(rowData.username);
+              setStaffID(rowData.staffId);
+              let id = rowData.authId;
+              setShow(true);
+              const detailURL = `${webapibaseurl}/cooperative-member-kyc/${id}`;
+              const passportURL = `${webapibaseurl}/passport/${id}`;
+              const cooporativeURL = `${webapibaseurl}/corporative/${rowData.CorporateId}`;
+              axios.get(cooporativeURL).then((response) => {setCorporativeName(response.data.corporative.name)});
+              axios.get(detailURL).then((res) => {
+                if(res.data.data === undefined ){
+                  setDetail({})
+                }
+                else {setDetail(res.data.data);
+                  if(res.data.data.passport !== undefined ){
+                setPassport(res.data.data.passport)}};
+
+            
+              });
+            }}
           >
-          
-          Detail
-           
+            Detail
           </Button>
         </div>
       ),
     },
-   
   ];
 
   return (
@@ -99,7 +118,6 @@ export default function AdminAllCooporativeMembers() {
             title={<b>Cooperative Members</b>}
             columns={columns}
             data={rows}
-           
             options={{
               actionsColumnIndex: -1,
               headerStyle: {
@@ -113,89 +131,189 @@ export default function AdminAllCooporativeMembers() {
               },
             }}
           />
- <div style={{ height:100 }}>.</div>
+          <div style={{ height: 100 }}>.</div>
           <Modal
             show={show}
             onHide={handleClose}
-            size="sm"
+            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
-            <Modal.Body>
-              <b>Are you sure you want approve this loan?</b>
+            <Modal.Body ref={ref}>
+              <div>
+                <div
+                  className="row "
+                  style={{
+                    backgroundColor: "#f15a29",
+                    color: "#fff",
+                    padding: 4,
+                    margin: 2,
+                  }}
+                >
+                  <b>Cooperative Member Account</b>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                  
+                    <img
+                      src={passport}
+                      style={{ width: 150, height: 150 }}
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <div className="row">
+                      <div className="col-md-7">
+                        <label>
+                          <b>Full Name:</b>
+                        </label><br/>
+                        {fullName}
+                      </div>
+                      
+                      <div className="col-md-5">
+                       
+                        <label>
+                          <b>Staff ID:</b>
+                        </label><br/>
+                        {staffID}
+                      </div>
+                    </div>
+                    <hr />
+
+                    <div className="row">
+                    <div className="col-md-7">
+                       
+                       <label>
+                         <b>Cooperative Name:</b>
+                       </label><br/>
+                       {corporativeName}
+                     </div>
+                      <div className="col-md-5">
+                        {" "}
+                        <label>
+                          <b>Phone :</b>
+                        </label><br/>
+                        {detail.phone}{" "}
+                      </div>
+                      <hr />
+                    </div>
+                    <hr />
+                   
+                  </div>
+                </div>
+                <div className="row"> <div className="col-md-4">
+                  
+                  <label>
+                    <b>Email:</b>
+                  </label><br/>
+                  {detail.email}
+                </div>{" "}
+                <div className="col-md-3">
+              
+                  <label>
+                    <b>Phone :</b>
+                  </label><br/>
+                  {detail.phone}{" "}
+                </div>
+                      <div className="col-md-5">
+                      <label>
+                          <b>Address:</b>
+                        </label><br/>
+                        {detail.address}{" "}
+                      </div>
+                    </div>
+                <div
+                  className="row "
+                  style={{
+                    backgroundColor: "#f15a29",
+                    color: "#fff",
+                    padding: 4,
+                    margin: 2,
+                  }}
+                >
+                  <b>Bank Details</b>
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    {" "}
+                    <label>
+                      <b>Account Name:</b>
+                    </label><br/>
+                    {detail.accountName}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>Bank Name:</b>
+                    </label><br/>
+                    {detail.bankName}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>Account Number:</b>
+                    </label><br/>
+                    {detail.accountNumber}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>BVN:</b>
+                    </label><br/>
+                    {detail.bvn}
+                  </div>
+                </div>
+                <div
+                  className="row "
+                  style={{
+                    backgroundColor: "#f15a29",
+                    color: "#fff",
+                    padding: 4,
+                    margin: 2,
+                  }}
+                >
+                  <b>Means of Identification</b>
+                 
+                </div>
+                <div className="row">
+                  <div className="col-md-3">
+                    {" "}
+                    <label>
+                      <b>Means Of ID:</b>
+                    </label><br/>
+                    {detail.meansOfID}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>ID Number:</b>
+                    </label><br/>
+                    {detail.IDnumber}{" "}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>Issuance Date:</b>
+                    </label><br/>
+                     {  moment(detail.issuanceDate).format("LL")}
+                  </div>
+                  <div className="col-md-3">
+                    <label>
+                      <b>Expiry Date:</b>
+                    </label><br/>
+                    {  moment(detail.expiryDate).format("LL")}
+                  </div>
+                </div>
+              </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                color="secondary"
-                type="submit"
-                className="btn-sm"
-                variant="secoundary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  setShow(false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
+            <Pdf targetRef={ref} filename="code-example.pdf">
+        {({ toPdf }) => <Button
                 color="success"
                 type="submit"
                 className="btn-sm"
                 variant="success"
                 style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(approveURL, payload).then((res) => {
-                    alert.success("Record Approved");
-                    setPayload({});
-                    setShow(false);
-                    callList();
-                  });
-                }}
+                onClick={toPdf}
               >
-                Approve
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <Modal
-            show={show2}
-            onHide={handleClose2}
-            size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Body>
-              <b>Are you sure you want reject this loan?</b>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                color="secondary"
-                type="submit"
-                className="btn-sm"
-                variant="secoundary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  setShow2(false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                color="danger"
-                type="submit"
-                className="btn-sm"
-                variant="primary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(rejectURL, payload).then((res) => {
-                    alert.success("Record Rejected");
-                    setPayload({});
-                    setShow2(false);
-                    callList();
-                  });
-                }}
-              >
-                Reject
-              </Button>
+                Download PDF
+              </Button>}
+      </Pdf>
+              
             </Modal.Footer>
           </Modal>
         </div>

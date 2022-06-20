@@ -47,7 +47,7 @@ export default function RegisterViaCorproative() {
     
       setCorpName(res.data.corporative.name);
       setPayload({ ...payload, ...res.data.corporative });
-      console.log(payload)
+      
     });
   }
   function checkStatus() {
@@ -66,7 +66,7 @@ export default function RegisterViaCorproative() {
   function submitForm(e) {
     e.preventDefault();
     payload.document = document.photo;
-    console.log(payload);
+   
     axios
       .post(url, payload)
       .then(() => {

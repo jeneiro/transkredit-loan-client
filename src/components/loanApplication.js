@@ -228,18 +228,7 @@ function resetForm(){
           <div class="Form-container ">
             {form && (
               <div>
-                <div style={{ textAlign: "right", color: "#f15a29" }}>
-                  {" "}
-                  <small
-                    className="text-end text-right"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      setForm(false);
-                    }}
-                  >
-                    View Loan Repayment Schedule
-                  </small>
-                </div>
+              
                 <form
                   className="register-form"
                   id="loan-form"
@@ -364,6 +353,19 @@ function resetForm(){
                     </div>
                   </div>
                 </form>
+                <form style={{width:200}}>
+                <button   onClick={() => {
+                      setForm(false);
+                    }}>
+                
+                  <small
+                    className="text-end text-right"
+                    style={{ cursor: "pointer" }}
+                  
+                  >
+                    Repayment Schedule
+                  </small>
+                </button></form>
               </div>
             )}
 

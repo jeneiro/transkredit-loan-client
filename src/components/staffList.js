@@ -20,7 +20,7 @@ export default function StaffList() {
 
   function callList() {
     axios.get(geturl).then((res) => {
-      console.log(res.data);
+     
       const list = res.data.List.map((item, index) => {
         item.sn = index + 1;
         return item;

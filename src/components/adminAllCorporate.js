@@ -30,7 +30,7 @@ export default function AdminAllCorporate() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data);
+    
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {

@@ -32,7 +32,7 @@ function Login() {
         const message =
           "You have succesfully logged into your Transkredit Loan Portal account. Thank you";
         let loginPayload = { title, message, email };
-        axios.post(emailURL, loginPayload).then((res)=>{console.log(res)}).catch(err=>console.log(err));
+        axios.post(emailURL, loginPayload).then((res)=>{}).catch(err=>console.log(err));
 
 
 
@@ -97,7 +97,7 @@ function Login() {
               }
              if(userType==="Cooperative Member"){
               axiosInstance.get(staffCorporativeURL).then((res) => {
-                console.log(res.data);
+               
                 localStorage.setItem("coporativememberId", res.data.data.id);
                 localStorage.setItem("corporateId", res.data.data.CorporateId);
                 localStorage.setItem("username", res.data.data.fullName);
@@ -154,7 +154,7 @@ function Login() {
             userType: "Unregistered",
           })
           .then((res) => {
-            console.log(res.data);
+           
             setPayload({});
           });
         toggle();

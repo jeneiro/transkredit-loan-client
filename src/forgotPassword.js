@@ -136,7 +136,7 @@ function ForgotPassword() {
                         name="code"
                         value={code || ""}
                         onChange={(e)=>{setCode(e.target.value)
-                        console.log(e.target.value)}
+                        }
                       }
                       ></input>
 
@@ -147,8 +147,8 @@ function ForgotPassword() {
                           if (validationCode === code) {
                             setValidCode(true);
                           } else {
-                            console.log(validationCode);
-                            console.log(code);
+                           
+                          
                             alert.error("Wrong Code");
                             document.getElementById("code").value = "";
                           }

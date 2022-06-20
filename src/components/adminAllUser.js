@@ -44,7 +44,7 @@ export default function AdminAllUsers() {
           repaymentMode: item.repaymentMode,
           status: item.status,
         };
-        console.log(payload);
+       
         return payload;
       });
       setStaff(listItems);
@@ -66,7 +66,7 @@ export default function AdminAllUsers() {
           <Button
             className="ml-3"
             onClick={() => {
-              console.log(rowData);
+           
               }}
           >
           

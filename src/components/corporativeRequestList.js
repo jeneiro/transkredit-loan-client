@@ -71,14 +71,14 @@ export default function CorporateRequestTable(props) {
           <Button
             className="ml-3"
             onClick={() => {
-              console.log(rowData);
+            
               const validUsername = `${webapibaseurl}/staff/byStaffId/${CorporateId}/${rowData.staffId}/`;
 
               const validName = axios
                 .get(validUsername)
                 .then((res) => {
                   let fullName = res.data.data.fullName;
-                  console.log(fullName);
+                 
                   setFullName(fullName);
                   setShow4(true);
                 })

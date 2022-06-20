@@ -22,7 +22,7 @@ export default function JoinCorporative() {
       setCorporative(res.data.corporative);
     });
     axios.get(url).then((res) => {
-      console.log(res.data);
+     
       setReqCorporative(res.data.data);
     });
   }, []);
@@ -38,7 +38,7 @@ export default function JoinCorporative() {
       .post(url, payload)
       .then((res) => {
         axios.get(url).then((res) => {
-          console.log(res.data);
+         
           setReqCorporative(res.data.data);
         });
         alert.success("Request to Join Cooperative Sent");
@@ -60,7 +60,7 @@ export default function JoinCorporative() {
     const value = e.target.value;
     const getCorpurl = `${webapibaseurl}/corporative/${value}`;
     axios.get(getCorpurl).then((res) => {
-        console.log(res.data.corporative)
+      
        
      setPayload({...payload, ...res.data.corporative});
     });

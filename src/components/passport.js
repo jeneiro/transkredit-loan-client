@@ -29,11 +29,13 @@ export default function UploadPassport() {
     if (Image.photo === "/media/users/blank.png") {
       alert("You have not uploaded an image");
     } else {
-      const individualURL = `${webapibaseurl}/passport/${individualId}`;
-      const registeredURI =`${webapibaseurl}/register/${id}`;
+      const individualURL = `${webapibaseurl}/passport/${id}`;
+      
       e.preventDefault();
       const formData = new FormData();
       formData.append("photo", Image.photo);
+      //formData.append("individualId", Image.individualId);
+      Image.individualId = individualId;
 
       axios.post(individualURL, Image).then(()=>{
      

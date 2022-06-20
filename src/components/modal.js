@@ -28,7 +28,7 @@ export default function LoanRequestLIst() {
   }, []);
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data.data);
+     
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
@@ -39,7 +39,7 @@ export default function LoanRequestLIst() {
           id: item.id,
           AuthId:item.AuthId
         };
-        console.log(payload)
+        
         return payload;
       });
       setStaff(listItems);
@@ -79,7 +79,7 @@ export default function LoanRequestLIst() {
                 iconProps: { style: { fontSize: "34px", color: "green" } },
                 tooltip: "Approve Request",
                 onClick: (event, rowData) => {
-                  console.log(rowData);
+                 
                   const Item = { staffId: rowData.staffId, id: rowData.id, fullName: rowData.fullName, AuthId:rowData.AuthId };
                   setPayload(Item)
                   setShow(true);
@@ -90,7 +90,7 @@ export default function LoanRequestLIst() {
                 tooltip: "Reject Request",
                 iconProps: { style: { fontSize: "34px", color: "red" } },
                 onClick: (event, rowData) => {
-                  console.log(rowData);
+                 
                   const Item = { staffId: rowData.staffId ,id: rowData.id };
                   setPayload(Item)
                   setShow2(true);

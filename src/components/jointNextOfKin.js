@@ -23,7 +23,7 @@ export default function JointNextOfKin() {
   const individualURL = `${webapibaseurl}/nextofkin/${corporateId}`;
   function submitForm(e){
     e.preventDefault()
-    console.log(payload)
+   
     axios.post(individualURL, payload).then(()=>{
       alert.success("Director's Next of Kin Details Submitted")
       navigate("/app/add-director")

@@ -18,7 +18,7 @@ export default function AddDirector() {
   useEffect(() => {
     const director = `${webapibaseurl}/director/${id}`;
     axios.get(director).then((res) => {
-      console.log(res.data);
+   
       setDirectors(res.data.directors);
     });
   }, []);

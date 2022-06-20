@@ -67,7 +67,7 @@ export default function AdminAllIndividuals() {
             onClick={() => {
               const detailURL = `${webapibaseurl}/admin//individual-detail/${rowData.id}`;
               axios.get(detailURL).then((res) => {
-                  console.log(res.data)
+                
                setDetail(res.data.data);
                detail.fullname = rowData.username
                 setShow(true);

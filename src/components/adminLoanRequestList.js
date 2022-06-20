@@ -30,7 +30,7 @@ export default function AdminLoanRequestList() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      console.log(res.data.data);
+    
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
@@ -45,7 +45,7 @@ export default function AdminLoanRequestList() {
           status: item.status,
           username: item.username,
         };
-        console.log(payload);
+      
         return payload;
       });
       setStaff(listItems);

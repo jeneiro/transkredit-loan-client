@@ -17,11 +17,11 @@ export default function BankDetails() {
     const name = e.target.name;
     const value = e.target.value;
     setPayload({ ...payload, [name]: value });
-    console.log(e.target.name);
+  
   }
   function submitForm(e){
     e.preventDefault()
-    console.log(payload)
+  
     axios.post(individualURL, payload).then(()=>{
       alert.success("Next of Kin Details Submitted")
       navigate("/app/passport-upload")

@@ -89,7 +89,7 @@ export default function Layout() {
             <i className="fas fa-home"> </i> Home
           </a>
           
-          <a
+          {/* <a
             target="_blank"
             style={{ cursor: "pointer" }}
             onClick={() => {
@@ -97,7 +97,7 @@ export default function Layout() {
             }}
           >
             <i className="fa fa-question"></i> Request
-          </a>
+          </a> */}
         </>
       );
     } else {
