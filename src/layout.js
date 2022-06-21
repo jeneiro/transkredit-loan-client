@@ -89,15 +89,7 @@ export default function Layout() {
             <i className="fas fa-home"> </i> Home
           </a>
           
-          {/* <a
-            target="_blank"
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              navigate("/app/loan-list");
-            }}
-          >
-            <i className="fa fa-question"></i> Request
-          </a> */}
+         
         </>
       );
     } else {
@@ -106,7 +98,7 @@ export default function Layout() {
   }
   return (
     <div>
-      <div className="navigation">
+      <div className="navigation" style={{zIndex:30}}>
         <input type="checkbox" id="navigation-check"></input>
         <div className="navigation-header">
           <img
@@ -126,7 +118,7 @@ export default function Layout() {
         <div className="navigation-links">
           {isRegisteredFunction()}
           {isAdminFunction()}
-          <span style={{ color: "white" }}>|</span>
+         
           <a target="_blank" style={{ cursor: "pointer" }} onClick={logout}>
             Logout <i className="fas fa-sign-out-alt"> </i>
           </a>

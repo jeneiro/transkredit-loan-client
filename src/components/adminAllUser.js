@@ -56,26 +56,26 @@ export default function AdminAllUsers() {
     { title: "Username", field: "username" },
     { title: "email", field: "email" },
     { title: "Date Created", field: "date" },
-    {
-      field: "url",
-      title: "Detail",
-      tooltip: "Detail",
-      render: (rowData) => (
-        <div>
+    // {
+    //   field: "url",
+    //   title: "Detail",
+    //   tooltip: "Detail",
+    //   render: (rowData) => (
+    //     <div>
          
-          <Button
-            className="ml-3"
-            onClick={() => {
+    //       <Button
+    //         className="ml-3"
+    //         onClick={() => {
            
-              }}
-          >
+    //           }}
+    //       >
           
-          Detail
+    //       Detail
            
-          </Button>
-        </div>
-      ),
-    },
+    //       </Button>
+    //     </div>
+    //   ),
+    // },
    
   ];
 
@@ -93,10 +93,10 @@ export default function AdminAllUsers() {
               margin: 2,
             }}
           >
-            <b>Loan Action Required</b>
+         
           </div>
           <MaterialTable
-            title={<b>Pending Action List</b>}
+            title={<b>All User Accounts</b>}
             columns={columns}
             data={rows}
            

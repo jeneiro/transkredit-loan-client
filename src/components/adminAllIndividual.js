@@ -384,31 +384,7 @@ export default function AdminAllIndividuals() {
               </Pdf>
             </Modal.Footer>
           </Modal>
-          <Modal
-            show={show2}
-            onHide={handleClose2}
-            size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Body>
-              <b>Are you sure you want reject this loan?</b>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                color="secondary"
-                type="submit"
-                className="btn-sm"
-                variant="secoundary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  setShow2(false);
-                }}
-              >
-                Cancel
-              </Button>
-            </Modal.Footer>
-          </Modal>
+         
         </div>
       </div>
     </div>
