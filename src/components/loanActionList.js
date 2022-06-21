@@ -15,6 +15,7 @@ export default function LoanActionList() {
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState('')
   const [payload, setPayload] = useState({});
+  const [loanDetail, setLoanDetail] = useState({});
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [defaultReject, setDefaultReject] = useState(true);
@@ -99,6 +100,7 @@ export default function LoanActionList() {
                 tooltip: "Submit Request",
                 onClick: (event, rowData) => {
                   setAmount(rowData.loanAmount)
+                  setLoanDetail(rowData)
                   let uri = `${webapibaseurl}/auth/${rowData.AuthId}`;
                   axios.get(uri).then((res) => {
                     setEmail(res.data.data.email);
@@ -170,8 +172,8 @@ export default function LoanActionList() {
                 
                   axios.post(approveURL, payload).then((res) => {
                     alert.success("Record Submitted");
-                    const emailURL = `${webapibaseurl}/email`;
-                    const title = "Transkredit Loan Status Update";
+                    let emailURL = `${webapibaseurl}/email`;
+                    let title = "Transkredit Loan Status Update";
 
                     const message = `Your loan request for ${amount}has been Submitted by your cooperative for further action. You You will be notified when your loan is approved.
                       Thank you`;
@@ -179,7 +181,14 @@ export default function LoanActionList() {
                     axios
                       .post(emailURL, loginPayload)
                       .then((res) => {
-                        console.log(res);
+                        
+                        let title = "Loan Action Required";
+    
+                        let message = `A ${loanDetail.loanType} of ${amount} for ${loanDetail.tenor} Months with a ${loanDetail.repaymentMode} repayment mode has been submitted by ${loanDetail.username}.
+                          Thank you`;
+                          let emailPayload = { title, message, "email":"enquiries@transkreditfinance.com" };
+                          axios.post(emailURL, emailPayload).then((response) => {}).catch((error) => {console.log(error);})
+                        
                       })
                       .catch((err) => console.log(err));
                  
@@ -261,6 +270,7 @@ export default function LoanActionList() {
                         axios
                           .post(emailURL, loginPayload)
                           .then((res) => {
+                         
                             
                           })
                           .catch((err) => console.log(err));

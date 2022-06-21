@@ -20,9 +20,6 @@ export default function UploadPassport() {
   useEffect(() => {
   
 
-   
-    
-
     // clear selections list
   }, []);
   const handleSubmit = (e) => {

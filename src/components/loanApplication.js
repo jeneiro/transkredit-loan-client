@@ -32,6 +32,7 @@ export default function LoanApplication(props) {
   const CorporateId = localStorage.getItem("corporateId");
   const getURL = `${webapibaseurl}/interest-rate`;
   const url = `${webapibaseurl}/joinRequest/approved/${individualId}`;
+  const emailURL = `${webapibaseurl}/email`;
   function handleClose(event) {
     resetForm();
     props.handleClose(event);
@@ -112,16 +113,25 @@ export default function LoanApplication(props) {
   }
   function submitForm(e) {
     e.preventDefault();
+    payload.username = username;
+    payload.tenor = tenor;
+    const formattedAmmount = currencyFormat(Number(payload.loanAmount));
     if (userType === "Individual" && CorporateId != null) {
       payload.Status = "Pending";
     } else if (userType === "Cooperative Member") {
       payload.Status = "Pending";
     } else {
       payload.Status = "Submitted";
+      let title = "Loan Action Required";
+    
+      let message = `A ${payload.loanType} of ${formattedAmmount} for ${tenor} Months with a ${payload.repaymentMode} repayment mode has been submitted by ${username}.
+        Thank you`;
+        let emailPayload = { title, message, "email":"enquiries@transkreditfinance.com" };
+        axios.post(emailURL, emailPayload).then((response) => {}).catch((error) => {console.log(error);})
+
     }
-    payload.username = username;
-    payload.tenor = tenor;
-    const formattedAmmount = currencyFormat(Number(payload.loanAmount));
+   
+    
     axios
       .post(loanURL, payload)
       .then((res) => {
@@ -135,7 +145,7 @@ export default function LoanApplication(props) {
           }
           return obj;})
         axios.post(loanScheduleURL,schedulePayload).then().catch()
-        const emailURL = `${webapibaseurl}/email`;
+      
         const title = "Transkredit Loan Request";
         const message = `You have applied for a loan of ${formattedAmmount} on the Transkredit Loan Portal. You will be notified when your loan request is treated.
           Thank you`;

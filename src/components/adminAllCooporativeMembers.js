@@ -22,7 +22,8 @@ export default function AdminAllCooporativeMembers() {
   const [staffID, setStaffID] = useState("");
   const [passport, setPassport] = useState(logoTag)
   const [detail, setDetail] = useState({});
-  const handleClose = () => setShow(false);
+  const handleClose = () =>{ setShow(false);
+     setPassport(logoTag)};
 
   useEffect(() => {
     callList();
@@ -78,6 +79,9 @@ export default function AdminAllCooporativeMembers() {
               const detailURL = `${webapibaseurl}/cooperative-member-kyc/${id}`;
               const passportURL = `${webapibaseurl}/passport/${id}`;
               const cooporativeURL = `${webapibaseurl}/corporative/${rowData.CorporateId}`;
+              axios.get(passportURL).then((res)=>{
+                setPassport(res.data.data.passport);
+              }).catch((err)=>{console.error(err);});
               axios.get(cooporativeURL).then((response) => {setCorporativeName(response.data.corporative.name)});
               axios.get(detailURL).then((res) => {
                 if(res.data.data === undefined ){
@@ -301,7 +305,7 @@ export default function AdminAllCooporativeMembers() {
               </div>
             </Modal.Body>
             <Modal.Footer>
-            <Pdf targetRef={ref} filename="code-example.pdf">
+            <Pdf targetRef={ref} filename="MemberDetail.pdf">
         {({ toPdf }) => <Button
                 color="success"
                 type="submit"

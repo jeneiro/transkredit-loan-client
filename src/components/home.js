@@ -63,10 +63,10 @@ export default function Home() {
         </small>
       </div>
       <div className="row">
-        <div class="productShell" style={{ marginTop: 55 }}>
+        <div className="productShell" style={{ marginTop: 55 }}>
           
           <div
-            class="productBox color-blue"
+            className="productBox color-blue"
             onClick={() => {
               setShow(true);
             }}
@@ -78,7 +78,7 @@ export default function Home() {
           </div>
 
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/loan-list");
             }}
@@ -90,7 +90,7 @@ export default function Home() {
           </div>
 
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/active-loan-list");
             }}
@@ -101,7 +101,7 @@ export default function Home() {
             <img src="https://play-lh.googleusercontent.com/ccWDU4A7fX1R24v-vvT480ySh26AYp97g1VrIB_FIdjRcuQB2JP2WdY7h_wVVAeSpg=w240-h480-rw" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/settled-loan-list");
             }}
@@ -112,7 +112,7 @@ export default function Home() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/upload-files");
             }}

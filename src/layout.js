@@ -213,6 +213,7 @@ export default function Layout() {
           width: "100%",
           height: 65,
           backgroundColor: "#03001a",
+          zIndex:30
         }}
       >
           

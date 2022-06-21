@@ -25,7 +25,7 @@ export default function CooporateHome() {
 
         <Cooperative show={show} handleClose={handleClose}/>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/loan-action-list");
               }}
@@ -36,7 +36,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/corporate-settled");
               }}
@@ -47,7 +47,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/corporate-approved");
               }}
@@ -58,7 +58,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/upload-staff-list");
               }}
@@ -69,7 +69,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/staff-list");
               }}
@@ -81,7 +81,7 @@ export default function CooporateHome() {
             </div>
   
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 setShow(true);
               }}
@@ -92,7 +92,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/corporative-request-list");
               }}
@@ -103,7 +103,7 @@ export default function CooporateHome() {
               <img src="" />
             </div>
             <div
-              class="productBox small"
+              className="productBox small"
               onClick={() => {
                 navigate("/app/document-request-list");
               }}

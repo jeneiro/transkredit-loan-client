@@ -104,7 +104,7 @@ export default function CooperativeMemberKYC(props) {
                 </div>
                 <div className="input-group col-md-6">
                   <label>Issuance Date</label>
-                  <Fragment className="input-group">
+                  <Fragment >
                     <KeyboardDatePicker
                       autoOk
                       variant="inline"
@@ -120,7 +120,7 @@ export default function CooperativeMemberKYC(props) {
                 </div>
                 <div className="input-group col-md-6">
                   <label>Expire Date</label>
-                  <Fragment className="input-group">
+                  <Fragment >
                     <KeyboardDatePicker
                       autoOk
                       variant="inline"

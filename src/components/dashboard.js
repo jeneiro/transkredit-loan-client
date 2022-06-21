@@ -12,7 +12,7 @@ export default function Dashboard() {
   const handleClose = (event) => {
     setShow(false);
   };
- 
+
   useEffect(() => {
     const userType = localStorage.getItem("userType");
     const username = localStorage.getItem("username");
@@ -41,9 +41,9 @@ export default function Dashboard() {
         </small>
       </div>
       <div className="row">
-        <div class="productShell" style={{ marginTop: 55 }}>
+        <div className="productShell" style={{ marginTop: 55 }}>
           <div
-            class="productBox color-blue"
+            className="productBox color-blue"
             onClick={() => {
               navigate("/app/admin-loan-request-list");
             }}
@@ -54,7 +54,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/admin-approved-loans");
             }}
@@ -66,7 +66,7 @@ export default function Dashboard() {
           </div>
 
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/settled-loan-list");
             }}
@@ -77,7 +77,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/admin-all-users");
             }}
@@ -88,7 +88,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/admin-all-individuals");
             }}
@@ -99,7 +99,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/admin-all-corporate");
             }}
@@ -110,7 +110,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               navigate("/app/admin-all-cooporative-members");
             }}
@@ -121,7 +121,7 @@ export default function Dashboard() {
             <img src="" />
           </div>
           <div
-            class="productBox small"
+            className="productBox small"
             onClick={() => {
               setShow(true);
             }}
@@ -141,12 +141,8 @@ export default function Dashboard() {
           centered
         >
           <Modal.Body>
-
- 
-<AdminInterestRate handleClose={handleClose}/>
-
+            <AdminInterestRate handleClose={handleClose} />
           </Modal.Body>
-         
         </Modal>
       </div>
     </div>

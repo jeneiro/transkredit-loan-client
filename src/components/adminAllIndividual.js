@@ -6,10 +6,11 @@ import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
+import Pdf from "react-to-pdf";
 import { useAlert } from "react-alert";
 export default function AdminAllIndividuals() {
   const alert = useAlert();
-
+  const ref = React.createRef();
   const getReqURL = `${webapibaseurl}/admin/all-individual-accounts`;
   const [staff, setStaff] = useState([]);
   const [payload, setPayload] = useState({});
@@ -31,7 +32,6 @@ export default function AdminAllIndividuals() {
   }
   function callList() {
     axios.get(getReqURL).then((res) => {
-     
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
@@ -43,7 +43,7 @@ export default function AdminAllIndividuals() {
           email: item.email,
           title: item.title,
         };
-     
+
         return payload;
       });
       setStaff(listItems);
@@ -65,11 +65,11 @@ export default function AdminAllIndividuals() {
           <Button
             className="ml-3"
             onClick={() => {
-              const detailURL = `${webapibaseurl}/admin//individual-detail/${rowData.id}`;
+              const detailURL = `${webapibaseurl}/admin/individual-detail/${rowData.id}`;
               axios.get(detailURL).then((res) => {
-                
-               setDetail(res.data.data);
-               detail.fullname = rowData.username
+                setDetail(res.data.data);
+                console.log(res.data.data);
+                detail.fullname = rowData.username;
                 setShow(true);
               });
             }}
@@ -122,68 +122,238 @@ export default function AdminAllIndividuals() {
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
-            <Modal.Body>
-            <div>
-            <div
-            className="row "
-            style={{
-              backgroundColor: "#f15a29",
-              color: "#fff",
-              padding: 4,
-              margin: 2,
-            }}
-          >
-            <b>Individual Account</b>
-          </div>
+            <Modal.Body ref={ref}>
+              <div>
+                <div
+                  className="row "
+                  style={{
+                    backgroundColor: "#f15a29",
+                    color: "#fff",
+                    padding: 4,
+                    margin: 2,
+                  }}
+                >
+                  <b>Individual Account</b>
+                </div>
                 <div className="row">
-               
-                  <div className="col-md-3"> <img src={detail.passport} style={{width:150, height:150}}/></div><div className="col-md-7">
-                  <div className="row">
-                          <div className="col-md-5"><label><b>Title:</b></label> {detail.title}</div><div className="col-md-7"><label><b>Full Name:</b></label>  {detail.fullname} </div>
-                         
+                  <div className="col-md-3">
+                    {" "}
+                    <img
+                      src={detail.passport}
+                      style={{ width: 150, height: 150 }}
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <div className="row">
+                      <div className="col-md-2">
+                        <label>
+                          <b>Title:</b>
+                        </label><br/>
+                        {detail.title}
                       </div>
-                      <hr/>
-                      <div className="row">
-                      <div className="col-md-5"> <label><b>DOB:</b></label> {moment(detail.dob).format("LL")} </div><div className="col-md-7"><label><b>Marital Status:</b></label>  {detail.maritalStatus} </div>
-                       
+                      <div className="col-md-6">
+                        <label>
+                          <b>Full Name:</b>
+                        </label><br/>
+                        {detail.fullname}{" "}
                       </div>
-                      <hr/>
-                      <div className="row">
-                      <div className="col-md-5">  <label><b>Phone :</b></label>  {detail.phone}  </div>  <div className="col-md-7"> <label><b>Email:</b></label>  {detail.email}</div>
-                          <hr/>
+                      <div className="col-md-4">
+                        {" "}
+                        <label>
+                          <b>DOB:</b>
+                        </label><br/>
+                        {moment(detail.dob).format("LL")}{" "}
                       </div>
+                    </div>
+                    <hr />
+                    
+                    <div className="row">
+                    <div className="col-md-4">
+                        <label>
+                          <b>Marital Status:</b>
+                        </label><br/>
+                        {detail.maritalStatus}{" "}
+                      </div>
+                      <div className="col-md-4">
+                        {" "}
+                        <label>
+                          <b>Phone :</b>
+                        </label><br/>
+                        {detail.phone}{" "}
+                      </div>{" "}
+                      <div className="col-md-4">
+                        {" "}
+                        <label>
+                          <b>Email:</b>
+                        </label><br/>
+                        {detail.email}
+                      </div>
+                      <hr />
+                    </div>
+
+                    <div>
+                      <hr />
+                    </div>
+                  </div>
+                  
+                </div>
+                <div className="row">
+                <div className="col-md-3">
+                      <label>
+                          <b>Mothers Maiden Name:</b>
+                        </label><br/>
+                        {detail.motherMaidenName}
                      
-                      <div>
-                        
-                          <hr/>
+                      </div>
+                      <div className="col-md-3">
+                      <label>
+                          <b>Nationality:</b>
+                        </label><br/>
+                        {detail.nationality}
+                     
+                      </div>
+                  <div className="col-md-6">
+                      <label>
+                          <b>Address:</b>
+                        </label><br/>
+                        {detail.address}{" "}
                       </div>
                       
-                      </div></div> 
                 </div>
-                <div
-            className="row "
-            style={{
-              backgroundColor: "#f15a29",
-              color: "#fff",
-              padding: 4,
-              margin: 2,
-            }}
-          >
-            <b>Work Detail</b>
-          </div>
-        
-          <div className="row">
-                          <div className="col-md-5"><label><b>Work Place:</b></label> {detail.placeOfWork}</div><div className="col-md-7"><label><b>Nature Of Business:</b></label>  {detail.natureOfBusiness} </div>
-                         
-                      </div>
-                      <hr/>
-                      <div className="row">
-                          <div className="col-md-5"><label><b>Salary Range:</b></label> {detail.salaryRange}</div><div className="col-md-7"><label><b>Work Address:</b></label>  {detail.natureOfBusiness} </div>
-                         
-                      </div>
-                      <hr/>
+              </div>
+              <div
+                className="row "
+                style={{
+                  backgroundColor: "#f15a29",
+                  color: "#fff",
+                  padding: 4,
+                  margin: 2,
+                }}
+              >
+                <b>Work Detail</b>
+              </div>
+
+              <div className="row">
+                <div className="col-md-4">
+                  <label>
+                    <b>Work Place:</b>
+                  </label>{" "}
+                  {detail.placeOfWork}
+                </div>
+                <div className="col-md-4">
+                  <label>
+                    <b>Nature Of Business:</b>
+                  </label>{" "}
+                  {detail.natureOfBusiness}{" "}
+                </div>
+                <div className="col-md-4">
+                  <label>
+                    <b>Source Of Income:</b>
+                  </label>{" "}
+                  {detail.sourceOfIncome}{" "}
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-4">
+                  <label>
+                    <b>Salary Range:</b>
+                  </label>{" "}
+                  {detail.salaryRange}
+                </div>
+                <div className="col-md-8">
+                  <label>
+                    <b>Work Address:</b>
+                  </label>{" "}
+                  {detail.natureOfBusiness}{" "}
+                </div>
+              </div>
+              <hr />
+              <div
+                className="row "
+                style={{
+                  backgroundColor: "#f15a29",
+                  color: "#fff",
+                  padding: 4,
+                  margin: 2,
+                }}
+              >
+                <b>Means of Identification</b>
+              </div>
+              <div className="row">
+                <div className="col-md-3">
+                  {" "}
+                  <label>
+                    <b>Means Of ID:</b>
+                  </label>
+                  <br />
+                  {detail.meansOfID}{" "}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>ID Number:</b>
+                  </label>
+                  <br />
+                  {detail.IDnumber}{" "}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>Issuance Date:</b>
+                  </label>
+                  <br />
+                  {moment(detail.issuanceDate).format("LL")}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>Expiry Date:</b>
+                  </label>
+                  <br />
+                  {moment(detail.expiryDate).format("LL")}
+                </div>
+              </div>
+              <div
+                className="row "
+                style={{
+                  backgroundColor: "#f15a29",
+                  color: "#fff",
+                  padding: 4,
+                  margin: 2,
+                }}
+              >
+                <b>Bank Details</b>
+              </div>
+              <div className="row">
+                <div className="col-md-3">
+                  {" "}
+                  <label>
+                    <b>Account Name:</b>
+                  </label>
+                  <br />
+                  {detail.accountName}{" "}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>Bank Name:</b>
+                  </label>
+                  <br />
+                  {detail.bankName}{" "}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>Account Number:</b>
+                  </label>
+                  <br />
+                  {detail.accountNumber}{" "}
+                </div>
+                <div className="col-md-3">
+                  <label>
+                    <b>BVN:</b>
+                  </label>
+                  <br />
+                  {detail.bvn}
+                </div>
+              </div>
               <div className="col-md-6"></div>
-          
             </Modal.Body>
             <Modal.Footer>
               <Button
@@ -198,16 +368,20 @@ export default function AdminAllIndividuals() {
               >
                 Cancel
               </Button>
-              <Button
-                color="success"
-                type="submit"
-                className="btn-sm"
-                variant="success"
-                style={{ marginTop: 10 }}
-                onClick={() => {}}
-              >
-               Download
-              </Button>
+              <Pdf targetRef={ref} filename="MemberDetail.pdf">
+                {({ toPdf }) => (
+                  <Button
+                    color="success"
+                    type="submit"
+                    className="btn-sm"
+                    variant="success"
+                    style={{ marginTop: 10 }}
+                    onClick={toPdf}
+                  >
+                    Download PDF
+                  </Button>
+                )}
+              </Pdf>
             </Modal.Footer>
           </Modal>
           <Modal
@@ -233,7 +407,6 @@ export default function AdminAllIndividuals() {
               >
                 Cancel
               </Button>
-              
             </Modal.Footer>
           </Modal>
         </div>
