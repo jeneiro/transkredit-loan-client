@@ -3,7 +3,6 @@ import { axiosInstance as axios } from "../interceptor";
 
 import PDFViewer from "pdf-viewer-reactjs";
 import { webapibaseurl } from "../environment";
-import PDF from "../assets/TandC.pdf";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import CorporateStepper from "./corporateStepper";
@@ -23,6 +22,7 @@ export default function TAndCCorporate() {
   const registeredURI = `${webapibaseurl}/register/${id}`;
   const corporateURL = `${webapibaseurl}/corporate/${id}`;
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const tandcURL = `${webapibaseurl}/tandc`;
   function submitForm(e) {
     e.preventDefault();
 
@@ -63,7 +63,7 @@ export default function TAndCCorporate() {
           style={{ height: "720px", marginTop: 130, padding: 20,  marginBottom:100 }}
           className="col-md-10 offset-1"
         >
-          <Viewer fileUrl={PDF} plugins={[defaultLayoutPluginInstance]} />
+          <Viewer fileUrl={tandcURL} plugins={[defaultLayoutPluginInstance]} />
         </div>
       </Worker>
       <form
@@ -89,6 +89,9 @@ export default function TAndCCorporate() {
         </div>
       </form>
       <div style={{ height:100 }}>.</div>
+      <div style={{height:100}}>
+        &nbsp;
+      </div>
     </div>
   );
 }

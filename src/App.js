@@ -4,7 +4,7 @@ import { positions, Provider } from "react-alert";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import AlertTemplate from "react-alert-template-basic";
 import React, { createContext, useReducer } from "react";
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 export const AuthContext = createContext();
 const options = {
   timeout: 3000,

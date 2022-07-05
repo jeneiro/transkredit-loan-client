@@ -5,6 +5,8 @@ import LoanApplication from "./loanApplication";
 import IndividualHome from "./individualHome";
 import CooporateHome from "./cooporateHome";
 import CooperateMemberHome from "./CooperateMemberHome";
+
+
 import $ from "jquery";
 export default function Home() {
   const [userType, setUserType] = useState("");
@@ -51,19 +53,21 @@ export default function Home() {
     }
   }
   return (
-    <div style={{ marginTop: 40, padding: 50, marginLeft: 20 }}>
+    <div className="home-bg">
+    
+    <div  style={{ marginTop: 40, padding: 50, marginLeft: 20, height:650}}  >
       <LoanApplication show={show} handleClose={handleClose} />
       <div className="row">
         <h5 style={{ color: "#f15a29" }}>Welcome </h5>
-        <b> &nbsp; | {username}</b> <br />
+        <b style={{ color: "white" }}> &nbsp; | {username}</b> <br />
       </div>
       <div>
-        <small style={{ color: "grey" }}>
+        <small style={{ color: "white" }}>
           <b>{userType}</b> Account
         </small>
       </div>
       <div className="row">
-        <div className="productShell" style={{ marginTop: 55 }}>
+        <div className="productShell" style={{ marginTop: 55}}>
           
           <div
             className="productBox color-blue"
@@ -126,6 +130,10 @@ export default function Home() {
           {view()}
         </div>
       </div>
+    </div>
+    <div className="room">
+      &nbsp;.
+    </div>
     </div>
   );
 }

@@ -64,6 +64,7 @@ code {
 /* layout/base.css */
 
 :root {
+ 
   --bodyBackgroundColor: #eaeaea;
   --bodyColor: #999;
   --bodyFontFamily: 'Helvetica', 'Arial';

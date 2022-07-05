@@ -1,12 +1,12 @@
 import React, { useState, Fragment } from "react";
-import { KeyboardDatePicker } from "@material-ui/pickers";
+import { KeyboardDatePicker, DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import IndividualSteppr from "./individualSteppr";
 import "./form.css";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { useAlert } from "react-alert";
-
+import DateFnsUtils from "@date-io/date-fns";
 export default function Individual() {
   const alert = useAlert();
   const navigate = useNavigate();
@@ -99,17 +99,23 @@ export default function Individual() {
               <div className="input-group col-md-4">
                 <label>Date Of Birth</label>
                 <Fragment className="input-group">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+               
+             
                   <KeyboardDatePicker
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
                     label="Date Of Birth"
+                    openTo="year"
+                    views={["year", "month", "date"]}
                     format="dd/MM/yyyy"
                     value={selectedDateDOB}
-                    maxDate={Date.now}
+                    maxDate={Date.now()}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeDOB(date)}
                   />
+                    </MuiPickersUtilsProvider>
                 </Fragment>
               </div>
 
@@ -622,7 +628,7 @@ export default function Individual() {
                     label="Issuance Date"
                     format="dd/MM/yyyy"
                     value={selectedDateID}
-                    maxDate={Date.now}
+                    maxDate={Date.now()}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeID(date)}
                   />
@@ -638,7 +644,7 @@ export default function Individual() {
                     label="Expire Date"
                     format="dd/MM/yyyy"
                     value={selectedDateED}
-                    maxDate={Date.now}
+                    minDate={selectedDateID}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeED(date)}
                   />
@@ -676,6 +682,9 @@ export default function Individual() {
             </div>
           </div> */}
         </form>
+      </div>
+      <div style={{height:100}}>
+        &nbsp;
       </div>
     </div>
   );

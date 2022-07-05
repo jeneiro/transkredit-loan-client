@@ -52,9 +52,9 @@ export default function StaffList() {
               margin: 2,
             }}
           >
-            <b>List Of All Cooperative Members</b>
+            <b></b>
           </div>
-
+<form ><button type="submit" className="col-md-4">Add Member</button></form>
           <MaterialTable
             title={<b>Member List</b>}
             columns={columns}
@@ -73,6 +73,7 @@ export default function StaffList() {
               },
             ]}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",
@@ -130,6 +131,10 @@ export default function StaffList() {
               </Button>
             </Modal.Footer>
           </Modal>
+      </div>
+      <div style={{ height:100 }}>.</div>
+      <div style={{height:100}}>
+        &nbsp;
       </div>
     </div>
   );

@@ -135,6 +135,9 @@ export default function NextOfKin() {
       
         </form>
       </div>
+      <div style={{height:100}}>
+        &nbsp;
+      </div>
     </div>
   );
 }

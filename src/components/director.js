@@ -636,7 +636,7 @@ export default function Director() {
                     label="Expire Date"
                     format="dd/MM/yyyy"
                     value={selectedDateED}
-                    maxDate={Date.now}
+                   
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeED(date)}
                   />
@@ -713,6 +713,9 @@ export default function Director() {
          
         </form>
       
+      </div>
+      <div style={{height:100}}>
+        &nbsp;
       </div>
     </div>
   );

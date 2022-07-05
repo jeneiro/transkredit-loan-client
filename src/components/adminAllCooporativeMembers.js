@@ -5,6 +5,7 @@ import moment from "moment";
 import { useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
+import logo from "../assets/logo-text.png";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
 import SecureLS from "secure-ls";
@@ -143,6 +144,12 @@ export default function AdminAllCooporativeMembers() {
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
+            <Modal.Header> <img
+            src={logo}
+            alt="Logo"
+            style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
+          
+          /></Modal.Header>
             <Modal.Body ref={ref}>
               <div>
                 <div

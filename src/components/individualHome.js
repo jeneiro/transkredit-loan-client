@@ -1,9 +1,15 @@
-import React, {useEffect}from 'react'
+import React, {useEffect, useState}from 'react'
 import { useNavigate } from "react-router-dom";
 import $ from "jquery";
+import JointAccountKYC from './jointAccountKYC';
 export default function IndividualHome() {
- 
+  const [show, setShow] = useState(false);
+  
     const navigate = useNavigate();
+    function handleClose(event) {
+        setShow(false);
+      }
+    
   
     useEffect(() => {
       
@@ -31,13 +37,17 @@ export default function IndividualHome() {
         <img src="" />
       </div>
 
-      <div class="productBox small">
+      <div class="productBox small"
+        onClick={() => {
+         setShow(true);
+        }}
+        >
         <aside>
           <h4>Joint Account</h4>
         </aside>
         <img src="" />
       </div>
-     
+      <JointAccountKYC show={show} handleClose={handleClose} />  
     </>
        
    

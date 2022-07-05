@@ -8,18 +8,19 @@ import { webapibaseurl } from "./environment";
 import $ from "jquery";
 import "./login.css";
 import SecureLS from "secure-ls";
+import { TailSpin } from "react-loader-spinner";
 function Login() {
   const alert = useAlert();
   var ls = new SecureLS();
   const [payload, setPayload] = useState({});
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const emailURL = `${webapibaseurl}/email`;
   useEffect(() => {}, []);
 
   function login(e) {
     e.preventDefault();
-  
+    setIsLoading(true);
     let uri = `${webapibaseurl}/auth/login`;
     axios
       .post(uri, payload)
@@ -28,15 +29,18 @@ function Login() {
         const token = res.data.token;
         const title = "Transkredit Login";
         const email = res.data.userD.email;
+        setIsLoading(false);
         ls.set("email", email);
         const message =
           "You have succesfully logged into your Transkredit Loan Portal account. Thank you";
         let loginPayload = { title, message, email };
-        axios.post(emailURL, loginPayload).then((res)=>{}).catch(err=>console.log(err));
+        axios
+          .post(emailURL, loginPayload)
+          .then((res) => {})
+          .catch((err) => console.log(err));
 
+        ls.set("token", token);
 
-
-        localStorage.setItem("token", token);
         localStorage.setItem(
           "isAuth",
           JSON.stringify({ isAuthenticated: true })
@@ -46,6 +50,7 @@ function Login() {
         const corporateURL = `${webapibaseurl}/corporate/${id}`;
         const staffCorporativeURL = `${webapibaseurl}/staff/byAuth/${id}`;
         if (res.data.userD.isAdmin === true) {
+          localStorage.setItem("home", "/app/dashboard");
           navigate("/app/dashboard");
           localStorage.setItem("isAdmin", true);
         } else {
@@ -54,73 +59,87 @@ function Login() {
               localStorage.setItem("isRegistered", true);
               const userType = res.data.registered.userType;
               localStorage.setItem("userType", userType);
-              if(userType==="Individual"){
+              if (userType === "Individual") {
                 axiosInstance
-                .get(individualURL)
-                .then((res) => {
-                  if (
-                    res.data.individual.name !== undefined ||
-                    res.data.individual.name !== null
-                  ) {
-                    localStorage.setItem(
-                      "individualId",
-                      res.data.individual.id
-                    );
-                    localStorage.setItem("username", res.data.individual.name);
-                    navigate("/app/home");
-                  }
-                })
-                .catch((err) => {
-                  console.log(err.response);
+                  .get(individualURL)
+                  .then((res) => {
+                    if (
+                      res.data.individual.name !== undefined ||
+                      res.data.individual.name !== null
+                    ) {
+                      localStorage.setItem(
+                        "individualId",
+                        res.data.individual.id
+                      );
+                      localStorage.setItem(
+                        "username",
+                        res.data.individual.name
+                      );
+                      localStorage.setItem("home", "/app/home");
+                      navigate("/app/home");
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              if (userType === "Corporate") {
+                axiosInstance
+                  .get(corporateURL)
+                  .then((res) => {
+                    if (
+                      res.data.corporate.name !== undefined ||
+                      res.data.corporate.name !== null
+                    ) {
+                      localStorage.setItem(
+                        "CorporateId",
+                        res.data.corporate.id
+                      );
+                      localStorage.setItem(
+                        "username",
+                        res.data.corporate.companyName
+                      );
+                      navigate("/app/home");
+                      localStorage.setItem("home", "/app/home");
+                    } else {
+                    }
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }
+              if (userType === "Cooperative Member") {
+                axiosInstance.get(staffCorporativeURL).then((res) => {
+                  localStorage.setItem("coporativememberId", res.data.data.id);
+                  localStorage.setItem(
+                    "corporateId",
+                    res.data.data.CorporateId
+                  );
+                  localStorage.setItem("username", res.data.data.fullName);
+                  localStorage.setItem("home", "/app/home");
+                  navigate("/app/home");
                 });
               }
-              if(userType==="Corporate"){
-                axiosInstance
-                .get(corporateURL)
-                .then((res) => {
-                  if (
-                    res.data.corporate.name !== undefined ||
-                    res.data.corporate.name !== null
-                  ) {
-                    localStorage.setItem("CorporateId", res.data.corporate.id);
-                    localStorage.setItem(
-                      "username",
-                      res.data.corporate.companyName
-                    );
-                    navigate("/app/home");
-                  } else {
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              }
-             if(userType==="Cooperative Member"){
-              axiosInstance.get(staffCorporativeURL).then((res) => {
-               
-                localStorage.setItem("coporativememberId", res.data.data.id);
-                localStorage.setItem("corporateId", res.data.data.CorporateId);
-                localStorage.setItem("username", res.data.data.fullName);
-                navigate("/app/home");
-              });
-             }
-           
             } else if (
               res.data.registered.isRegistered === null ||
               res.data.registered.isRegistered === undefined
             ) {
               localStorage.setItem("isRegistered", false);
+              localStorage.setItem("home", "/app/register");
               navigate("/app/register");
             } else {
               localStorage.setItem("isRegistered", false);
+              localStorage.setItem("home", "/app/register");
               navigate("/app/register");
             }
           });
         }
       })
       .catch((err) => {
-        console.log(err.response);
-        alert.error(err.response.data.errorMessage);
+        setIsLoading(false);
+        if (err.response === undefined) {
+          alert.error("No Network Detected");
+        } else alert.error(err.response.data.errorMessage);
       });
   }
   function toggle() {
@@ -144,17 +163,19 @@ function Login() {
         const email = res.data.userD.email;
         const message =
           "You have succesfully registered this email to the Transkredit Loan Portal. Thank you";
-          alert.success("User registered, please login to proceed");
+        alert.success("User registered, please login to proceed");
         let loginPayload = { title, message, email };
-        axios.post(emailURL, loginPayload).then((res)=>{}).catch(err=>console.log(err));
-        
+        axios
+          .post(emailURL, loginPayload)
+          .then((res) => {})
+          .catch((err) => console.log(err));
+
         axios
           .post(`${webapibaseurl}/register/${id}`, {
             isRegistered: false,
             userType: "Unregistered",
           })
           .then((res) => {
-           
             setPayload({});
           });
         toggle();
@@ -245,7 +266,24 @@ function Login() {
                     value={payload.password || ""}
                     onChange={handleChange}
                   ></input>
-                  <button>login</button>
+                  <button>
+                    <span
+                      className="row text-center"
+                      style={{ margin: "auto", width: "30%" }}
+                    >
+                      login &nbsp;{" "}
+                      {isLoading ? (
+                        <TailSpin
+                          height="20"
+                          width="20"
+                          color="white"
+                          ariaLabel="loading"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </span>
+                  </button>
                   <p className="message">
                     Not registered?{" "}
                     <a style={{ cursor: "pointer" }} onClick={toggle}>
@@ -253,11 +291,13 @@ function Login() {
                     </a>
                   </p>
                   <p className="message">
-                   
-                    <a style={{ cursor: "pointer", color: "#ed8d64" }}  onClick={() => {
-                      navigate("/forgotPassword")
-                    }}>
-                     Forgot Password?
+                    <a
+                      style={{ cursor: "pointer", color: "#ed8d64" }}
+                      onClick={() => {
+                        navigate("/forgotPassword");
+                      }}
+                    >
+                      Forgot Password?
                     </a>
                   </p>
                 </form>

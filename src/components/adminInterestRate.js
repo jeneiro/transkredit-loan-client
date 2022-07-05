@@ -13,7 +13,6 @@ const AdminInterestRate = (props) => {
   const getURL = `${webapibaseurl}/interest-rate`;
   const postURL = `${webapibaseurl}/interest-rate`;
   function handleClose2(event) {
-   
     props.handleClose(event);
   }
 
@@ -56,8 +55,9 @@ const AdminInterestRate = (props) => {
       >
         <Modal.Body>
           <b>
-            Are you sure you want to set a {newRate}% Interest Rate? {newRate / 100} Reducing Interest
-            will be charged on all loan request. Previous rate is {rate}
+            Are you sure you want to set a {newRate}% Interest Rate?{" "}
+            {newRate / 100} Reducing Interest will be charged on all loan
+            request. Previous rate is {rate}
           </b>
         </Modal.Body>
         <Modal.Footer>
@@ -83,9 +83,9 @@ const AdminInterestRate = (props) => {
               const value = newRate / 100;
               const valueString = { rate: value.toString() };
               axios.post(postURL, valueString).then((res) => {
-               handleClose()
-alert.success(`New Rate Successfully set at ${newRate}%`)
-handleClose2()
+                handleClose();
+                alert.success(`New Rate Successfully set at ${newRate}%`);
+                handleClose2();
               });
             }}
           >

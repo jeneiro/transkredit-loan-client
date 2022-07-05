@@ -16,7 +16,7 @@ import "pure-react-carousel/dist/react-carousel.es.css";
 export default function Registration() {
   const navigate = useNavigate();
   return (
-    <div>
+    <div style={{backgroundColor:"#061829"}}>
       <div
         className="banner"
         style={{ color: "#ffffff", paddingTop: "100px", paddingLeft: "40px" }}
@@ -39,7 +39,7 @@ export default function Registration() {
         isPlaying={true}
         interval={4000}
       >
-        <Slider style={{ width: "100%", position: "absolute", marginTop: -30 }}>
+        <Slider style={{ width: "100%", position: "absolute", marginTop: -30, minHeight: 700}}>
           <Slide index={0}>
             {" "}
             <img
@@ -55,6 +55,8 @@ export default function Registration() {
                 marginTop: 130,
                 paddingRight: 50,
               }}
+              className="sliderTXT"
+
             >
               <h1>Access Loans In Minutes</h1>
               <h5 style={{ marginTop: 15, textAlign: "justifyContent" }}>
@@ -73,10 +75,10 @@ export default function Registration() {
               alt=""
               width={"100%"}
             />
-            <div style={{ color: "white", marginTop: 130,  textAlign:"center" }}>
+            <div style={{ color: "white", marginTop: 130,  textAlign:"center" }} className="sliderTXT">
               <h1>Consumer Loans</h1>
               <h5 style={{ marginTop: 15, textAlign: "justifyContent" }}>
-              TransKredit provides consumer lending services that are focused  <br /> mainly on individual and household consumers. The consumer loans <br /> we provide may be secured or unsecured,  <br /> depending on the amount   to be borrowed and the type of product  <br /> to be purchased.
+              Transkredit provides consumer lending services that are focused  <br /> mainly on individual and household consumers. The consumer loans <br /> we provide may be secured or unsecured,  <br /> depending on the amount   to be borrowed and the type of product  <br /> to be purchased.
                 <br />
                 
               </h5>
@@ -91,19 +93,19 @@ export default function Registration() {
               alt=""
               width={"100%"}
             />
-            <div style={{ color: "white", marginTop: 130, marginLeft:50, textAlign:"left" }}>
+            <div style={{ color: "white", marginTop: 130, marginLeft:50, textAlign:"left" }} className="sliderTXT">
               <h1>Cooperative Loans</h1>
               <h5 style={{ marginTop: 15, textAlign: "justifyContent" }}>
-              TransKredit provides a platform for <br /> Cooporatives and its members easy access to loans. Transkredit Loan Portal <br /> affords, a customer-friendly approach  <br /> 
+              Transkredit provides a platform for <br /> Cooperatives and its members easy access to loans. Transkredit Loan Portal <br /> affords, a customer-friendly approach  <br /> 
                 
               </h5>
             </div>
           </Slide>
         </Slider>
         <div
-          className="row "
+          className="row"
           style={{
-            height: "100%",
+           
             paddingLeft: 40,
             paddingRight: 40,
             marginTop: 30,
@@ -112,6 +114,7 @@ export default function Registration() {
         >
           <div
             class="box box-2 col-md-4 "
+            style={{marginBottom:5}}
             onClick={() => {
               navigate("/app/Individual-registration");
             }}
@@ -122,6 +125,7 @@ export default function Registration() {
           </div>
           <div
             class="box box-2 col-md-4"
+            style={{marginBottom:5}}
             onClick={() => {
               navigate("/app/register-via-corporative");
             }}
@@ -132,6 +136,7 @@ export default function Registration() {
           </div>
           <div
             class="box box-2 col-md-4"
+            style={{marginBottom:5}}
             onClick={() => {
               navigate("/app/corporate-registration");
             }}
@@ -144,13 +149,7 @@ export default function Registration() {
         </div>
       </CarouselProvider>
 
-      {/* <div style={{ padding: 80, float: "right", zIndex:5  }}>
-        <h6>
-          <b>
-            Money<span style={{ color: "#f15a29" }}> when you need it.</span>{" "}
-          </b>
-        </h6>
-      </div> */}
+    
     </div>
   );
 }

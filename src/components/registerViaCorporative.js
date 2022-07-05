@@ -151,7 +151,7 @@ export default function RegisterViaCorproative() {
           </p>{" "}
           <br />
           <p style={{ textAlign: "center" }}>
-            <i>Please contact your cooporative and try again</i>
+            <i>Please contact your cooperative and try again</i>
             <form style={{ marginTop: 20 }} className="col-md-4 offset-4">
               <button
                 onClick={(e) => {
@@ -175,7 +175,7 @@ export default function RegisterViaCorproative() {
       {request ? (
         <div>
           <div className="Form-container ">
-            <h5>REGISTER USING A COOPORATIVE</h5>
+            <h5>REGISTER USING A COOPERATIVE</h5>
             <div
               className="row "
               style={{
@@ -204,7 +204,7 @@ export default function RegisterViaCorproative() {
                 margin: 2,
               }}
             >
-              <h6>REGISTER USING A COOPORATIVE</h6>
+              <h6>REGISTER USING A COOPERATIVE</h6>
             </div>
             <div style={{ padding: 2 }}>
               <div class="row">

@@ -143,6 +143,9 @@ export default function WorkDetails() {
           </div>
         </form>
       </div>
+      <div style={{height:100}}>
+        &nbsp;
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
 import Pdf from "react-to-pdf";
+import logo from "../assets/logo-text.png";
 export default function AdminAllCorporate() {
   const alert = useAlert();
   const ref = React.createRef();
@@ -121,6 +122,12 @@ export default function AdminAllCorporate() {
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
+             <Modal.Header> <img
+            src={logo}
+            alt="Logo"
+            style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
+          
+          /></Modal.Header>
             <Modal.Body ref={ref}>
               <div>
                 <div
@@ -207,34 +214,28 @@ export default function AdminAllCorporate() {
                 </div>
 
                 <div className="row">
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     <label>
                       <b>TIN</b>
                     </label>
                     <br />
                     {detail.tin}
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     <label>
                       <b>Email</b>
                     </label>
                     <br />
                     {detail.email}
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     <label>
                       <b>Phone</b>
                     </label>
                     <br />
                     {detail.phoneNumber}
                   </div>
-                  <div className="col-md-3">
-                    <label>
-                      <b>Operating Address</b>
-                    </label>
-                    <br />
-                    {detail.OperatingAddress}{" "}
-                  </div>
+                 
                 </div>
                 <hr />
                 <div className="row">
@@ -244,6 +245,13 @@ export default function AdminAllCorporate() {
                     </label>
                     <br />
                     {detail.CorporateAddress}{" "}
+                  </div>
+                  <div className="col-md-6">
+                    <label>
+                      <b>Operating Address</b>
+                    </label>
+                    <br />
+                    {detail.OperatingAddress}{" "}
                   </div>
                 </div>
               </div>
@@ -314,31 +322,6 @@ return(
                   <br />
                   {detail.motherMaidenName}
                 </div>
-                  <div className="col-md-3">
-                    {" "}
-                    <label>
-                      <b>Phone :</b>
-                    </label>
-                    <br />
-                    {detail.phone}{" "}
-                  </div>{" "}
-                  <div className="col-md-3">
-                    {" "}
-                    <label>
-                      <b>Email:</b>
-                    </label>
-                    <br />
-                    {detail.email}
-                  </div>
-                  <hr />
-                </div>
-
-                <div>
-                  <hr />
-                </div>
-            
-              <div className="row">
-                
                 <div className="col-md-3">
                   <label>
                     <b>Nationality</b>
@@ -353,7 +336,33 @@ return(
                   <br />
                   {i.stateOfOrigin}
                 </div>
-                <div className="col-md-6">
+                  <hr />
+                </div>
+
+                <div>
+                  <hr />
+                </div>
+            
+              <div className="row">
+                
+              <div className="col-md-3">
+                    {" "}
+                    <label>
+                      <b>Phone :</b>
+                    </label>
+                    <br />
+                    {detail.phone}{" "}
+                  </div>{" "}
+                  <div className="col-md-3" style={{paddingRight: "4px", paddingLeft: "4px"}}>
+                    {" "}
+                    <label>
+                      <b>Email:</b>
+                    </label>
+                    <br />
+                    {detail.email} &nbsp;
+                  </div>
+                
+                <div className="col-md-6" style={{paddingRight: "4px", paddingLeft: "4px"}}>
                   <label>
                     <b>Address:</b>
                   </label>

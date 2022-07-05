@@ -1,109 +1,101 @@
-import React, { useState, Fragment } from "react";
-import { KeyboardDatePicker } from "@material-ui/pickers";
-import CorporateStepper from "./corporateStepper";
-import "./form.css";
-import { useNavigate } from "react-router-dom";
+import React, {  useState, Fragment } from "react";
+import Modal from "react-bootstrap/Modal";
 import { axiosInstance as axios } from "../interceptor";
-import { webapibaseurl } from "../environment";
+import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-
-export default function Corporate() {
-  const alert = useAlert();
+import { webapibaseurl } from "../environment";
+import { KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+export default function JointAccountKYC(props) {
   const navigate = useNavigate();
+  const alert = useAlert();
+  const [selectedDateDOB, handleDateChangeDOB] = useState(new Date());
   const [payload, setPayload] = useState({});
-  const [selectedDateDOI, handleDateChangeDOI] = useState(new Date());
   const [selectedDateID, handleDateChangeID] = useState(new Date());
   const [selectedDateED, handleDateChangeED] = useState(new Date());
   const [activate, setActivate] = useState(true);
-  const [corporativeName, setCorporativeName] = useState("");
   const id = localStorage.getItem("id");
+  const kycURI = `${webapibaseurl}/joint-individual/${id}`;
+  function handleClose(event) {
+    props.handleClose(event);
+    setPayload({})
+  }
 
-  // const dashboard = `${webapibaseurl}/dashboard?officerId=${url}`;
-  const corporateURL = `${webapibaseurl}/corporate/${id}`;
   function changeHandler(e) {
     e.preventDefault();
-    if (e.target.name === "nationality" && e.target.value === "Nigeria") {
-      setActivate(false);
-    }
-    if (e.target.name === "nationality" && e.target.value !== "Nigeria") {
-      setActivate(true);
-    }
     const name = e.target.name;
     const value = e.target.value;
     setPayload({ ...payload, [name]: value });
+    
   }
   function submitForm(e) {
     e.preventDefault();
-    payload.doi = selectedDateDOI;
     payload.expiryDate = selectedDateED;
     payload.issuanceDate = selectedDateID;
-
+    payload.dob =selectedDateDOB;
     axios
-      .post(corporateURL, payload)
-      .then((res) => {
-        localStorage.setItem("CorporateId", res.data.corporate.id);
-        const CorporateId = res.data.corporate.id;
-        const url = `${webapibaseurl}/corporative/${CorporateId}`;
-        axios
-          .post(url,{name: corporativeName})
-          .then(() => {
-            alert.success("Corporate Information submitted");
-            navigate("/app/directors");
-          })
-          .catch((err) => console.log(err));
+      .post(kycURI, payload)
+      .then(() => {
+        alert.success("Joint Account Detail Successfully Updated");
+        navigate("/app/home");
       })
       .catch((error) => {
-        // alert.error(error.response.data);
-        console.log(error);
+        alert.error(error.response.data.msg);
       });
   }
-
   return (
-    <div style={{ marginTop: 155, marginBottom: 100 }}>
-      <CorporateStepper />
-      <div class="Form-container ">
-        <form className="register-form" onSubmit={submitForm}>
-          <h5>Corporate Account Registration</h5>
-          <hr />
-          <div
-            class="row"
-            style={{
-              backgroundColor: "#f15a29",
-              color: "#fff",
-              padding: 4,
-              margin: 2,
-            }}
-          >
-            <h6>Company Detail</h6>
-          </div>
-          <div style={{ padding: 2 }}>
+    <Modal
+      show={props.show}
+      onHide={handleClose}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header>
+        <div className="row" style={{ width: "100%" }}>
+          <h5 className="col-md-6">Joint Account Detail</h5>
+          <div className="col-md-2"></div>
+        </div>
+      </Modal.Header>
+      <Modal.Body>
+        <div class="Form-container ">
+          <form className="register-form" onSubmit={submitForm}>
+            <div
+              class="row"
+              style={{
+                backgroundColor: "#f15a29",
+                color: "#fff",
+                padding: 4,
+                margin: 2,
+              }}
+            >
+              <h6></h6>
+            </div>
+            <div style={{ padding: 2 }}>
             <div class="row">
               <div class=" col-md-4">
-                <label> Category</label>
+                <label>Title</label>
                 <select
-                  name="category"
+                  name="title"
                   class="input-group"
                   required
                   onChange={changeHandler}
                 >
                   {" "}
-                  <option selected>--Category--</option>
-                  <option value="llc">Limited Liability Company</option>
-                  <option value="plc">Public Limited Company</option>
-                  <option value="partnership">Partnership</option>
-                  <option value="sole proprietorship">
-                    Sole Proprietorship
-                  </option>
-                  <option value="schools">Schools</option>
+                  <option selected>--Title--</option>
+                  <option value="Mr">Mr</option>
+                  <option value="Mrs">Mrs</option>
+                  <option value="Miss">Miss</option>
+                  <option value="Dr">Dr</option>
                 </select>
               </div>
               <div class="input-group col-md-8">
-                <label>Company/Business Name</label>
+                <label>Full Name</label>
                 <input
                   type="text"
-                  placeholder="Company/Business Name"
-                  name="companyName"
-                  value={"" || payload.companyName}
+                  placeholder="Full Name"
+                  name="name"
+                  value={"" || payload.name}
                   required
                   onChange={changeHandler}
                 />
@@ -112,41 +104,155 @@ export default function Corporate() {
 
             <div class=" row">
               <div className="input-group col-md-4">
-                <label>Date Of Incorporation</label>
+                <label>Date Of Birth</label>
                 <Fragment className="input-group">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+               
+             
                   <KeyboardDatePicker
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
-                    label="Date Of Incorporation"
+                    label="Date Of Birth"
+                    openTo="year"
+                    views={["year", "month", "date"]}
                     format="dd/MM/yyyy"
-                    value={selectedDateDOI}
+                    value={selectedDateDOB}
                     maxDate={Date.now()}
                     InputAdornmentProps={{ position: "start" }}
-                    onChange={(date) => handleDateChangeDOI(date)}
+                    onChange={(date) => handleDateChangeDOB(date)}
                   />
+                    </MuiPickersUtilsProvider>
                 </Fragment>
               </div>
 
+              <div class=" col-md-4">
+                <label>Gender</label>
+                <div>
+                  <input
+                    id="gender-male"
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    onChange={changeHandler}
+                  />
+                  <label for="gender-male">Male</label>
+                  <input
+                    id="gender-female"
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    onChange={changeHandler}
+                  />
+                  <label for="gender-female">Female</label>
+                </div>
+              </div>
+
+              
               <div className=" input-group col-md-4">
                 {" "}
-                <label>Certificate Of Incorporation Number</label>{" "}
+                <label>Mother's Maiden Name</label>{" "}
+                <input
+                  type="text"
+                  placeholder="Mother's Maiden Name"
+                  required
+                  name="motherMaidenName"
+                  value={"" || payload.motherMaidenName}
+                  onChange={changeHandler}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className=" input-group col-md-4">
+                {" "}
+                <label>Phone Number</label>{" "}
                 <input
                   type="number"
-                  placeholder="Certificate Of Incorporation Number"
-                  // minLength={11}
+                  placeholder="Phone Number"
+                  
+                  minLength={11}
                   required
-                  name="registrationNumber"
-                  value={"" || payload.registrationNumber}
+                  name="phone"
+                  value={"" || payload.phone}
                   onChange={changeHandler}
                 />
               </div>
 
-              <div className="input-group col-md-4 ">
-                <label>Country of Incorporation</label>
+              <div className=" input-group col-md-4">
+                {" "}
+                <label>Email Address</label>{" "}
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  required
+                  name="email"
+                  value={"" || payload.email}
+                  onChange={changeHandler}
+                />
+              </div>
+
+              <div className=" input-group col-md-4">
+                {" "}
+                <label>BVN</label>{" "}
+                <input
+                  type="number"
+                  placeholder="BVN"
+                  minLength={11}
+                  required
+                  name="bvn"
+                  value={"" || payload.bvn}
+                  onChange={changeHandler}
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div class=" col-md-4">
+                <label>Marital Status</label>
+                <select
+                  name="maritalStatus"
+                  class="input-group"
+                  onChange={changeHandler}
+                >
+                  <option disabled selected>
+                    -Select Status-
+                  </option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Divorced">Divorced</option>
+                  <option value="Widowed">Widowed</option>
+                </select>
+              </div>
+              
+              <div className=" input-group col-md-4">
+                {" "}
+                <label>Relationship</label>{" "}
+                <input
+                  
+                  placeholder="Relationship"
+                  required
+                  name="relationship"
+                  value={"" || payload.relationship}
+                  onChange={changeHandler}
+                />
+              </div>
+              <div class="input-group col-md-4">
+                <label>TIN</label>
+                <input
+                  type="text"
+                  placeholder="TIN"
+                  name="tin"
+                  value={"" || payload.tin}
+                  required
+                  onChange={changeHandler}
+                />
+              </div>
+
+              <div className="input-group col-md-4" style={{ align: "left" }}>
+                <label>Nationality</label>
                 <select
                   class="input-group"
-                  name="countryOfRegistration"
+                  name="nationality"
                   onChange={changeHandler}
                 >
                   <option disabled selected>
@@ -451,137 +557,158 @@ export default function Corporate() {
                   <option value="Zimbabwe">Zimbabwe</option>
                 </select>
               </div>
-            </div>
-            <div className="row">
-              <div className=" input-group col-md-4">
-                {" "}
-                <label>Nature/Type Of Business</label>{" "}
-                <input
-                  type="text"
-                  placeholder="Nature/Type Of Business"
-                  required
-                  name="typeOfBusiness"
-                  value={"" || payload.typeOfBusiness}
+              <div class=" col-md-4">
+                <label>State of Origin (*Nigerians)</label>
+                <select
+                  name="stateOfOrigin"
+                  class="input-group"
                   onChange={changeHandler}
-                />
-              </div>
-              <div className=" input-group col-md-4">
-                <label>Sector/Industry</label>{" "}
-                <input
-                  type="text"
-                  placeholder="Sector/Industry"
-                  required
-                  name="sector"
-                  value={"" || payload.sector}
-                  onChange={changeHandler}
-                />
-              </div>
-              <div className=" input-group col-md-4">
-                <label>Cooperative Name</label>{" "}
-                <input
-                  type="text"
-                  placeholder="Cooperative Name"
-                  required
-                  name="sector"
-                  value={"" || corporativeName}
-                  onChange={(e) => {
-                    e.preventDefault();
-                    setCorporativeName(e.target.value);
-                  }}
-                />
-              </div>
-              <div className=" input-group col-md-4">
-                <label>TIN</label>{" "}
-                <input
-                  type="text"
-                  placeholder="TIN"
-                  required
-                  name="tin"
-                  value={"" || payload.tin}
-                  onChange={changeHandler}
-                />
-              </div>
-
-              <div className=" input-group col-md-4">
-                <label>Email Address</label>{" "}
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  required
-                  name="email"
-                  value={"" || payload.email}
-                  onChange={changeHandler}
-                />
-              </div>
-              <div class="input-group col-md-4">
-                <label>Contact Number</label>
-                <input
-                  type="text"
-                  placeholder="Contact Number"
-                  name="phoneNumber"
-                  value={"" || payload.phoneNumber}
-                  required
-                  onChange={changeHandler}
-                />
+                  disabled={activate}
+                >
+                  <option disabled selected>
+                    --Select State--
+                  </option>
+                  <option value="Abia">Abia</option>
+                  <option value="Adamawa">Adamawa</option>
+                  <option value="Akwa Ibom">Akwa Ibom</option>
+                  <option value="Anambra">Anambra</option>
+                  <option value="Bauchi">Bauchi</option>
+                  <option value="Bayelsa">Bayelsa</option>
+                  <option value="Benue">Benue</option>
+                  <option value="Borno">Borno</option>
+                  <option value="Cross River">Cross River</option>
+                  <option value="Delta">Delta</option>
+                  <option value="Ebonyi">Ebonyi</option>
+                  <option value="Edo">Edo</option>
+                  <option value="Ekiti">Ekiti</option>
+                  <option value="Enugu">Enugu</option>
+                  <option value="FCT">Federal Capital Territory</option>
+                  <option value="Gombe">Gombe</option>
+                  <option value="Imo">Imo</option>
+                  <option value="Jigawa">Jigawa</option>
+                  <option value="Kaduna">Kaduna</option>
+                  <option value="Kano">Kano</option>
+                  <option value="Katsina">Katsina</option>
+                  <option value="Kebbi">Kebbi</option>
+                  <option value="Kogi">Kogi</option>
+                  <option value="Kwara">Kwara</option>
+                  <option value="Lagos">Lagos</option>
+                  <option value="Nasarawa">Nasarawa</option>
+                  <option value="Niger">Niger</option>
+                  <option value="Ogun">Ogun</option>
+                  <option value="Ondo">Ondo</option>
+                  <option value="Osun">Osun</option>
+                  <option value="Oyo">Oyo</option>
+                  <option value="Plateau">Plateau</option>
+                  <option value="Rivers">Rivers</option>
+                  <option value="Sokoto">Sokoto</option>
+                  <option value="Taraba">Taraba</option>
+                  <option value="Yobe">Yobe</option>
+                  <option value="Zamfara">Zamfara</option>
+                </select>
               </div>
             </div>
+              <div className="row">
+                <div class=" col-md-6">
+                  <label>Means Of Identification</label>
+                  <select
+                    name="meansOfID"
+                    class="input-group"
+                    onChange={changeHandler}
+                  >
+                    <option value="Driver's License">Driver's License</option>
+                    <option value="International Passport">
+                      International Passport
+                    </option>
+                    <option value="National Identity Card">
+                      National Identity Card
+                    </option>
+                    <option value="Birth Certificate">Birth Certificate</option>
+                    <option value="Voters Card">
+                     Voters Card
+                    </option>
+                  </select>
+                </div>
 
-            <div className="row">
-              <div class=" col-md-8">
-                <label> Operating Business Address</label>
-                <input
-                  type="text"
-                  placeholder="Operating Business Address"
-                  name="OperatingAddress"
-                  value={"" || payload.OperatingAddress}
-                  required
-                  onChange={changeHandler}
-                />
+                <div class="input-group col-md-6">
+                  <label>ID Number</label>
+                  <input
+                    type="text"
+                    placeholder="ID Number"
+                    name="IDnumber"
+                    value={"" || payload.IDnumber}
+                    required
+                    onChange={changeHandler}
+                  />
+                </div>
+                <div className="input-group col-md-6">
+                  <label>Issuance Date</label>
+                  <Fragment >
+                    <KeyboardDatePicker
+                      autoOk
+                      variant="inline"
+                      inputVariant="outlined"
+                      label="Issuance Date"
+                      format="dd/MM/yyyy"
+                      value={selectedDateID}
+                      maxDate={Date.now()}
+                      InputAdornmentProps={{ position: "start" }}
+                      onChange={(date) => handleDateChangeID(date)}
+                    />
+                  </Fragment>
+                </div>
+                <div className="input-group col-md-6">
+                  <label>Expire Date</label>
+                  <Fragment >
+                    <KeyboardDatePicker
+                      autoOk
+                      variant="inline"
+                      inputVariant="outlined"
+                      label="Expire Date"
+                      format="dd/MM/yyyy"
+                      value={selectedDateED}
+              minDate={selectedDateID}
+                      InputAdornmentProps={{ position: "start" }}
+                      onChange={(date) => handleDateChangeED(date)}
+                    />
+                  </Fragment>
+                </div>
               </div>
-              <div class="input-group col-md-4">
-                <label>SCUML Reg No.</label>
-                <input
-                  type="text"
-                  placeholder="Contact Number"
-                  name="scumlRegNo"
-                  value={"" || payload.scumlRegNo}
-                  required
-                  onChange={changeHandler}
-                />
-              </div>
-              <div class=" col-md-8">
-                <label> Corporate Business Address</label>
-                <input
-                  type="text"
-                  placeholder=" Corporate Business Address"
-                  name="CorporateAddress"
-                  value={"" || payload.CorporateAddress}
-                  required
-                  onChange={changeHandler}
-                />
-              </div>
-
-              <div className="col-md-4" style={{ marginTop: 30 }}>
-                <button>Submit</button>
+              
+               
+              <div className="row">
+              
+               
+               
+                <div className="input-group col-md-8">
+                  <label>Residential Address</label>
+                
+                    <input
+                     className="input-group"
+                      name="address"
+                      rows={4}
+                      
+                      value={"" || payload.address}
+                      required
+                      onChange={changeHandler}
+                    ></input>
+                  
+                </div>
+                <div className="col-md-4"> <label>&nbsp;</label><button
+            onClick={(e) => {
+              submitForm(e);
+              handleClose();
+            }}
+          >
+            Submit
+          </button></div>
+               
               </div>
             </div>
-          </div>
-
-          {/* <div class="row">
-            <h4>Terms and Conditions</h4>
-            <div class="input-group">
-              <input id="terms" type="checkbox" />
-              <label for="terms">
-                I accept the terms and conditions for signing up to this
-                service, and hereby confirm I have read the privacy policy.
-              </label>
-            </div>
-          </div> */}
-        </form>
-      </div>
-      <div style={{height:100}}>
-        &nbsp;
-      </div>
-    </div>
+          </form>
+        </div>
+      </Modal.Body>
+     
+    </Modal>
   );
 }

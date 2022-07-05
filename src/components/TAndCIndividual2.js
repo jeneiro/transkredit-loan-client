@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
-import PDF from "../assets/TandC.pdf";
+
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import IndividualSteppr from "./joinCorporativeSteppr";
@@ -18,7 +18,7 @@ export default function TAndCIndividual2() {
   const id = localStorage.getItem("id");
   const registeredURI = `${webapibaseurl}/register/${id}`;
   const individualURL = `${webapibaseurl}/staff/byAuth/${id}`;
- 
+  const tandcURL = `${webapibaseurl}/tandc`;
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   function submitForm(e) {
     e.preventDefault();
@@ -52,12 +52,13 @@ export default function TAndCIndividual2() {
   return (
     <div>
      <IndividualSteppr activeStep={2} />
+
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
         <div
           style={{ height: "720px", marginTop: 130, padding: 20 ,  marginBottom:100}}
           className="col-md-10 offset-1"
         >
-          <Viewer fileUrl={PDF} plugins={[defaultLayoutPluginInstance]} />
+          <Viewer fileUrl={tandcURL} plugins={[defaultLayoutPluginInstance]} />
         </div>
       </Worker>
       <form
@@ -84,6 +85,9 @@ export default function TAndCIndividual2() {
         </div>
       </form>
       <div style={{ height:100 }}>.</div>
+      <div style={{height:100}}>
+        &nbsp;
+      </div>
     </div>
   );
 }

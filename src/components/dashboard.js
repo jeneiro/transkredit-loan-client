@@ -30,13 +30,14 @@ export default function Dashboard() {
       });
   }
   return (
-    <div style={{ marginTop: 40, padding: 50, marginLeft: 20 }}>
+    <div className="home-bg">
+    <div style={{ marginTop: 40, padding: 50, marginLeft: 20, height:650 }}>
       <div className="row">
         <h5 style={{ color: "#f15a29" }}>Welcome </h5>
-        <b> &nbsp; | Admin</b> <br />
+        <b  style={{ color: "white" }}> &nbsp; | Admin</b> <br />
       </div>
       <div>
-        <small style={{ color: "grey" }}>
+        <small style={{ color: "white" }}>
           <b>Administrator</b> Account
         </small>
       </div>
@@ -145,6 +146,10 @@ export default function Dashboard() {
           </Modal.Body>
         </Modal>
       </div>
+    </div>
+    <div className="room">
+      &nbsp;.
+    </div>
     </div>
   );
 }

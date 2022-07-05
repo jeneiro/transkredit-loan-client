@@ -115,6 +115,7 @@ export default function LoanApplication(props) {
     e.preventDefault();
     payload.username = username;
     payload.tenor = tenor;
+    payload.totalRepayment = totalRepayment;
     const formattedAmmount = currencyFormat(Number(payload.loanAmount));
     if (userType === "Individual" && CorporateId != null) {
       payload.Status = "Pending";
@@ -355,6 +356,7 @@ function resetForm(){
                               const { formattedValue, value } = values;
 
                               setAmount(value);
+                           
                               // setFormattedAmount2(formattedValue);
                             }}
                           />
@@ -383,15 +385,17 @@ function resetForm(){
               <div>
                 <div style={{ textAlign: "right", color: "#f15a29" }}>
                   {" "}
-                  <small
+                  <span
                     className="text-end text-right"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize:14}}
                     onClick={() => {
                       setForm(true);
                     }}
                   >
-                    View Loan Application
-                  </small>
+                  
+            <i className="fas fa-angle-left"> </i> <b>Back</b>
+         
+                  </span>
                 </div>
 
                 <RepaymentSchedule data={repaymentList} />

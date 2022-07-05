@@ -1,12 +1,25 @@
+.home-bg{
+background-image: url('../assets/slideBG2.jpg');
+width:"100%";
+background-position: center;
+background-size: cover;
+padding-bottom:200;
+height:"100%";
+}
+
 .productShell {
 	width: 960px;
 	background: #fff;
+    background: rgba(60, 60, 60, 0.4);
+	
+	
 	margin: 0 auto;
 	padding: 15px;
 	overflow: hidden;
 }
 
 .productBox {
+
 	float: left;
 	margin: 3px;
 }
@@ -71,3 +84,21 @@
 	background: linear-gradient(to bottom,  #f15a29 0%,#f2a305 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#89c825', endColorstr='#6ea11d',GradientType=0 );
 }
+
+@media (max-width:700px){
+	.room {
+	 height: 480px;
+	 background:"black";
+	}
+	.carousel {
+		height:750px;
+		zIndex:-1;
+	}
+	.sliderTXT{
+		width:"70%";
+		width:70%;
+		margin-top:"130px";
+		opacity:0;
+	}
+	
+  }

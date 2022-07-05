@@ -44,6 +44,7 @@ import AdminAllIndividuals from "./components/adminAllIndividual";
 export default function Layout() {
   const navigate = useNavigate();
   const isRegistered = localStorage.getItem("isRegistered");
+  const home = localStorage.getItem("home");
   const isAdmin = localStorage.getItem("isAdmin");
   function logout() {
     localStorage.setItem("isAuth", JSON.stringify({ isAuthenticated: false }));
@@ -101,10 +102,14 @@ export default function Layout() {
       <div className="navigation" style={{zIndex:30}}>
         <input type="checkbox" id="navigation-check"></input>
         <div className="navigation-header">
+        
           <img
             src={logoTag}
             alt="Logo"
-            style={{ height: 32, marginLeft: 25, marginTop: 10 }}
+            style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
+            onClick={() => {
+              navigate(home);
+            }}
           />
         </div>
         <div className="navigation-btn">
@@ -124,7 +129,7 @@ export default function Layout() {
           </a>
         </div>
       </div>
-
+<div style={{height:"100%"}}>
       <Routes>
         <Route path={"register"} element={<Registration />} />
         <Route path={"Individual-registration"} element={<Individual />} />
@@ -194,7 +199,9 @@ export default function Layout() {
             />
           </>
         )}
-      </Routes><div style={{ height:100 }}>.</div>
+      </Routes>
+      </div>
+      
       <div
         style={{
           position: "fixed",

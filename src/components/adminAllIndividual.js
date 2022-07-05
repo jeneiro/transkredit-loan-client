@@ -8,6 +8,7 @@ import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import Pdf from "react-to-pdf";
 import { useAlert } from "react-alert";
+import logo from "../assets/logo-text.png";
 export default function AdminAllIndividuals() {
   const alert = useAlert();
   const ref = React.createRef();
@@ -122,6 +123,12 @@ export default function AdminAllIndividuals() {
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
+             <Modal.Header> <img
+            src={logo}
+            alt="Logo"
+            style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
+          
+          /></Modal.Header>
             <Modal.Body ref={ref}>
               <div>
                 <div

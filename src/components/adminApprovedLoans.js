@@ -7,6 +7,7 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { Button } from "reactstrap";
 import { useAlert } from "react-alert";
+import AdminLoanRepaymentSchedule from "./adminLoanRepaymentSchedule";
 export default function AdminApprovedLoans() {
   const alert = useAlert();
 
@@ -16,27 +17,34 @@ export default function AdminApprovedLoans() {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [loanID, setLoanID] = useState();
-
+  const [data, setData] = useState([]);
   const handleClose = () => setShow(false);
-  const handleClose2 = () => setShow(false);
+  const handleClose2 = () => setShow2(false);
   const approveURL = `${webapibaseurl}/admin/complete-repayment/${loanID}`;
-  const rejectURL = `${webapibaseurl}/admin/reject-loan-request/${loanID}`;
 
   useEffect(() => {
     callList();
+ 
   }, []);
   function currencyFormat(num) {
     return "₦" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
+  function callList2(id){
+    const URL = `${webapibaseurl}/loan-schedule/${id}`;
+      
+    axios.get(URL).then((res) => {
+        setData(res.data.data);
+        setShow2(true); 
+      });
+  }
   function callList() {
     axios.get(getReqURL).then((res) => {
-      
       setStaff(res.data.data);
       const list = res.data.data;
       const listItems = list.map((item, index) => {
         const payload = {
           sn: index + 1,
-          id:item.id,
+          id: item.id,
           date: moment(item.date).format("LL"),
           loanAmount: currencyFormat(Number(item.loanAmount)),
           tenor: item.tenor,
@@ -45,8 +53,9 @@ export default function AdminApprovedLoans() {
           repaymentStatus: item.repaymentStatus,
           status: item.status,
           username: item.username,
+          totalRepayment:currencyFormat(Number(item.totalRepayment)),
         };
-        console.log(payload);
+
         return payload;
       });
       setStaff(listItems);
@@ -57,17 +66,18 @@ export default function AdminApprovedLoans() {
     { title: "S/N", field: "sn", width: "2%" },
     { title: "Applicant", field: "username" },
     { title: "Loan Amount", field: "loanAmount" },
+    { title: "Repayment Amount", field: "totalRepayment" },
     { title: "Loan Type", field: "loanType" },
     { title: "Repayment Mode", field: "repaymentMode" },
-    { title: "Repayment Status", field: "repaymentStatus" },
+   
     { title: "Tenor", field: "tenor" },
     { title: "Date", field: "date" },
-    { title: "Status", field: "status" },
+    { title: "Repayment Status", field: "repaymentStatus" },
   ];
 
   return (
     <div>
-      <div style={{ marginTop: 120 }} className="col-md-10 offset-1">
+      <div style={{ marginTop: 120 }} className="col-md-12">
         <div className="Form-container ">
           <h5>Admin Loans</h5>
           <div
@@ -75,7 +85,7 @@ export default function AdminApprovedLoans() {
             style={{
               backgroundColor: "#f15a29",
               color: "#fff",
-              padding: 4,
+              padding: 3,
               margin: 2,
             }}
           >
@@ -86,19 +96,29 @@ export default function AdminApprovedLoans() {
             columns={columns}
             data={rows}
             actions={[
-                {
-                  icon: "checkCircleOutlineIcon",
-                  iconProps: { style: { fontSize: "34px", color: "green" } },
-                  tooltip: "Fully Paid",
-                  onClick: (event, rowData) => {
-                    setLoanID(rowData.id);
+              {
+                icon: "previewIcon",
+                iconProps: { style: { fontSize: "34px", color: "green" } },
+                tooltip: "Repayment Schedule",
+                onClick: (event, rowData) => {
+                setLoanID(rowData.id);
                  
-                    setShow(true);
-                  },
+                callList2(rowData.id)
+             
+                 
                 },
-               
-              ]}
+              },
+              {
+                icon: "checkCircleOutlineIcon",
+                iconProps: { style: { fontSize: "34px", color: "green" } },
+                tooltip: "Fully Paid",
+                onClick: (event, rowData) => {
+                  setShow(true);
+                },
+              },
+            ]}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",
@@ -150,54 +170,21 @@ export default function AdminApprovedLoans() {
                   });
                 }}
               >
-               Repayment Complete
+                Repayment Complete
               </Button>
             </Modal.Footer>
           </Modal>
-          <Modal
+          <AdminLoanRepaymentSchedule
             show={show2}
-            onHide={handleClose2}
-            size="sm"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-          >
-            <Modal.Body>
-              <b>Are you sure you want reject this loan?</b>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button
-                color="secondary"
-                type="submit"
-                className="btn-sm"
-                variant="secoundary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  setShow2(false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                color="danger"
-                type="submit"
-                className="btn-sm"
-                variant="primary"
-                style={{ marginTop: 10 }}
-                onClick={() => {
-                  axios.post(rejectURL, payload).then((res) => {
-                    alert.success("Record Rejected");
-                    setPayload({});
-                    setShow2(false);
-                    callList();
-                  });
-                }}
-              >
-                Reject
-              </Button>
-            </Modal.Footer>
-          </Modal>
+            handleClose2={handleClose2}
+            callList2={callList2}
+            data={data}
+            loanID = {loanID}
+          />
         </div>
       </div>
+      <div style={{ height: 100 }}>.</div>
+      <div style={{ height: 100 }}>&nbsp;</div>
     </div>
   );
 }

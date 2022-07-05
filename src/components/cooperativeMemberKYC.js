@@ -112,7 +112,7 @@ export default function CooperativeMemberKYC(props) {
                       label="Issuance Date"
                       format="dd/MM/yyyy"
                       value={selectedDateID}
-                      maxDate={Date.now}
+                      maxDate={Date.now()}
                       InputAdornmentProps={{ position: "start" }}
                       onChange={(date) => handleDateChangeID(date)}
                     />
@@ -128,7 +128,7 @@ export default function CooperativeMemberKYC(props) {
                       label="Expire Date"
                       format="dd/MM/yyyy"
                       value={selectedDateED}
-                      maxDate={Date.now}
+              minDate={selectedDateID}
                       InputAdornmentProps={{ position: "start" }}
                       onChange={(date) => handleDateChangeED(date)}
                     />

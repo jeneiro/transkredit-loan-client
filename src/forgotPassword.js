@@ -24,7 +24,7 @@ function ForgotPassword() {
 
   function sendEmail(e) {
     e.preventDefault();
-    const randomString = cryptoRandomString({ length: 10 });
+    const randomString = cryptoRandomString({ length: 6 });
    
     ls.set("randomString", randomString);
     const emailURL = `${webapibaseurl}/email`;
@@ -34,6 +34,7 @@ function ForgotPassword() {
     const message = `You have requested a password change and your code is:<b>${randomString}</b>`;
     let loginPayload = { title, message, email };
     axios.post(emailURL, loginPayload).then(() => {
+      alert.success("Code sent to your email address")
       toggle();
     });
   }
