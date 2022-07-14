@@ -102,6 +102,7 @@ export default function AdminAllCorporate() {
             columns={columns}
             data={rows}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",
@@ -120,6 +121,7 @@ export default function AdminAllCorporate() {
             onHide={handleClose}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
+            ref={ref}
             centered
           >
              <Modal.Header> <img
@@ -128,7 +130,7 @@ export default function AdminAllCorporate() {
             style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
           
           /></Modal.Header>
-            <Modal.Body ref={ref}>
+            <Modal.Body >
               <div>
                 <div
                   className="row "

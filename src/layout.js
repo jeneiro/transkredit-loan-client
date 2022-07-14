@@ -34,7 +34,7 @@ import SettledLoanList from "./components/settledLoansList";
 import LoanActionList from "./components/loanActionList";
 import AdminLoanRequestList from "./components/adminLoanRequestList";
 import AdminApprovedLoans from "./components/adminApprovedLoans";
-import  AdminAllUser from "./components/adminAllUser";
+import AdminAllUser from "./components/adminAllUser";
 import UploadFiles from "./components/uploadFiles";
 import CorporateApproved from "./components/corporateApproved";
 import CorporateSettled from "./components/corporateSettled";

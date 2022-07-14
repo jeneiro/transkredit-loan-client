@@ -124,6 +124,7 @@ export default function AdminAllCooporativeMembers() {
             columns={columns}
             data={rows}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",
@@ -143,6 +144,7 @@ export default function AdminAllCooporativeMembers() {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            ref={ref}
           >
             <Modal.Header> <img
             src={logo}
@@ -150,7 +152,7 @@ export default function AdminAllCooporativeMembers() {
             style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
           
           /></Modal.Header>
-            <Modal.Body ref={ref}>
+            <Modal.Body>
               <div>
                 <div
                   className="row "

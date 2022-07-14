@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, createContext } from "react";
+import React, {  useEffect, useState} from "react";
 import { useAlert } from "react-alert";
 import axios from "axios";
 import { axiosInstance } from "./interceptor";
@@ -9,6 +9,8 @@ import $ from "jquery";
 import "./login.css";
 import SecureLS from "secure-ls";
 import { TailSpin } from "react-loader-spinner";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 function Login() {
   const alert = useAlert();
   var ls = new SecureLS();
@@ -16,6 +18,22 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const emailURL = `${webapibaseurl}/email`;
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string()
+      .max(50, "Maximum 50 symbols")
+      .required(),
+    password: Yup.string()
+      .min(3, "Minimum 3 symbols")
+      .max(50, "Maximum 50 symbols")
+      .required(),
+  });
+  const initialValues = {
+    username: "",
+    password: "",
+  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: LoginSchema})
   useEffect(() => {}, []);
 
   function login(e) {
@@ -258,7 +276,15 @@ function Login() {
                     name="username"
                     value={payload.username || ""}
                     onChange={handleChange}
+                    {...formik.getFieldProps("username")}
                   ></input>
+                   {formik.touched.username && formik.errors.username ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block" style={{ color: "red" }}>
+                        *{formik.errors.username}
+                      </div>
+                    </div>
+                  ) : null}
                   <input
                     type="password"
                     placeholder="password"

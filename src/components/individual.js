@@ -7,6 +7,8 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { useAlert } from "react-alert";
 import DateFnsUtils from "@date-io/date-fns";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 export default function Individual() {
   const alert = useAlert();
   const navigate = useNavigate();
@@ -19,6 +21,21 @@ export default function Individual() {
 
  // const dashboard = `${webapibaseurl}/dashboard?officerId=${url}`;
  const individualURL = `${webapibaseurl}/individual/${id}`;
+
+ const formSchema = Yup.object().shape({
+  bvn: Yup.string()
+  .required()
+  .matches(/^[0-9]+$/, "Must be only digits")
+  .length(11,'Must be exactly 11 digits')
+ 
+});
+const initialValues = {
+  bvn: "",
+
+};
+const formik = useFormik({
+  initialValues,
+  validationSchema: formSchema})
   function changeHandler(e) {
     e.preventDefault();
     if (e.target.name === "nationality" && e.target.value === "Nigeria") {
@@ -152,7 +169,15 @@ export default function Individual() {
                   name="bvn"
                   value={"" || payload.bvn}
                   onChange={changeHandler}
+                  {...formik.getFieldProps("bvn")}
                 />
+                 {formik.touched.bvn && formik.errors.bvn ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block" style={{ color: "red" }}>
+                        *{formik.errors.bvn}
+                      </div>
+                    </div>
+                  ) : null}
               </div>
             </div>
             <div className="row">

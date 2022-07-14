@@ -6,6 +6,8 @@ import { axiosInstance as axios } from "../interceptor";
 import { webapibaseurl } from "../environment";
 import { useAlert } from "react-alert";
 import CorporateStepper from "./corporateStepper";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 export default function Director() {
   const alert = useAlert();
   const navigate = useNavigate();
@@ -44,6 +46,19 @@ export default function Director() {
     ).catch((error)=>{alert.error(error.response.data.msg)})
    
   }
+  const formSchema = Yup.object().shape({
+    bvn: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .length(11,'Must be exactly 11 digits')
+  });
+  const initialValues = {
+    bvn: "",
+   
+  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formSchema})
 
   return (
     <div style={{ marginTop: 155 }}>
@@ -145,7 +160,15 @@ export default function Director() {
                   name="bvn"
                   value={"" || payload.bvn}
                   onChange={changeHandler}
+                  {...formik.getFieldProps("bvn")}
                 />
+                 {formik.touched.bvn && formik.errors.bvn ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block" style={{ color: "red" }}>
+                        *{formik.errors.bvn}
+                      </div>
+                    </div>
+                  ) : null}
               </div>
             </div>
             <div className="row">
@@ -620,7 +643,7 @@ export default function Director() {
                     label="Issuance Date"
                     format="dd/MM/yyyy"
                     value={selectedDateID}
-                    maxDate={Date.now}
+                    maxDate={Date.now()}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeID(date)}
                   />

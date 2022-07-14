@@ -158,12 +158,14 @@ export default function LoanApplication(props) {
           })
           .catch((err) => console.log(err));
         alert.success("Loan Request Submitted");
+        handleClose();
        
       resetForm();
         navigate("/app/home/");
       })
       .catch((error) => {
-        alert.error(error.response.data.msg);
+      
+        alert.error("All fields are required");
       });
   }
 function resetForm(){

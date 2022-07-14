@@ -6,6 +6,8 @@ import { useAlert } from "react-alert";
 import { webapibaseurl } from "../environment";
 import { KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 export default function JointAccountKYC(props) {
   const navigate = useNavigate();
   const alert = useAlert();
@@ -20,7 +22,20 @@ export default function JointAccountKYC(props) {
     props.handleClose(event);
     setPayload({})
   }
-
+  const formSchema = Yup.object().shape({
+    bvn: Yup.string()
+    .required()
+    .matches(/^[0-9]+$/, "Must be only digits")
+    .length(11,'Must be exactly 11 digits')
+  
+  });
+  const initialValues = {
+    
+    bvn: "",
+  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formSchema})
   function changeHandler(e) {
     e.preventDefault();
     const name = e.target.name;
@@ -202,7 +217,15 @@ export default function JointAccountKYC(props) {
                   name="bvn"
                   value={"" || payload.bvn}
                   onChange={changeHandler}
+                  {...formik.getFieldProps("bvn")}
                 />
+                 {formik.touched.bvn && formik.errors.bvn ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block" style={{ color: "red" }}>
+                        *{formik.errors.bvn}
+                      </div>
+                    </div>
+                  ) : null}
               </div>
             </div>
 

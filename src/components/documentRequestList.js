@@ -100,6 +100,7 @@ const sn = index+1
               
             ]}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { webapibaseurl } from "../environment";
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 export default function CooperativeMemberKYC(props) {
   const navigate = useNavigate();
   const alert = useAlert();
@@ -17,7 +19,20 @@ export default function CooperativeMemberKYC(props) {
     props.handleClose(event);
     setPayload({})
   }
-
+  const formSchema = Yup.object().shape({
+    bvn: Yup.string()
+      .required()
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .length(11,'Must be exactly 11 digits')
+   
+  });
+  const initialValues = {
+    bvn: "",
+  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: formSchema})
+  useEffect(() => {}, []);
   function changeHandler(e) {
     e.preventDefault();
     const name = e.target.name;
@@ -182,7 +197,15 @@ export default function CooperativeMemberKYC(props) {
                     value={"" || payload.bvn}
                     required
                     onChange={changeHandler}
+                    {...formik.getFieldProps("bvn")}
                   ></input>
+                  {formik.touched.bvn && formik.errors.bvn ? (
+                    <div className="fv-plugins-message-container">
+                      <div className="fv-help-block" style={{ color: "red" }}>
+                        *{formik.errors.bvn}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="input-group col-md-4">
                   <label>Phone Number</label>

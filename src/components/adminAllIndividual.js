@@ -103,6 +103,7 @@ export default function AdminAllIndividuals() {
             columns={columns}
             data={rows}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",
@@ -122,6 +123,7 @@ export default function AdminAllIndividuals() {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            ref={ref}
           >
              <Modal.Header> <img
             src={logo}
@@ -129,7 +131,7 @@ export default function AdminAllIndividuals() {
             style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
           
           /></Modal.Header>
-            <Modal.Body ref={ref}>
+            <Modal.Body>
               <div>
                 <div
                   className="row "

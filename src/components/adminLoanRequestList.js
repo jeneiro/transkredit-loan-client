@@ -106,6 +106,7 @@ export default function AdminLoanRequestList() {
               },
             ]}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",

@@ -126,6 +126,7 @@ export default function LoanActionList() {
               },
             ]}
             options={{
+              padding: "dense",
               actionsColumnIndex: -1,
               headerStyle: {
                 backgroundColor: "#8a8988",

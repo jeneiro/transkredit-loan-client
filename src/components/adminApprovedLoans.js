@@ -103,7 +103,8 @@ export default function AdminApprovedLoans() {
                 onClick: (event, rowData) => {
                 setLoanID(rowData.id);
                  
-                callList2(rowData.id)
+                callList2(rowData.id);
+                console.log(rowData.id);
              
                  
                 },
