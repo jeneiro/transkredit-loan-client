@@ -38,17 +38,6 @@ export default function CooporateHome() {
             <div
               className="productBox small"
               onClick={() => {
-                navigate("/app/corporate-settled");
-              }}
-            >
-              <aside>
-                <h4>Members Settled Loans</h4>
-              </aside>
-              <img src="" />
-            </div>
-            <div
-              className="productBox small"
-              onClick={() => {
                 navigate("/app/corporate-approved");
               }}
             >
@@ -57,6 +46,18 @@ export default function CooporateHome() {
               </aside>
               <img src="" />
             </div>
+            <div
+              className="productBox small"
+              onClick={() => {
+                navigate("/app/corporate-settled");
+              }}
+            >
+              <aside>
+                <h4>Members Settled Loans</h4>
+              </aside>
+              <img src="" />
+            </div>
+            
             <div
               className="productBox small"
               onClick={() => {

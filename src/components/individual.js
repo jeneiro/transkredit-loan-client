@@ -52,7 +52,7 @@ const formik = useFormik({
     payload.dob = selectedDateDOB;
     payload.expiryDate = selectedDateED;
     payload.issuanceDate = selectedDateID;
-   
+    payload.bvn = formik.values.bvn;
     axios.post(individualURL, payload).then((res)=>{
     localStorage.setItem("individualId",res.data.individual.id) 
       alert.success("Individual Information submitted")
@@ -168,8 +168,7 @@ const formik = useFormik({
                   required
                   name="bvn"
                   value={"" || payload.bvn}
-                  onChange={changeHandler}
-                  {...formik.getFieldProps("bvn")}
+                {...formik.getFieldProps("bvn")}
                 />
                  {formik.touched.bvn && formik.errors.bvn ? (
                     <div className="fv-plugins-message-container">

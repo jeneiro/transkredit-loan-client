@@ -44,6 +44,7 @@ export default function CooperativeMemberKYC(props) {
     e.preventDefault();
     payload.expiryDate = selectedDateED;
     payload.issuanceDate = selectedDateID;
+    payload.bvn = formik.values.bvn;
     axios
       .post(kycURI, payload)
       .then(() => {
@@ -196,8 +197,7 @@ export default function CooperativeMemberKYC(props) {
                     name="bvn"
                     value={"" || payload.bvn}
                     required
-                    onChange={changeHandler}
-                    {...formik.getFieldProps("bvn")}
+                  {...formik.getFieldProps("bvn")}
                   ></input>
                   {formik.touched.bvn && formik.errors.bvn ? (
                     <div className="fv-plugins-message-container">

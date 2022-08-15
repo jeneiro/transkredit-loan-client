@@ -29,6 +29,7 @@ export default function Director() {
     }
     const name = e.target.name;
     const value = e.target.value;
+    console.log(formik.values.bvn);
     setPayload({ ...payload, [name]: value });
   }
   function submitForm(e) {
@@ -36,7 +37,7 @@ export default function Director() {
     payload.dob = selectedDateDOB;
     payload.expiryDate = selectedDateED;
     payload.issuanceDate = selectedDateID;
-   
+    payload.bvn = formik.values.bvn;
     axios.post(individualURL, payload).then((res)=>{
     
       alert.success("Director Information submitted")
@@ -159,8 +160,7 @@ export default function Director() {
                   required
                   name="bvn"
                   value={"" || payload.bvn}
-                  onChange={changeHandler}
-                  {...formik.getFieldProps("bvn")}
+                {...formik.getFieldProps("bvn")}
                 />
                  {formik.touched.bvn && formik.errors.bvn ? (
                     <div className="fv-plugins-message-container">
@@ -659,7 +659,7 @@ export default function Director() {
                     label="Expire Date"
                     format="dd/MM/yyyy"
                     value={selectedDateED}
-                   
+                    minDate={selectedDateID}
                     InputAdornmentProps={{ position: "start" }}
                     onChange={(date) => handleDateChangeED(date)}
                   />

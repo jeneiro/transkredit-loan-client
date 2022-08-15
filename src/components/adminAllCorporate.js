@@ -121,16 +121,16 @@ export default function AdminAllCorporate() {
             onHide={handleClose}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
-            ref={ref}
+          
             centered
           >
-             <Modal.Header> <img
+              <Modal.Body  ref={ref}>
+            <img
             src={logo}
             alt="Logo"
             style={{ height: 32, marginLeft: 25, marginTop: 10, cursor:"pointer"}}
           
-          /></Modal.Header>
-            <Modal.Body >
+          />
               <div>
                 <div
                   className="row "
